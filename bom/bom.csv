@@ -1,5 +1,14 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-3/4 in EMT conduit,,,,,,
-Nylon or aluminum nodes,,,,,,
-Tarp or fabric skin,,,,,,
-Ground anchors,,,,,,
+1 EMT post,6,"3/4 in EMT (ANSI C80.3, OD 23.4 mm, wall 1.24 mm), cut to 1.65 m, deburred, one 6 mm button hole and one 8 mm pin hole at each end, color band at ends",Hardware store or electrical wholesaler,9.00,buy,Indicative price per 3.05 m (10 ft) stick; one member per stick; offcut 1.40 m
+2 EMT rafter,6,"3/4 in EMT cut to 2.06 m, drilled and color banded as item 1",Hardware store or electrical wholesaler,9.00,buy,Indicative price; 1 in EMT rafters (about $14 each) proposed to meet the 20 m/s wind target; awaiting Amish
+3 EMT ridge tube,2,"3/4 in EMT cut to 1.91 m, drilled and color banded as item 1",Hardware store or electrical wholesaler,9.00,buy,Indicative price per stick
+4 EMT eave tube,4,"3/4 in EMT cut to 1.91 m, drilled and color banded as item 1",Hardware store or electrical wholesaler,9.00,buy,Indicative price per stick
+5 Foot node,6,"Printed node: 84 mm core, one 24 mm bore socket 110 mm long, 170 x 170 x 12 mm plate with anchor hole; about 300 g",Local print farm or makerspace,8.00,make,Indicative filament and machine cost; polymer not chosen; castable in aluminum later
+6 Eave node,6,"Printed node: 84 mm core, three or four sockets (corner and middle versions), cable tab; about 250 g",Local print farm or makerspace,7.00,make,Indicative filament and machine cost
+7 Ridge node,3,"Printed node: 84 mm core, three or four sockets, guy tab on end nodes; about 220 g",Local print farm or makerspace,6.00,make,Indicative filament and machine cost
+8 Brace cable with hand tensioner,10,"4 mm galvanized wire rope, about 3.1 m average (31 m total), swaged or clipped loop ends, snap hook and hand cam tensioner",Rigging or hardware supplier,3.50,buy,Indicative price per assembled cable
+9 Screw ground anchor,8,"380 mm galvanized screw anchor with 90 mm helix and eye, turned by hand with a tube as lever",Hardware or farm supplier,4.00,buy,Indicative price; six at the feet and two for guys; holding capacity in the target soil unverified
+10 Guy line,2,"6 mm polyester rope, 3.5 m, slide tensioner, reflective tape",Outdoor or hardware supplier,3.00,buy,Indicative price
+11 Tarpaulin,2,"4 x 6 m reinforced woven polyethylene with eyelets, relief agency specification class",Relief supplier or agency stock,25.00,buy,Indicative price; may be supplied from agency stock (budget scope awaiting Amish); not flame retardant; left out of the exploded view
+12 Snap buttons and hitch pins,1,"36 stainless spring snap buttons (about 6 mm), 12 hitch pins with lanyards",Outdoor gear or hardware supplier,24.00,buy,Indicative price for the set; no exploded-view callout
+13 Bundle straps and bag,1,"Two 25 mm cam straps for the tube bundle; one duffel bag about 0.08 m3 for nodes, cables, anchors and tarpaulins",Outdoor or hardware supplier,20.00,buy,Indicative price; no exploded-view callout

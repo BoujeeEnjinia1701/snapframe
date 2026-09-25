@@ -3,9 +3,9 @@ doc_id: SNF-PRB-001
 title: SnapFrame problem statement
 project: SnapFrame
 doc_type: Problem statement
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-24'
+date: '2026-09-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,16 +13,77 @@ revisions:
   date: '2026-09-24'
   author: Amish Chadha
   change: Initial scaffold
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Populate to TRL 2 (problem, users, context, constraints, out of scope, prior work, open questions)
 ---
 
 # SnapFrame problem statement
 
-Emergency shelters need frames that ship flat and go up without tools.
+After a disaster, families need a covered, weather-tight space within days, and the frame that holds up the sheeting is the hard part: it must ship compactly, go up without tools or skilled labor, and survive wind. Standard relief tarpaulins are everywhere; a frame that fits them, built from a steel tube sold in almost every hardware store, is not. Design with, not for: requirements must come from co-design sessions and field trials with the intended users through a local partner.
+
+## The problem
+
+In the first weeks after an earthquake, flood or storm, the most common shelter response is plastic sheeting over whatever frame people can find. The International Federation of Red Cross and Red Crescent Societies (IFRC) shelter kit, for example, provides two 4 x 6 m reinforced tarpaulins, rope, fixings and tools, but leaves the frame to locally found timber or bamboo ([IFRC](https://www.ifrc.org)). Where timber is scarce, costly or has been used up, the result is low, sagging shelters that collapse in wind and use the sheeting badly.
+
+Purpose-built alternatives sit at the other extreme:
+
+- **Family tents** are quick to deploy and familiar, but they are single-purpose. The UNHCR family tent gives about 16 m² of floor ([UNHCR Emergency Handbook](https://emergency.unhcr.org)), and when the canvas wears out, the poles are rarely reused.
+- **Flat-pack shelters** such as Better Shelter give about 17.5 m² with a steel frame and rigid panels ([Better Shelter, Wikipedia](https://en.wikipedia.org/wiki/Better_Shelter)). They are robust, but cost far more than a tent, arrive as a large crate and depend on one supplier for spare parts.
+- **Improvised steel frames** from electrical metallic tubing (EMT) conduit are already common for event shade and geodesic domes, where tube ends are flattened, drilled and bolted ([Desert Domes](https://www.desertdomes.com)). They are cheap, but each needs a pipe bender, a drill, bolts and spanners on site, and bolted joints loosen.
+
+The gap is a frame kit that uses a globally stocked tube (EMT, made to ANSI C80.3 in North America and to similar metric standards elsewhere), connects with pre-made nodes that lock by hand, ships as a bundle of straight tubes and a box of nodes, and is sized to the tarpaulins that relief agencies already stock. Nodes are generated from parameters so that one design covers several shelter sizes, and can be printed near the response or cast in aluminum at scale.
 
 ## Users and context
 
-_To be developed._
+| User | Need | Context |
+| --- | --- | --- |
+| Displaced household (four to six people) | A covered living space of 3.5 m² or more per person, the Sphere minimum ([Sphere Handbook](https://spherestandards.org/handbook/)), with standing headroom, up on the first day | Camps, host-family plots, the site of a damaged home; warm to temperate climates in the first release |
+| Shelter team of a relief agency or NGO | A kit that fits existing tarpaulin stock, ships densely, can be put up by the family with a short demonstration, and can be counted and repaired | Pre-positioned stock, mixed logistics (truck, pickup, boat) |
+| Community builder or local fabricator | Standard tube, printable or castable nodes, open files, no welding | Makerspace, university lab, small foundry or print farm near the response |
+| Household moving from emergency to transitional shelter | A frame that can later carry better cladding (timber, corrugated sheet, woven mats) or be reused as a store or shade | The months after the emergency |
+| Clinic, school or distribution point | A larger frame (about 24 m²) from the same parts | Temporary public buildings |
 
 ## Constraints
 
-- Garage-buildable prototype, about $400 USD
+- Garage-buildable prototype, concept budget about $400 USD for one complete size M kit.
+- Members are trade-size EMT conduit, cut to length and drilled only. No bending, flattening or welding.
+- No tools on site for erection. Hands only, plus parts of the kit itself (for example, a tube used as a lever to turn a screw anchor).
+- Every package that a person carries weighs 25 kg (55 lb) or less, and no member is longer than about 2.1 m, so the kit fits a pickup bed and a standard pallet.
+- Skin is standard relief tarpaulin (4 x 6 m reinforced polyethylene), tied on, not a custom-cut fabric.
+- The frame must be understood and erected by people who have not seen it before, with a picture guide and no written language needed.
+- Operating range about 0 to 50 °C air temperature, with node surfaces in full sun reaching higher.
+
+## Out of scope
+
+- Snow load. The first release is for warm and temperate climates; cold-climate winterization needs a heavier frame and is a later variant.
+- Cyclone and hurricane rating. SnapFrame is an emergency shelter, not a storm refuge. Occupants must follow local evacuation guidance.
+- Floors, insulation, doors that lock, and sanitation.
+- Multi-story use or hanging loads beyond a lamp and a mosquito net.
+
+## Prior work
+
+- **IFRC shelter kit.** Two 4 x 6 m tarpaulins plus rope, fixings and tools; the frame comes from local material ([IFRC](https://www.ifrc.org)). SnapFrame is sized so the same two tarpaulins cover the roof, both side walls and one gable.
+- **UNHCR family tent.** About 16 m² living space, canvas over poles ([UNHCR Emergency Handbook](https://emergency.unhcr.org)). SnapFrame size M matches this floor area.
+- **Better Shelter (Refugee Housing Unit).** About 17.5 m², steel frame, polymer panels, supplied as a flat pack and designed for about three years of use ([Wikipedia](https://en.wikipedia.org/wiki/Better_Shelter)). It shows that a flat-pack frame works in the field, and that fire performance of the cladding must be addressed early; its panels were questioned on fire grounds in Zurich in 2015 (same source).
+- **EMT geodesic domes and shade structures.** Widely built by hobbyists and event crews from 3/4 in and 1/2 in EMT with flattened, bolted ends ([Desert Domes](https://www.desertdomes.com)). They prove the tube is available, cheap and strong enough for light cladding, and show the weakness of site-drilled, bolted joints.
+- **Tent pole snap buttons.** Spring-loaded buttons that pop into a hole to lock two tubes, as used in camping gear and walking aids. SnapFrame uses the same part at every tube end.
+- **Wind loading.** Design pressures follow the method of ASCE/SEI 7 ([ASCE](https://www.asce.org)) at first order: dynamic pressure q = ½ρv² times a pressure coefficient.
+
+## Open questions
+
+- Which partner and region to design with first (an IFRC national society shelter team, an NGO with a print farm, or a university humanitarian engineering group)? Proposed, awaiting Amish.
+- Should the reference kit include tarpaulins, or assume agency stock? This changes the budget test (see SNF-REQ-001 R10). Proposed, awaiting Amish.
+- Are printed polymer nodes acceptable for a first field trial, or should the first trial use cast aluminum nodes from printed patterns?
+- What wind speed should the kit be rated for, and what is the procedure above it (drop the skin, add guys, evacuate)?
+- Is metric EMT or other thin-wall steel tube of similar diameter stocked in the target region, and at what price?
+
+## User research and co-design
+
+This design is for communities the author is not part of, so requirements come from the people who will use it.
+
+- [ ] Identify a local partner organization (Helpful Engineering network, NGO or university)
+- [ ] Run co-design sessions with intended users; record who, where and what was learned
+- [ ] Validate floor area, headroom, erection time, wind exposure and cost assumptions in the field
+- [ ] Revise requirements (REQ) from findings before freezing the design
