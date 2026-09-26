@@ -3,9 +3,9 @@ doc_id: SNF-DDR-002
 title: SnapFrame recommendations accepted
 project: SnapFrame
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002); record the newly decided items, what changed and the items still open
+- version: "0.2"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: "Budget set to $445 to cover the priced BOM: decided by Amish, 2026-09-26 (O4 closed)"
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items D8 and D9); items O1 to O8 remain proposed
+- **Status:** accepted (items D8 and D9, and the budget under O4); items O1 to O3 and O5 to O8 remain proposed
 
 ## Context
 
@@ -54,11 +58,13 @@ Table 2. Items that remain open.
 | O1 | Tube offcuts (39 %) | The recommendation was to decide once the first region's tube source is known (SNF-DDR-001) | Proposed, awaiting Amish |
 | O2 | First co-design partner and region | No recommendation was made | Proposed, awaiting Amish |
 | O3 | Open front gable (R7) | No recommendation was made | Proposed, awaiting Amish |
-| O4 | R10 cost ($443): bulk EMT pricing, a lighter foot plate, or raise `budget_usd` | Options only, no recommendation | Proposed, awaiting Amish |
+| O4 | R10 cost ($443): bulk EMT pricing, a lighter foot plate, or raise `budget_usd` | Options only, no recommendation | Decided by Amish, 2026-09-26: budget set to $445 (see below) |
 | O5 | R5 tube bundle (28.6 kg) and, now, R11 carried mass (51.1 kg): two tube bundles (16.5 and 12.1 kg), or relax R5 to 30 kg for a two-person carry; R11 also needs a choice | Options only, no recommendation | Proposed, awaiting Amish |
 | O6 | Node polymer (R9) | No recommendation was made | Proposed, awaiting Amish |
 | O7 | R8 anchor target: 1.0 kN target against 1.28 kN calculated demand | No recommendation was made | Proposed, awaiting Amish |
 | O8 | 1 in posts (R6 would reach 20.3 m/s by member check) | D8 puts this after a frame analysis, which has not been run yet | Proposed, awaiting Amish once the frame analysis is done |
+
+Budget, 2026-09-26. On 2026-09-26 Amish wrote: "i approve all the budget items." Budget set to $445 to cover the priced BOM: decided by Amish, 2026-09-26. The priced frame kit is $443.32 (`bom/bom.csv`, excluding the agency-stock tarpaulins under SNF-DDR-001 D1), so `budget_usd` in `project.yaml` moves from 400 to 445 and R10 moves from not met to met. SNF-CAL-001 v0.3, SNF-REQ-001 v0.5, SNF-PRC-001 v0.5, SNF-PRB-001 v0.6, `README.md`, `bom/bom-notes.md` and the concept blueprint were updated. Requirement status is now 5 met, 5 not met, 2 at risk and 1 not verifiable.
 
 ## Consequences
 

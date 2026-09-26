@@ -3,9 +3,9 @@ doc_id: SNF-PRB-001
 title: SnapFrame problem statement
 project: SnapFrame
 doc_type: Problem statement
-version: "0.4"
+version: "0.6"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,14 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Stronger sources
+- version: "0.6"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget approved by Amish ($445, SNF-DDR-002)
 ---
 
 # SnapFrame problem statement
@@ -55,7 +63,7 @@ The gap is a frame kit that uses a globally stocked tube (EMT, made to ANSI C80.
 
 ## Constraints
 
-- Garage-buildable prototype, concept budget $400 USD for one size M frame kit. Tarpaulins come from agency stock and are costed separately (SNF-DDR-001 D1).
+- Garage-buildable prototype, concept budget $445 USD for one size M frame kit (approved by Amish, 2026-09-26). Tarpaulins come from agency stock and are costed separately (SNF-DDR-001 D1).
 - Members are trade-size EMT conduit, cut to length and drilled only. No bending, flattening or welding.
 - No tools on site for erection. Hands only, plus parts of the kit itself (for example, a tube used as a lever to turn a screw anchor).
 - Every package that a person carries weighs 25 kg (55 lb) or less, and no member is longer than about 2.1 m, so the kit fits a pickup bed and a standard pallet.
@@ -76,7 +84,7 @@ The gap is a frame kit that uses a globally stocked tube (EMT, made to ANSI C80.
 - **UNHCR family tent.** 16 m² main floor plus two 3.5 m² vestibules, canvas over poles, for a family of five ([UNHCR family tent fact sheet](https://unis.unvienna.org/pdf/factsheets/UNHCR_tent.pdf)). SnapFrame size M matches the main floor area.
 - **Better Shelter (Relief Housing Unit).** 17.5 m², steel frame, polymer panels, supplied as a flat pack; panels are rated for at least three years and the frame for at least ten ([Better Shelter](https://bettershelter.org/relief-housing-unit-rhu/)). It shows that a flat-pack frame works in the field, and that fire performance of the cladding must be addressed early; Zurich set the units aside over fire concerns in 2015 ([Humanosphere](https://www.humanosphere.org/basics/2015/12/ikea-shelters-fail/)).
 - **EMT geodesic domes and shade structures.** Widely built by hobbyists and event crews from EMT with flattened, drilled and bolted ends ([Domerama](https://www.domerama.com/fabricating/making-the-struts/geodesic-dome-struts-flattening/)). They prove the tube is available, cheap and strong enough for light cladding, and show the weakness of site-drilled, bolted joints.
-- **MERO space frame.** Max Mengeringhausen's tube construction method from the end of the 1930s joins prefabricated standard tubes at ball-shaped nodes ([MERO](https://mero.de/en/the-company/)). SnapFrame applies the same principle at family-shelter scale, with hand-locking joints in place of screwed ones.
+- **MERO space frame.** Max Mengeringhausen's tube construction method from the end of the 1930s builds structures from industrially prefabricated series elements ([MERO](https://mero.de/en/the-company/)): tubular rods screwed into near-spherical node pieces ([EP0475216B1, MERO Raumstruktur](https://patents.google.com/patent/EP0475216B1/de)). SnapFrame applies the same principle at family-shelter scale, with hand-locking joints in place of screwed ones.
 - **Tent pole snap buttons.** Spring-loaded buttons that pop into a hole to lock two tubes, as used in camping gear and walking aids. SnapFrame uses the same part at every tube end.
 - **Wind loading.** Design pressures follow the method of ASCE/SEI 7 ([ASCE](https://www.asce.org)) at first order: dynamic pressure q = ½ρv² times a pressure coefficient.
 

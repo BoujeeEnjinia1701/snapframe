@@ -325,7 +325,8 @@ def main():
     total = sum(cost.values())
     for k, v in cost.items():
         print(f"{k:20s} ${v:7.2f}")
-    print(f"frame kit ${total:.2f} against $400 budget: {(total / 400 - 1) * 100:+.1f} %; "
+    budget = 445  # budget_usd in project.yaml, approved by Amish 2026-09-26 (SNF-DDR-002)
+    print(f"frame kit ${total:.2f} against ${budget} budget: {(total / budget - 1) * 100:+.1f} %; "
           f"tarpaulins (agency stock) $50.00; with tarpaulins ${total + 50:.2f}")
     bought = 18 * 3.05
     print(f"offcut: {bought:.1f} m bought, {tube_m:.1f} m used, {(1 - tube_m / bought) * 100:.0f} % offcut")

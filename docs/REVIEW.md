@@ -117,7 +117,7 @@ Decided by Amish, 2026-09-25, going with the recommendation: D1 budget covers th
 2. **O2 First co-design partner and region**: no recommendation.
 3. **O3 Open gable (R7)**: no recommendation; the open gable also sets the 13.3 m/s open-door wind case.
 4. **New, R6 wind.** Options: (a) 1 in ridge tubes as well (+2 sticks, about $10; rating 19.7 m/s, posts then govern); (b) 1 in ridge tubes and posts (about $40 more; 20.3 m/s); (c) keep D2 and rate the kit at 17.5 m/s. Recommendation: (a) now and a frame analysis before deciding on posts. Decided by Amish, 2026-09-25: go with recommendation (SNF-DDR-002 D8).
-5. **New, R10 cost ($431).** Options: bulk EMT pricing, a lighter foot plate (foot nodes are $10.29 each), or raise `budget_usd`. No change was made. Proposed, awaiting Amish.
+5. **New, R10 cost ($431).** Options: bulk EMT pricing, a lighter foot plate (foot nodes are $10.29 each), or raise `budget_usd`. No change was made. Decided by Amish, 2026-09-26: budget set to $445 (SNF-DDR-002 v0.2).
 6. **New, R5 tube bundle (27.4 kg).** Options: two tube bundles (15.2 kg and 12.1 kg, three packages), or relax R5 to 30 kg for a two-person carry. Proposed, awaiting Amish.
 7. **New, R12 node variants.** Using the four-socket middle eave node at the corners with one blank socket would remove the handed corner nodes. Decided by Amish, 2026-09-25: go with recommendation (SNF-DDR-002 D9).
 8. **New, node polymer (R9)** and **R8 anchor target**: the 1.0 kN target is below the 1.28 kN calculated demand. Proposed, awaiting Amish.
@@ -181,7 +181,7 @@ Files changed: `cad/src/model.py` (1 in ridge tubes, single eave node), `cad/ste
 1. **O1 Tube offcuts** (39 %): decide once the first region's tube source is known.
 2. **O2 First co-design partner and region**: no recommendation.
 3. **O3 Open front gable (R7)**: no recommendation.
-4. **O4 R10 cost ($443)**: bulk EMT pricing, a lighter foot plate, or raise `budget_usd`; no recommendation.
+4. **O4 R10 cost ($443)**: bulk EMT pricing, a lighter foot plate, or raise `budget_usd`; no recommendation. Decided by Amish, 2026-09-26: budget set to $445 (SNF-DDR-002 v0.2).
 5. **O5 R5 package and R11 carried mass**: two tube bundles (16.5 and 12.1 kg) or relax R5 to 30 kg; R11 is now 1.1 kg over and needs a choice too; no recommendation.
 6. **O6 Node polymer (R9)** and **O7 R8 anchor target** (1.0 kN against 1.28 kN demand): no recommendation.
 7. **O8 1 in posts**: per D8, after the frame analysis (20.3 m/s by member check, about $30 more).
@@ -193,3 +193,18 @@ None. No accepted recommendation for SnapFrame needs another repo to change.
 ### TRL 4
 
 TRL 4 remains on hold by Amish's instruction. No build, test, purchasing or build-log material was created. The frame analysis that D8 calls for is TRL 3 paper work; it was not run in this session and is the recommended next step.
+
+## Session 2026-09-26: sources strengthened
+
+- **What sparked the idea (README):** the Wikipedia "Space frame" link (and the "first space truss system" claim it carried) was removed. The MERO account now rests on the company's own history page ([mero.de](https://mero.de/en/the-company/)), restated to what that page says (end of the 1930s, industrially prefabricated series elements), plus MERO Raumstruktur's patent [EP0475216B1](https://patents.google.com/patent/EP0475216B1/de) for the tubular rods and near-spherical node pieces.
+- **`docs/01-problem.md` (SNF-PRB-001 v0.5):** the same MERO prior-work line now cites the patent for the tube and node description, since the MERO history page does not describe the nodes.
+- `INSPIRATIONS.md`: the SnapFrame line now names the patent as a source. Country rows were already cited; no rows replaced. No budget change.
+
+## Session 2026-09-26: budget approved
+
+On 2026-09-26 Amish wrote: "i approve all the budget items." Open item O4 (R10 cost) is decided: budget set to $445 to cover the priced BOM, recorded in SNF-DDR-002 v0.2.
+
+- `project.yaml`: `budget_usd` 400 to 445. The priced frame kit is $443.32 (tarpaulins excluded, SNF-DDR-001 D1), so the figure covers it.
+- R10: **not met** (10.8 % over $400) to **met** ($1.70 under $445). Requirement status is now 5 met, 5 not met, 2 at risk and 1 not verifiable.
+- `docs/04-calcs/sizing.py` now checks against $445 and was rerun; SNF-CAL-001 v0.3, SNF-REQ-001 v0.5, SNF-PRC-001 v0.5, SNF-PRB-001 v0.6, `README.md` and `bom/bom-notes.md` quote the new figure. The concept blueprint key figure now reads "budget $445", and `media/` was regenerated.
+- Still awaiting Amish: O1 tube offcuts, O2 co-design partner, O3 open gable, O5 packages and carried mass, O6 node polymer, O7 anchor target, O8 1 in posts.

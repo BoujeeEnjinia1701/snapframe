@@ -3,9 +3,9 @@ doc_id: SNF-PRC-001
 title: SnapFrame design precis
 project: SnapFrame
 doc_type: Design precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,11 +25,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget approved by Amish ($445, SNF-DDR-002); cost figure restated against it
 ---
 
 # SnapFrame design precis
 
-SnapFrame is a gable-roof shelter frame of straight EMT conduit joined by printed nodes: 1 in EMT rafters and ridge tubes, and 3/4 in EMT posts and eave tubes. Each tube end carries a spring button that snaps into a hole in the node socket, so two adults can put the frame up by hand. The reference size M covers 4.0 x 4.0 m (16 m²) with a 2.6 m ridge and takes two standard 4 x 6 m relief tarpaulins from agency stock as its skin. The TRL 3 calculation note SNF-CAL-001 v0.2 puts the frame kit at about 42.0 kg and $443 (10.8 % over the $400 budget) and rates the frame at about 19.7 m/s (71 km/h, 44 mph), just short of the 20 m/s target, with the 3/4 in posts governing.
+SnapFrame is a gable-roof shelter frame of straight EMT conduit joined by printed nodes: 1 in EMT rafters and ridge tubes, and 3/4 in EMT posts and eave tubes. Each tube end carries a spring button that snaps into a hole in the node socket, so two adults can put the frame up by hand. The reference size M covers 4.0 x 4.0 m (16 m²) with a 2.6 m ridge and takes two standard 4 x 6 m relief tarpaulins from agency stock as its skin. The TRL 3 calculation note SNF-CAL-001 v0.3 puts the frame kit at about 42.0 kg and $443 (within the $445 budget) and rates the frame at about 19.7 m/s (71 km/h, 44 mph), just short of the 20 m/s target, with the 3/4 in posts governing.
 
 ![Hero render](../media/hero.png)
 
@@ -113,7 +117,7 @@ The TRL 2 estimates (factor 1.70 for posts, 1.26 for 3/4 in rafters, about 18 m/
 Decided by Amish on 2026-09-25 (SNF-DDR-001):
 
 - **Tube size (D2).** 1 in EMT rafters, with the wind rating stated on the kit.
-- **Budget scope (D1).** The $400 budget covers the frame kit. Tarpaulins come from agency stock and are costed separately.
+- **Budget scope (D1).** The budget covers the frame kit; Amish set it at $445 on 2026-09-26 to cover the priced BOM (SNF-DDR-002). Tarpaulins come from agency stock and are costed separately.
 - **Node process (D3).** Print for the first prototype, design every node to be castable from the printed pattern.
 - **Joint locking (D4).** Spring buttons at every tube end, hitch pins at the 12 tension joints.
 - **Frame form (D5).** Gable roof with pinned nodes and cable bracing, not a dome, barrel vault or rigid nodes.

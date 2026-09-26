@@ -79,7 +79,7 @@ render_all(
     key_figures=["Size M: 4.0 x 4.0 m floor (16 m²), eave 1.8 m, ridge 2.6 m",
                  "18 EMT members: 1 in rafters and ridge, 3/4 in posts and eaves",
                  "15 printed nodes in 4 variants, spring-button sockets, no tools",
-                 "Frame kit 42.0 kg, $443 (budget $400); tarpaulins agency stock",
+                 "Frame kit 42.0 kg, $443 (budget $445); tarpaulins agency stock",
                  "Wind rating 19.7 m/s, 3/4 in post governs (SNF-CAL-001)"],
     cut=False, scale_figure=False, context=context,
 )

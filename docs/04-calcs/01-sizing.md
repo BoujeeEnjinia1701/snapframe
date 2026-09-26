@@ -3,9 +3,9 @@ doc_id: SNF-CAL-001
 title: SnapFrame sizing calculations
 project: SnapFrame
 doc_type: Calculation
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,13 +17,17 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). 1 in ridge tubes and one eave node variant; results rerun
+- version: "0.3"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Budget approved by Amish ($400 to $445, SNF-DDR-002); script rerun; R10 not met to met
 ---
 
 # SnapFrame sizing calculations
 
-With the decisions in SNF-DDR-001 and SNF-DDR-002 (1 in EMT rafters and ridge tubes, 3/4 in EMT posts and eave tubes, one eave node variant, tarpaulins from agency stock), the size M frame meets its floor, headroom, size-family and part-count targets, but six of thirteen requirements are **not met**: wind (R6), packages (R5), skin (R7), cost (R10), carried mass (R11) and fire (R13). A first-principles load share puts more wind load on the ridge tubes and posts than the TRL 2 estimate did. With the 1 in ridge tubes of SNF-DDR-002 the frame is rated at about **19.7 m/s** (71 km/h, 44 mph), up from 17.8 m/s in v0.1, and the 3/4 in posts now govern. The heavier tubes raise the frame kit to about **$443** (from $431) against the $400 budget, the tube bundle to about **28.6 kg** (from 27.4 kg) against the 25 kg package limit, and the complete kit with tarpaulins to **51.1 kg** (from 49.8 kg), just over the 50 kg carry limit.
+With the decisions in SNF-DDR-001 and SNF-DDR-002 (1 in EMT rafters and ridge tubes, 3/4 in EMT posts and eave tubes, one eave node variant, tarpaulins from agency stock), the size M frame meets its floor, headroom, size-family and part-count targets, but five of thirteen requirements are **not met**: wind (R6), packages (R5), skin (R7), carried mass (R11) and fire (R13). A first-principles load share puts more wind load on the ridge tubes and posts than the TRL 2 estimate did. With the 1 in ridge tubes of SNF-DDR-002 the frame is rated at about **19.7 m/s** (71 km/h, 44 mph), up from 17.8 m/s in v0.1, and the 3/4 in posts now govern. The heavier tubes raise the frame kit to about **$443** (from $431), the tube bundle to about **28.6 kg** (from 27.4 kg) against the 25 kg package limit, and the complete kit with tarpaulins to **51.1 kg** (from 49.8 kg), just over the 50 kg carry limit. The frame kit is within the $445 budget that Amish approved on 2026-09-26, so R10 is met (it was not met against the former $400 budget).
 
-Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the repo root). Geometry, cut lengths and node volumes come from the parametric model `cad/src/model.py`, so the note, the model, drawing SNF-DWG-001 and `bom/bom.csv` agree. This is a first-order hand calculation, not a code check or a frame analysis. Version 0.2 reruns the script after SNF-DDR-002; every changed number is noted with its v0.1 value.
+Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the repo root). Geometry, cut lengths and node volumes come from the parametric model `cad/src/model.py`, so the note, the model, drawing SNF-DWG-001 and `bom/bom.csv` agree. This is a first-order hand calculation, not a code check or a frame analysis. Version 0.2 reruns the script after SNF-DDR-002; every changed number is noted with its v0.1 value. Version 0.3 changes only the budget, from $400 to $445 (SNF-DDR-002), so R10 moves from not met to met; no design number changed.
 
 ## 1. Method
 
@@ -160,7 +164,7 @@ Table 8. Cost, size M.
 | Guy lines (2) | $6.00 |
 | Buttons and hitch pins | $24.00 |
 | Straps and bag | $20.00 |
-| **Frame kit** | **$443.30, 10.8 % over $400** |
+| **Frame kit** | **$443.30, 0.4 % under the $445 budget** |
 | Tarpaulins, agency stock | $50.00 |
 | With tarpaulins | $493.30 |
 
@@ -181,7 +185,6 @@ Table 9. Requirement status, size M. Not met items first.
 | R5 | Ship flat | Longest member 2.064 m; tube bundle 28.6 kg, 0.030 m³; bag 22.5 kg with tarpaulins | 2.1 m or less; two packages, each 25 kg or less and 0.10 m³ or less | **Not met** (tube bundle 3.6 kg over) |
 | R6 | Resist wind | Rating 19.7 m/s; post factor 1.46 at 20 m/s | Factor 1.5 at 20 m/s | **Not met** (posts; frame analysis pending) |
 | R7 | Fit standard tarpaulins | 48.0 m² closes roof, side walls and one gable (42.6 m²); full enclosure 51.4 m² | Both gables closed | **Not met** (front gable open; awaiting Amish) |
-| R10 | Stay within budget | Frame kit $443 | $400 or less, frame kit without tarpaulins | **Not met** (10.8 % over) |
 | R11 | Carried by two people | Frame kit 42.0 kg; 51.1 kg with tarpaulins | 50 kg or less | **Not met** (1.1 kg over with tarpaulins) |
 | R13 | Limit fire spread | Standard polyethylene tarpaulins | Flame spread test or fire-retardant option | **Not met** |
 | R8 | Anchor without a hammer | Demand up to 1.28 kN at a rear corner foot, before pretension | Each anchor holds 1.0 kN | **At risk** (demand above target; capacity not verifiable at TRL 3) |
@@ -190,9 +193,10 @@ Table 9. Requirement status, size M. Not met items first.
 | R1 | Living space | 16.0 m² (4.6 people at 3.5 m²) | 16 m² or more | Met |
 | R2 | Headroom | 73 % of floor at 2.0 m or more | 60 % or more | Met |
 | R3 | Several sizes | S, M and L node sets generated and exported | Three sizes from one model | Met |
+| R10 | Stay within budget | Frame kit $443 | $445 or less, frame kit without tarpaulins | Met (not met at the former $400 budget in v0.2) |
 | R12 | Repairable in the field | 4 tube types; 3 node types in 4 printed variants, none handed | 4 tube types and 3 node types | Met (at risk in v0.1) |
 
-Summary: 4 met, 6 not met, 2 at risk, 1 not verifiable at TRL 3 (v0.1: 4 met, 5 not met, 3 at risk, 1 not verifiable).
+Summary: 5 met, 5 not met, 2 at risk, 1 not verifiable at TRL 3 (v0.2: 4 met, 6 not met, 2 at risk, 1 not verifiable; v0.1: 4 met, 5 not met, 3 at risk, 1 not verifiable).
 
 ## 10. Limitations
 

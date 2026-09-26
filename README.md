@@ -2,7 +2,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Situational Field Hardware · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $400 USD for the frame kit · **Difficulty:** 2 of 5
+**Area:** Situational Field Hardware · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $445 USD for the frame kit · **Difficulty:** 2 of 5
 
 Frame kit of standard EMT conduit joined by printed or cast nodes, with parametric nodes generated for several shelter sizes.
 
@@ -45,7 +45,7 @@ The standard first response is still plastic sheeting. The IFRC and ICRC [shelte
 
 ## What sparked the idea
 
-The idea traces back to the MERO system, the "MEngeringhausen ROhrbauweise" (tube construction method) that Max Mengeringhausen developed in Germany at the end of the 1930s, in which [industrially prefabricated standard tubes join at ball-shaped nodes](https://mero.de/en/the-company/) and which became the [first space truss system used in architecture](https://en.wikipedia.org/wiki/Space_frame). MERO showed that when all the angles live in a mass-produced node, the members can be plain, identical tubes. SnapFrame takes that principle down to the scale of a family shelter: the tubes are trade-size conduit from a hardware store, the nodes are printed from a parametric model, and the screwed joints of MERO give way to spring buttons that lock by hand.
+The idea traces back to the MERO system, the "MEngeringhausen ROhrbauweise" (tube construction method) that Max Mengeringhausen developed in Germany at the end of the 1930s, as [economical building solutions made from industrially prefabricated series elements](https://mero.de/en/the-company/). The company's own patents describe the result: space frames of tubular rods screwed into near-spherical node pieces, citing Mengeringhausen's book *Raumfachwerke aus Stäben und Knoten* (Space frames of bars and nodes) ([EP0475216B1, MERO Raumstruktur](https://patents.google.com/patent/EP0475216B1/de)). MERO showed that when all the angles live in a mass-produced node, the members can be plain, identical tubes. SnapFrame takes that principle down to the scale of a family shelter: the tubes are trade-size conduit from a hardware store, the nodes are printed from a parametric model, and the screwed joints of MERO give way to spring buttons that lock by hand.
 
 ## Problem
 
@@ -55,7 +55,7 @@ Emergency shelters need frames that ship flat and go up without tools. Relief ag
 
 Frame kit of standard EMT conduit joined by printed or cast nodes, with parametric nodes generated for several shelter sizes.
 
-The reference size M is a 4.0 x 4.0 m (16 m²) gable frame with a 2.6 m ridge: 18 straight EMT tubes (1 in rafters and ridge tubes, 3/4 in posts and eave tubes), 15 printed nodes in four variants with spring-button sockets, cable bracing, hand-turned screw anchors, and two standard tarpaulins from agency stock. The TRL 3 calculation note puts the frame kit at about 42.0 kg and $443 (10.8 % over the $400 budget) and the wind rating at about 19.7 m/s, just short of the 20 m/s target, with the 3/4 in posts governing. See the [review note](docs/REVIEW.md) for decisions and open items.
+The reference size M is a 4.0 x 4.0 m (16 m²) gable frame with a 2.6 m ridge: 18 straight EMT tubes (1 in rafters and ridge tubes, 3/4 in posts and eave tubes), 15 printed nodes in four variants with spring-button sockets, cable bracing, hand-turned screw anchors, and two standard tarpaulins from agency stock. The TRL 3 calculation note puts the frame kit at about 42.0 kg and $443 (within the $445 budget) and the wind rating at about 19.7 m/s, just short of the 20 m/s target, with the 3/4 in posts governing. See the [review note](docs/REVIEW.md) for decisions and open items.
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -91,6 +91,12 @@ The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 ## Documentation
 
 Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (SNF-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `SNF-PRC-001/v1.0`.
+
+## Credits
+
+Designed by Amish Chadha, with contributions from Ashok Kumar Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+
+AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 
 ## Licenses
 
