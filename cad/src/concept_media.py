@@ -1,7 +1,7 @@
 """SnapFrame concept media from the parametric model (TRL 3).
 
 Run from the repo root:  python cad/src/concept_media.py
-Frame geometry comes from cad/src/model.py (size M, 1 in rafters per SNF-DDR-001).
+Frame geometry comes from cad/src/model.py (size M, 1 in rafters per SNF-DDR-001 and 1 in ridge tubes per SNF-DDR-002).
 The tarpaulin skin is shown on the rear bay only so the frame and nodes stay visible;
 tarpaulins are agency stock, outside the kit budget (SNF-DDR-001 D1).
 CONCEPT, NOT FOR FABRICATION.
@@ -55,7 +55,7 @@ def boff(shape, extra=(0, 0, 0)):
 
 lengths = M.member_lengths(SIZE)
 NAMES = {1: f"EMT post, 3/4 in, {lengths['post'] / 1000:.2f} m", 2: f"EMT rafter, 1 in, {lengths['rafter'] / 1000:.2f} m",
-         3: f"EMT ridge tube, 3/4 in, {lengths['ridge'] / 1000:.2f} m", 4: f"EMT eave tube, 3/4 in, {lengths['eave'] / 1000:.2f} m",
+         3: f"EMT ridge tube, 1 in, {lengths['ridge'] / 1000:.2f} m", 4: f"EMT eave tube, 3/4 in, {lengths['eave'] / 1000:.2f} m",
          5: "Foot node with anchor slot", 6: "Eave node", 7: "Ridge node", 8: "Brace cable with hand tensioner",
          9: "Screw ground anchor", 10: "Guy line"}
 
@@ -77,10 +77,10 @@ render_all(
     parts, project="SnapFrame", title="Emergency shelter frame kit concept, size M", dwg_no="SNF-DWG-010",
     date="2026-09-25",
     key_figures=["Size M: 4.0 x 4.0 m floor (16 m²), eave 1.8 m, ridge 2.6 m",
-                 "18 EMT members: 1 in rafters, 3/4 in elsewhere; longest 2.06 m",
-                 "15 printed nodes, spring-button sockets, no tools",
-                 "Frame kit 40.6 kg, $431 (budget $400); tarpaulins agency stock",
-                 "Wind rating 17.8 m/s, ridge tube governs (SNF-CAL-001)"],
+                 "18 EMT members: 1 in rafters and ridge, 3/4 in posts and eaves",
+                 "15 printed nodes in 4 variants, spring-button sockets, no tools",
+                 "Frame kit 42.0 kg, $443 (budget $400); tarpaulins agency stock",
+                 "Wind rating 19.7 m/s, 3/4 in post governs (SNF-CAL-001)"],
     cut=False, scale_figure=False, context=context,
 )
 

@@ -116,10 +116,10 @@ Decided by Amish, 2026-09-25, going with the recommendation: D1 budget covers th
 1. **O1 Tube offcuts** (39 %): the recommendation was to decide once the first region's tube source is known, so it stays open.
 2. **O2 First co-design partner and region**: no recommendation.
 3. **O3 Open gable (R7)**: no recommendation; the open gable also sets the 13.3 m/s open-door wind case.
-4. **New, R6 wind.** Options: (a) 1 in ridge tubes as well (+2 sticks, about $10; rating 19.7 m/s, posts then govern); (b) 1 in ridge tubes and posts (about $40 more; 20.3 m/s); (c) keep D2 and rate the kit at 17.5 m/s. Recommendation: (a) now and a frame analysis before deciding on posts. Proposed, awaiting Amish.
+4. **New, R6 wind.** Options: (a) 1 in ridge tubes as well (+2 sticks, about $10; rating 19.7 m/s, posts then govern); (b) 1 in ridge tubes and posts (about $40 more; 20.3 m/s); (c) keep D2 and rate the kit at 17.5 m/s. Recommendation: (a) now and a frame analysis before deciding on posts. Decided by Amish, 2026-09-25: go with recommendation (SNF-DDR-002 D8).
 5. **New, R10 cost ($431).** Options: bulk EMT pricing, a lighter foot plate (foot nodes are $10.29 each), or raise `budget_usd`. No change was made. Proposed, awaiting Amish.
 6. **New, R5 tube bundle (27.4 kg).** Options: two tube bundles (15.2 kg and 12.1 kg, three packages), or relax R5 to 30 kg for a two-person carry. Proposed, awaiting Amish.
-7. **New, R12 node variants.** Using the four-socket middle eave node at the corners with one blank socket would remove the handed corner nodes. Proposed, awaiting Amish.
+7. **New, R12 node variants.** Using the four-socket middle eave node at the corners with one blank socket would remove the handed corner nodes. Decided by Amish, 2026-09-25: go with recommendation (SNF-DDR-002 D9).
 8. **New, node polymer (R9)** and **R8 anchor target**: the 1.0 kN target is below the 1.28 kN calculated demand. Proposed, awaiting Amish.
 
 ### Safety concerns
@@ -143,3 +143,53 @@ Checked this session with web search and fetch: IFRC and ICRC shelter kit (two 4
 ### Recommended next step
 
 TRL 4 is on hold by Amish's instruction; do not start it. Next, Amish decides items 4 to 8 above, and SNF-CAL-001 is revised to v0.2 if the tube sizes change. For reference only, TRL 4 would need: a built frame kit and printed nodes, node and anchor load tests with a test report (TST, `environment: lab`), a timed erection with users, and build log entries.
+
+## Session 2026-09-25: recommendations accepted
+
+On 2026-09-25 Amish wrote: "i accept all your recommendations, go with them across all repos." Every item from the TRL 3 session that carried a recommendation is now "Decided by Amish, 2026-09-25: go with recommendation" and is recorded in `docs/decisions/0002-recommendations-accepted.md` (SNF-DDR-002 v0.1). Items without a recommendation stay "Proposed, awaiting Amish". The trl and trl_target stay at 3.
+
+### Decisions applied and what changed
+
+| # | Decision | Before | After |
+| --- | --- | --- | --- |
+| D8 (item 4, R6 wind) | Decided by Amish, 2026-09-25: go with recommendation. (a) 1 in EMT ridge tubes now; frame analysis before deciding on posts | 3/4 in ridge tubes; rating 17.8 m/s, ridge tube governs (factor 1.18); open-gable case 13.3 m/s | 1 in ridge tubes; rating 19.7 m/s, 3/4 in post governs (factor 1.46); ridge tube 2.22; open-gable case 14.7 m/s |
+| D9 (item 7, R12 node variants) | Decided by Amish, 2026-09-25: go with recommendation. Four-socket eave node at the corners with one blank, capped socket | Six printed variants per size (handed corner eave nodes) | Four printed variants per size, none handed; R12 at risk to met |
+
+Knock-on numbers, size M (SNF-CAL-001 v0.1 to v0.2): frame kit $431.09 to $443.30 (7.8 % to 10.8 % over the $400 budget); frame kit mass 40.6 to 42.0 kg; with tarpaulins 49.8 to 51.1 kg (R11 met to **not met**); tube bundle 27.4 to 28.6 kg; nodes 4.87 kg and $122.09 to 4.97 kg and $124.30. `budget_usd` stays 400 under SNF-DDR-001 D1; `pitch` and `problem` are unchanged because no accepted recommendation touched them.
+
+Files changed: `cad/src/model.py` (1 in ridge tubes, single eave node), `cad/step/` and `cad/stl/` re-exported (the six `eave-corner-L/R` and three `eave-middle` STLs replaced by `snapframe-{S,M,L}-eave.stl`), `cad/src/sheets.py` and SNF-DWG-001 Rev P1 to P2, `docs/04-calcs/sizing.py` and SNF-CAL-001 v0.1 to v0.2, SNF-PRC-001 v0.3 to v0.4, SNF-REQ-001 v0.3 to v0.4, SNF-PRB-001 v0.3 to v0.4 (updated rating; MERO added to prior work), `bom/bom.csv` (items 3, 6, 7, 12) and `bom/bom-notes.md`, `cad/src/concept_media.py` and all of `media/`, `README.md` (numbers, and the new sections Concept rationale, Burning platform, Where it could be used and What sparked the idea), `project.yaml` (DDR-002 added to trl_evidence). All PDFs in `docs/pdf/`, the drawing and the concept media were regenerated so every footer shows designmolecule.com.
+
+### Requirement status (SNF-CAL-001 v0.2, size M)
+
+4 met, 6 not met, 2 at risk, 1 not verifiable at TRL 3 (was 4, 5, 3, 1).
+
+| ID | Value | Target | Status |
+| --- | --- | --- | --- |
+| R5 | Tube bundle 28.6 kg | 25 kg per package | **Not met** |
+| R6 | Rating 19.7 m/s; post 1.46 at 20 m/s | Factor 1.5 at 20 m/s | **Not met** (frame analysis pending) |
+| R7 | One gable open (51.4 m² needed, 48 m² available) | Both gables closed | **Not met** |
+| R10 | Frame kit $443 | $400, tarpaulins excluded | **Not met** (10.8 % over) |
+| R11 | 51.1 kg with tarpaulins | 50 kg | **Not met** (new, from the 1 in ridge tubes) |
+| R13 | Standard polyethylene tarpaulins | Fire-retardant option | **Not met** |
+| R8 | Anchor demand up to 1.28 kN | 1.0 kN per anchor | At risk |
+| R9 | Pin bearing on polymer 32 MPa with factor 2 | Factor 2 at 70 °C after two years | At risk |
+| R4 | About 46 min estimated | 60 min | Not verifiable at TRL 3 |
+| R1, R2, R3, R12 | 16.0 m²; 73 % headroom; S, M, L generated; four node variants, none handed | | Met |
+
+### Still awaiting Amish
+
+1. **O1 Tube offcuts** (39 %): decide once the first region's tube source is known.
+2. **O2 First co-design partner and region**: no recommendation.
+3. **O3 Open front gable (R7)**: no recommendation.
+4. **O4 R10 cost ($443)**: bulk EMT pricing, a lighter foot plate, or raise `budget_usd`; no recommendation.
+5. **O5 R5 package and R11 carried mass**: two tube bundles (16.5 and 12.1 kg) or relax R5 to 30 kg; R11 is now 1.1 kg over and needs a choice too; no recommendation.
+6. **O6 Node polymer (R9)** and **O7 R8 anchor target** (1.0 kN against 1.28 kN demand): no recommendation.
+7. **O8 1 in posts**: per D8, after the frame analysis (20.3 m/s by member check, about $30 more).
+
+### Cross-repo actions
+
+None. No accepted recommendation for SnapFrame needs another repo to change.
+
+### TRL 4
+
+TRL 4 remains on hold by Amish's instruction. No build, test, purchasing or build-log material was created. The frame analysis that D8 calls for is TRL 3 paper work; it was not run in this session and is the recommended next step.

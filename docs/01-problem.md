@@ -3,7 +3,7 @@ doc_id: SNF-PRB-001
 title: SnapFrame problem statement
 project: SnapFrame
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Apply SNF-DDR-001 (budget covers the frame kit, snow and cyclone out of scope); citations checked and deep-linked
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # SnapFrame problem statement
@@ -72,6 +76,7 @@ The gap is a frame kit that uses a globally stocked tube (EMT, made to ANSI C80.
 - **UNHCR family tent.** 16 m² main floor plus two 3.5 m² vestibules, canvas over poles, for a family of five ([UNHCR family tent fact sheet](https://unis.unvienna.org/pdf/factsheets/UNHCR_tent.pdf)). SnapFrame size M matches the main floor area.
 - **Better Shelter (Relief Housing Unit).** 17.5 m², steel frame, polymer panels, supplied as a flat pack; panels are rated for at least three years and the frame for at least ten ([Better Shelter](https://bettershelter.org/relief-housing-unit-rhu/)). It shows that a flat-pack frame works in the field, and that fire performance of the cladding must be addressed early; Zurich set the units aside over fire concerns in 2015 ([Humanosphere](https://www.humanosphere.org/basics/2015/12/ikea-shelters-fail/)).
 - **EMT geodesic domes and shade structures.** Widely built by hobbyists and event crews from EMT with flattened, drilled and bolted ends ([Domerama](https://www.domerama.com/fabricating/making-the-struts/geodesic-dome-struts-flattening/)). They prove the tube is available, cheap and strong enough for light cladding, and show the weakness of site-drilled, bolted joints.
+- **MERO space frame.** Max Mengeringhausen's tube construction method from the end of the 1930s joins prefabricated standard tubes at ball-shaped nodes ([MERO](https://mero.de/en/the-company/)). SnapFrame applies the same principle at family-shelter scale, with hand-locking joints in place of screwed ones.
 - **Tent pole snap buttons.** Spring-loaded buttons that pop into a hole to lock two tubes, as used in camping gear and walking aids. SnapFrame uses the same part at every tube end.
 - **Wind loading.** Design pressures follow the method of ASCE/SEI 7 ([ASCE](https://www.asce.org)) at first order: dynamic pressure q = ½ρv² times a pressure coefficient.
 
@@ -80,7 +85,7 @@ The gap is a frame kit that uses a globally stocked tube (EMT, made to ANSI C80.
 - Which partner and region to design with first (an IFRC national society shelter team, an NGO with a print farm, or a university humanitarian engineering group)? Proposed, awaiting Amish.
 - Tarpaulins come from agency stock (decided, SNF-DDR-001 D1). Do partner agencies stock a fire-retardant tarpaulin (R13)?
 - Nodes are printed for the prototype and designed for casting later (decided, SNF-DDR-001 D3). Which polymer, and are printed nodes acceptable to a partner for a first field trial?
-- The frame is rated at about 17.8 m/s by calculation (SNF-CAL-001), below the 20 m/s target. What rating do partners need, and what is the procedure above it (drop the skin, add guys, evacuate)?
+- The frame is rated at about 19.7 m/s by calculation with 1 in ridge tubes (SNF-CAL-001 v0.2, SNF-DDR-002 D8), just below the 20 m/s target. What rating do partners need, and what is the procedure above it (drop the skin, add guys, evacuate)?
 - Is metric EMT or other thin-wall steel tube of similar diameter stocked in the target region, and at what price?
 
 ## User research and co-design

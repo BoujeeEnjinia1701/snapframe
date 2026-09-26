@@ -31,7 +31,7 @@ TUBES = {
     "3/4": {"od": 23.42, "wall": 1.245},   # 0.922 in OD, 0.049 in wall
     "1":   {"od": 29.54, "wall": 1.448},   # 1.163 in OD, 0.057 in wall
 }
-TUBE_OF = {"post": "3/4", "rafter": "1", "ridge": "3/4", "eave": "3/4"}   # DDR-001 D2: 1 in rafters
+TUBE_OF = {"post": "3/4", "rafter": "1", "ridge": "1", "eave": "3/4"}   # DDR-001 D2: 1 in rafters; DDR-002 D8: 1 in ridge tubes
 
 NODE = {
     "core_r": 42.0,        # spherical core radius
@@ -184,15 +184,12 @@ def node_variants(size="M"):
     v = {}
     v["foot"] = (node([Socket(_d(f.foot[(x0, 1)], f.eave[(x0, 1)]), "post", True)], foot=True, outboard=(0, 1, 0)),
                  len(f.foot), [f.foot[k] for k in f.foot])
-    eave_c = [Socket(_d(f.eave[(x0, 1)], f.foot[(x0, 1)]), "post", True),
-              Socket(_d(f.eave[(x0, 1)], f.ridge[x0]), "rafter"), Socket((1, 0, 0), "eave")]
-    corner = node(eave_c, tab=(0, 1, -1))
-    # corner nodes are handed: R at (first frame, +Y) and (last frame, -Y); L is its mirror image
-    v["eave-corner-R"] = (corner, 2, [f.eave[(x0, 1)], f.eave[(xl, -1)]])
-    v["eave-corner-L"] = (corner.mirror(Plane.YZ), 2, [f.eave[(xl, 1)], f.eave[(x0, -1)]])
-    eave_m = eave_c + [Socket((-1, 0, 0), "eave")]
-    v["eave-middle"] = (node(eave_m, tab=(0, 1, -1)), 2 * (len(f.xs) - 2),
-                        [f.eave[k] for k in f.eave if k[0] not in (x0, xl)])
+    # DDR-002 D9: one four-socket eave node everywhere. At the four corners the socket that points
+    # past the gable stays blank (capped), so there are no handed corner nodes.
+    eave_m = [Socket(_d(f.eave[(x0, 1)], f.foot[(x0, 1)]), "post", True),
+              Socket(_d(f.eave[(x0, 1)], f.ridge[x0]), "rafter"), Socket((1, 0, 0), "eave"),
+              Socket((-1, 0, 0), "eave")]
+    v["eave"] = (node(eave_m, tab=(0, 1, -1)), len(f.eave), [f.eave[k] for k in f.eave])
     ridge_e = [Socket(_d(f.ridge[x0], f.eave[(x0, -1)]), "rafter"), Socket(_d(f.ridge[x0], f.eave[(x0, 1)]), "rafter"),
                Socket((1, 0, 0), "ridge")]
     v["ridge-end"] = (node(ridge_e, tab=(-1, 0, 0.4)), 2, [f.ridge[x0], f.ridge[xl]])
@@ -218,15 +215,7 @@ def assembly(size="M"):
 
     var = node_variants(size)
     feet = {k: _place(var["foot"][0], f.foot[k], 0 if k[1] > 0 else 180) for k in f.foot}
-    eaves_n = {}
-    R, Lh = var["eave-corner-R"][0], var["eave-corner-L"][0]
-    for (x, s), pos in f.eave.items():
-        if x == x0:
-            eaves_n[(x, s)] = _place(R, pos, 0) if s > 0 else _place(Lh, pos, 180)
-        elif x == xl:
-            eaves_n[(x, s)] = _place(Lh, pos, 0) if s > 0 else _place(R, pos, 180)
-        else:
-            eaves_n[(x, s)] = _place(var["eave-middle"][0], pos, 0 if s > 0 else 180)
+    eaves_n = {k: _place(var["eave"][0], pos, 0 if k[1] > 0 else 180) for k, pos in f.eave.items()}
     ridges_n = {}
     for x, pos in f.ridge.items():
         if x == x0:
@@ -252,7 +241,7 @@ def assembly(size="M"):
             "front": rod((xl + 60, 0, h + 20), (xl + GUY_OUT, 0, 80), 3)}
     return {
         1: ("EMT post, 3/4 in", posts), 2: ("EMT rafter, 1 in", rafters),
-        3: ("EMT ridge tube, 3/4 in", ridges), 4: ("EMT eave tube, 3/4 in", eaves),
+        3: ("EMT ridge tube, 1 in", ridges), 4: ("EMT eave tube, 3/4 in", eaves),
         5: ("Foot node", feet), 6: ("Eave node", eaves_n), 7: ("Ridge node", ridges_n),
         8: ("Brace cable", {i: c for i, c in enumerate(cables)}),
         9: ("Screw ground anchor", anchors), 10: ("Guy line", guys),

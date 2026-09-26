@@ -4,6 +4,7 @@ Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md. Geometry (cut lengths, node volumes and
 bounding boxes) comes from cad/src/model.py so the note, the model and the BOM stay in step.
 
+v0.2 applies SNF-DDR-002 (1 in ridge tubes, one eave node variant).
 First-order, hand-calculation level. Not a code check and not a frame analysis.
 """
 import math
@@ -186,9 +187,9 @@ def main():
     all34 = {k: "3/4" for k in M.TUBE_OF}
     v34, sf34, g34 = rating(all34)
     print(f"all 3/4 in (TRL 2 concept): rating {v34:.1f} m/s; governed by {g34} at SF {sf34:.2f}")
-    alt = dict(M.TUBE_OF, ridge="1")
+    alt = dict(M.TUBE_OF, ridge="3/4")
     va, sfa, ga = rating(alt)
-    print(f"sensitivity, 1 in rafters and ridge tubes: rating {va:.1f} m/s; governed by {ga} at SF {sfa:.2f}")
+    print(f"DDR-001 only, 1 in rafters and 3/4 in ridge tubes (CAL-001 v0.1): rating {va:.1f} m/s; governed by {ga} at SF {sfa:.2f}")
     alt2 = dict(M.TUBE_OF, ridge="1", post="1")
     vb, sfb, gb = rating(alt2)
     print(f"sensitivity, 1 in rafters, ridge tubes and posts: rating {vb:.1f} m/s; governed by {gb} at SF {sfb:.2f}")

@@ -3,7 +3,7 @@ doc_id: SNF-CAL-001
 title: SnapFrame sizing calculations
 project: SnapFrame
 doc_type: Calculation
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,13 +13,17 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: First sizing note for TRL 3 (geometry, wind, bracing, anchors, joints, mass, packages, cost, skin, erection time)
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002). 1 in ridge tubes and one eave node variant; results rerun
 ---
 
 # SnapFrame sizing calculations
 
-With the decisions in SNF-DDR-001 (1 in EMT rafters, 3/4 in EMT elsewhere, tarpaulins from agency stock), the size M frame meets its floor, headroom, size-family and mass targets, but five of thirteen requirements are **not met**: wind (R6), packages (R5), skin (R7), cost (R10) and fire (R13). The main finding is that a first-principles load share puts more wind load on the ridge tubes and posts than the TRL 2 estimate did, so the 1 in rafters alone do not reach the 20 m/s target: the frame is rated at about **17.8 m/s** (64 km/h, 40 mph), governed by the 3/4 in ridge tubes. The frame kit costs about **$431** against the $400 budget, and the tube bundle weighs about **27.4 kg** against the 25 kg package limit.
+With the decisions in SNF-DDR-001 and SNF-DDR-002 (1 in EMT rafters and ridge tubes, 3/4 in EMT posts and eave tubes, one eave node variant, tarpaulins from agency stock), the size M frame meets its floor, headroom, size-family and part-count targets, but six of thirteen requirements are **not met**: wind (R6), packages (R5), skin (R7), cost (R10), carried mass (R11) and fire (R13). A first-principles load share puts more wind load on the ridge tubes and posts than the TRL 2 estimate did. With the 1 in ridge tubes of SNF-DDR-002 the frame is rated at about **19.7 m/s** (71 km/h, 44 mph), up from 17.8 m/s in v0.1, and the 3/4 in posts now govern. The heavier tubes raise the frame kit to about **$443** (from $431) against the $400 budget, the tube bundle to about **28.6 kg** (from 27.4 kg) against the 25 kg package limit, and the complete kit with tarpaulins to **51.1 kg** (from 49.8 kg), just over the 50 kg carry limit.
 
-Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the repo root). Geometry, cut lengths and node volumes come from the parametric model `cad/src/model.py`, so the note, the model, drawing SNF-DWG-001 and `bom/bom.csv` agree. This is a first-order hand calculation, not a code check or a frame analysis.
+Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the repo root). Geometry, cut lengths and node volumes come from the parametric model `cad/src/model.py`, so the note, the model, drawing SNF-DWG-001 and `bom/bom.csv` agree. This is a first-order hand calculation, not a code check or a frame analysis. Version 0.2 reruns the script after SNF-DDR-002; every changed number is noted with its v0.1 value.
 
 ## 1. Method
 
@@ -36,7 +40,7 @@ Table 1. Assumptions. Each is used only where stated.
 | # | Assumption | Value | Basis |
 | --- | --- | --- | --- |
 | A1 | 3/4 in EMT | OD 23.42 mm (0.922 in), wall 1.245 mm (0.049 in) | ANSI C80.3 nominal; OD and ID checked against [Engineering ToolBox](https://www.engineeringtoolbox.com/conduit-size-d_1738.html) |
-| A2 | 1 in EMT | OD 29.54 mm (1.163 in), wall 1.448 mm (0.057 in) | As A1 |
+| A2 | 1 in EMT | OD 29.54 mm (1.163 in), wall 1.448 mm (0.057 in); rafters (SNF-DDR-001 D2) and ridge tubes (SNF-DDR-002 D8) | As A1 |
 | A3 | Steel yield strength | 275 MPa (40 ksi) | Assumed; C80.3 does not set a yield, so confirm from supplier data |
 | A4 | Design gust, safety factor | 20 m/s, 1.5 on yield | R6 |
 | A5 | Air density | 1.225 kg/m³ | Sea level, 15 °C |
@@ -49,6 +53,7 @@ Table 1. Assumptions. Each is used only where stated.
 | A12 | Printed nodes | Density 1,070 kg/m³, 55 % effective fill, filament $22/kg plus $1.00 machine time per node | ASA-class polymer, estimate; polymer not chosen |
 | A13 | Tarpaulins | Two 4 x 6 m, 190 g/m², $25 each, from agency stock | Relief tarpaulin class; outside the kit budget (SNF-DDR-001 D1) |
 | A14 | Tube prices | 3.05 m (10 ft) stick: 3/4 in $9.00, 1 in $14.00 | Indicative US retail, not quotes |
+| A15 | Corner eave nodes | The four-socket eave node with the socket past the gable left blank and capped | SNF-DDR-002 D9 |
 
 ## 3. Geometry
 
@@ -62,7 +67,7 @@ Table 2. Cut lengths from the model (node-center distance less 45 mm at each end
 | M | 4.0 x 4.0 m (16.0 m²) | 1.650 m | 2.064 m | 1.910 m |
 | L | 4.0 x 6.0 m (24.0 m²) | 1.650 m | 2.064 m | 1.910 m |
 
-The model generates the node set of each size (six printed variants per size) and exports each as STL, so R3 is met at model level. M and L share every tube length.
+The model generates the node set of each size (four printed variants per size: foot, eave, ridge end and ridge middle, none handed) and exports each as STL, so R3 is met at model level. M and L share every tube length.
 
 ## 4. Tube sections
 
@@ -84,7 +89,7 @@ Table 4. Member check at 20 m/s, middle frame unless stated.
 | Member | Tube | Moment | Stress | Factor on yield | Against 1.5 |
 | --- | --- | --- | --- | --- | --- |
 | Rafter | 1 in | 141.8 N·m | 166 MPa | 1.66 | Meets |
-| Ridge tube | 3/4 in | 106.2 N·m | 232 MPa | **1.18** | **Below** |
+| Ridge tube | 1 in | 106.2 N·m | 124 MPa | 2.22 | Meets (1.18 with 3/4 in in v0.1) |
 | Post (windward) | 3/4 in | 86.0 N·m | 188 MPa | **1.46** | **Below** |
 | Eave tube, windward side | 3/4 in | 68.0 N·m | 149 MPa | 1.85 | Meets |
 | Eave tube, leeward side | 3/4 in | 80.9 N·m | 177 MPa | 1.55 | Meets |
@@ -96,13 +101,13 @@ Table 5. Wind rating and sensitivity.
 
 | Case | Rating at factor 1.5 | Governing member |
 | --- | --- | --- |
-| **As decided: 1 in rafters, 3/4 in elsewhere** | **17.8 m/s (64 km/h, 40 mph)** | Ridge tube, 1.18 at 20 m/s |
+| **As decided: 1 in rafters and ridge tubes, 3/4 in posts and eave tubes (SNF-DDR-002 D8)** | **19.7 m/s (71 km/h, 44 mph)** | Post, 1.46 at 20 m/s |
 | TRL 2 concept, 3/4 in throughout | 15.4 m/s | Rafter, 0.89 at 20 m/s |
-| 1 in rafters and ridge tubes | 19.7 m/s | Post, 1.46 at 20 m/s |
+| SNF-DDR-001 only: 1 in rafters, 3/4 in elsewhere (v0.1 baseline) | 17.8 m/s | Ridge tube, 1.18 at 20 m/s |
 | 1 in rafters, ridge tubes and posts | 20.3 m/s | Eave tube (leeward), 1.55 at 20 m/s |
-| As decided, open gable facing the wind (internal pressure +0.55) | 13.3 m/s | Ridge tube, 0.66 at 20 m/s |
+| As decided, open gable facing the wind (internal pressure +0.55) | 14.7 m/s (13.3 m/s in v0.1) | Eave tube (leeward), 0.81 at 20 m/s |
 
-For comparison, the TRL 2 method (half of each panel, uniform) gives 99 N·m and 218 MPa in a 3/4 in rafter, which matches SNF-PRC-001 v0.2; that method understated the midspan moment. The open gable case matters: with the door end facing the wind, internal pressure adds to the roof suction and the rating falls to about 13 m/s. Closing the front gable (R7, still open) or dropping the skin in strong wind removes this case.
+For comparison, the TRL 2 method (half of each panel, uniform) gives 99 N·m and 218 MPa in a 3/4 in rafter, which matches SNF-PRC-001 v0.2; that method understated the midspan moment. The open gable case matters: with the door end facing the wind, internal pressure adds to the roof suction and the wall suction, and the rating falls to about 14.7 m/s. Whether the posts also move to 1 in waits for a frame analysis (SNF-DDR-002 D8); on this member-by-member basis 1 in posts would give 20.3 m/s. Closing the front gable (R7, still open) or dropping the skin in strong wind removes this case.
 
 Snow is out of scope (SNF-DDR-001 D7). As a check for the safety note, 0.5 kPa of snow on plan puts 356 N·m and 416 MPa into a middle 1 in rafter, well past yield.
 
@@ -110,7 +115,7 @@ Snow is out of scope (SNF-DDR-001 D7). As a check for the safety note, 0.5 kPa o
 
 Wind across the span puts 2,217 N on the two side walls; about 1,108 N reaches eave level. With the rear gable as the only braced frame across the span, its active X cable carries **1,209 N** and pulls up on its foot with 482 N. The roof acts as a cantilever from the rear gable; the resulting couple of 2,217 N·m puts 554 N into each side wall, 735 N into a side wall cable and another 482 N of uplift at its foot. Wind along the ridge on the closed rear gable (1,678 N) puts 556 N into a side wall cable. The highest cable tension is 1.2 kN, a factor of 6.6 on the assumed 8.0 kN breaking load of 4 mm wire rope; the hand tensioner rating is unknown.
 
-Roof suction lifts the middle frame with 1,372 N against 110 N of its own weight, so each middle foot anchor sees **0.63 kN** and each end foot 0.32 kN. At a rear corner foot, the gable cable and the side wall cable both pull up as well: 0.32 + 0.48 + 0.48 = **1.28 kN** before cable pretension, above the 1.0 kN target in R8.
+Roof suction lifts the middle frame with 1,372 N against 116 N of its own weight, so each middle foot anchor sees **0.63 kN** and each end foot 0.31 kN. At a rear corner foot, the gable cable and the side wall cable both pull up as well: 0.31 + 0.48 + 0.48 = **1.28 kN** before cable pretension, above the 1.0 kN target in R8.
 
 At that foot the hitch pin bears on the polymer socket at 16.0 MPa, or **32.0 MPa** with the factor of 2 in R9, and on the EMT wall at 64 MPa. The EMT shear-out capacity behind the pin hole is about 37.8 kN, so the steel is not the limit; the polymer socket is. A rafter end transfers 198 N of shear into its socket, a nominal bearing pressure of 0.10 MPa over 65 mm of engagement.
 
@@ -121,44 +126,43 @@ Table 6. Printed nodes, size M, from the model volumes.
 | Node | Count | Solid volume | Printed mass | Cost each |
 | --- | --- | --- | --- | --- |
 | Foot | 6 | 717.3 cm³ | 422 g | $10.29 |
-| Eave, corner (right and left hand) | 2 + 2 | 427.3 cm³ | 251 g | $6.53 |
-| Eave, middle | 2 | 461.1 cm³ | 271 g | $6.97 |
-| Ridge, end | 2 | 436.6 cm³ | 257 g | $6.65 |
-| Ridge, middle | 1 | 463.4 cm³ | 273 g | $7.00 |
+| Eave (all six; corners with one blank socket) | 6 | 461.1 cm³ | 271 g | $6.97 |
+| Ridge, end | 2 | 445.5 cm³ | 262 g | $6.77 |
+| Ridge, middle | 1 | 481.1 cm³ | 283 g | $7.23 |
 
-The 15 nodes weigh 4.87 kg and cost about $122. Corner eave nodes are handed, so a size M kit prints six node variants in three families.
+The 15 nodes weigh 4.97 kg and cost about $124 (v0.1: 4.87 kg, $122). With one eave node variant (SNF-DDR-002 D9), a size M kit prints four node variants in three families, none of them handed; the ridge nodes grow slightly because their ridge sockets now take 1 in tube.
 
 Table 7. Mass and packages, size M.
 
 | Item | Mass |
 | --- | --- |
-| Tubes (33.74 m) | 26.97 kg |
-| Nodes | 4.87 kg |
+| Tubes (33.74 m) | 28.20 kg |
+| Nodes | 4.97 kg |
 | Brace cables (31.1 m node to node) and tensioners | 3.22 kg |
 | Screw anchors | 3.60 kg |
 | Guy lines | 0.28 kg |
 | Buttons and hitch pins | 0.72 kg |
 | Straps and bag | 1.00 kg |
-| **Frame kit** | **40.6 kg (90 lb)** |
+| **Frame kit** | **42.0 kg (93 lb)** |
 | Tarpaulins, agency stock | 9.1 kg |
-| **With tarpaulins** | **49.8 kg** |
+| **With tarpaulins** | **51.1 kg** |
 
-The tube bundle weighs **27.4 kg** and takes about 0.029 m³; the bag weighs 13.3 kg (22.4 kg with the tarpaulins) and holds about 0.055 m³ of parts before the tarpaulins. Splitting the tubes into two bundles (rafters and ridge tubes 15.2 kg; posts and eave tubes 12.1 kg) would keep every package under 25 kg but makes three packages.
+The tube bundle weighs **28.6 kg** and takes about 0.030 m³; the bag weighs 13.4 kg (22.5 kg with the tarpaulins) and holds about 0.060 m³ of parts before the tarpaulins. Splitting the tubes into two bundles (rafters and ridge tubes 16.5 kg; posts and eave tubes 12.1 kg) would keep every package under 25 kg but makes three packages. The complete kit with tarpaulins is now 1.1 kg over the 50 kg carry limit of R11.
 
 Table 8. Cost, size M.
 
 | Item | Cost |
 | --- | --- |
-| Tubes: 12 sticks of 3/4 in, 6 of 1 in | $192.00 |
-| Nodes (15) | $122.09 |
+| Tubes: 10 sticks of 3/4 in, 8 of 1 in | $202.00 |
+| Nodes (15) | $124.30 |
 | Brace cables (10) | $35.00 |
 | Screw anchors (8) | $32.00 |
 | Guy lines (2) | $6.00 |
 | Buttons and hitch pins | $24.00 |
 | Straps and bag | $20.00 |
-| **Frame kit** | **$431.09, 7.8 % over $400** |
+| **Frame kit** | **$443.30, 10.8 % over $400** |
 | Tarpaulins, agency stock | $50.00 |
-| With tarpaulins | $481.09 |
+| With tarpaulins | $493.30 |
 
 The kit buys 54.9 m of tube and uses 33.7 m, a 39 % offcut.
 
@@ -174,26 +178,26 @@ Table 9. Requirement status, size M. Not met items first.
 
 | ID | Requirement | Value | Target | Status |
 | --- | --- | --- | --- | --- |
-| R5 | Ship flat | Longest member 2.064 m; tube bundle 27.4 kg, 0.029 m³; bag 22.4 kg with tarpaulins | 2.1 m or less; two packages, each 25 kg or less and 0.10 m³ or less | **Not met** (tube bundle 2.4 kg over) |
-| R6 | Resist wind | Rating 17.8 m/s; ridge tube factor 1.18 and post 1.46 at 20 m/s | Factor 1.5 at 20 m/s | **Not met** |
+| R5 | Ship flat | Longest member 2.064 m; tube bundle 28.6 kg, 0.030 m³; bag 22.5 kg with tarpaulins | 2.1 m or less; two packages, each 25 kg or less and 0.10 m³ or less | **Not met** (tube bundle 3.6 kg over) |
+| R6 | Resist wind | Rating 19.7 m/s; post factor 1.46 at 20 m/s | Factor 1.5 at 20 m/s | **Not met** (posts; frame analysis pending) |
 | R7 | Fit standard tarpaulins | 48.0 m² closes roof, side walls and one gable (42.6 m²); full enclosure 51.4 m² | Both gables closed | **Not met** (front gable open; awaiting Amish) |
-| R10 | Stay within budget | Frame kit $431 | $400 or less, frame kit without tarpaulins | **Not met** (7.8 % over) |
+| R10 | Stay within budget | Frame kit $443 | $400 or less, frame kit without tarpaulins | **Not met** (10.8 % over) |
+| R11 | Carried by two people | Frame kit 42.0 kg; 51.1 kg with tarpaulins | 50 kg or less | **Not met** (1.1 kg over with tarpaulins) |
 | R13 | Limit fire spread | Standard polyethylene tarpaulins | Flame spread test or fire-retardant option | **Not met** |
 | R8 | Anchor without a hammer | Demand up to 1.28 kN at a rear corner foot, before pretension | Each anchor holds 1.0 kN | **At risk** (demand above target; capacity not verifiable at TRL 3) |
 | R9 | Nodes strong in sun and cold | Pin bearing 32.0 MPa with the factor of 2 | Factor 2 after two years, -10 to 70 °C | **At risk** (polymer not chosen; close to typical printed ASA strength at room temperature, lower at 70 °C) |
-| R12 | Repairable in the field | 4 tube types; 3 node families in 6 printed variants (handed corners) | 4 tube types and 3 node types | **At risk** |
 | R4 | Go up without tools | About 46 min estimated | 60 min or less | Not verifiable at TRL 3 |
 | R1 | Living space | 16.0 m² (4.6 people at 3.5 m²) | 16 m² or more | Met |
 | R2 | Headroom | 73 % of floor at 2.0 m or more | 60 % or more | Met |
 | R3 | Several sizes | S, M and L node sets generated and exported | Three sizes from one model | Met |
-| R11 | Carried by two people | Frame kit 40.6 kg; 49.8 kg with tarpaulins | 50 kg or less | Met (0.2 kg margin with tarpaulins) |
+| R12 | Repairable in the field | 4 tube types; 3 node types in 4 printed variants, none handed | 4 tube types and 3 node types | Met (at risk in v0.1) |
 
-Summary: 4 met, 5 not met, 3 at risk, 1 not verifiable at TRL 3.
+Summary: 4 met, 6 not met, 2 at risk, 1 not verifiable at TRL 3 (v0.1: 4 met, 5 not met, 3 at risk, 1 not verifiable).
 
 ## 10. Limitations
 
 - Pressure coefficients are first-order, not taken from a code for this building shape and exposure. Gust factor, terrain and shelter from neighboring structures are not modeled.
-- The frame is checked member by member. No frame analysis with pinned nodes and tension-only cables was run, so buckling of posts under combined axial load and bending, cable slack and second-order sway are not covered.
+- The frame is checked member by member. No frame analysis with pinned nodes and tension-only cables was run, so buckling of posts under combined axial load and bending, cable slack and second-order sway are not covered. That analysis is the next TRL 3 step under SNF-DDR-002 D8, before deciding on 1 in posts.
 - Tarpaulin membrane forces that pull the edge members inward are ignored.
 - EMT yield, anchor holding capacity, tensioner rating and printed polymer strength at 70 °C are assumed or unknown.
 - Costs are indicative and exclude labor, shipping and tooling.
