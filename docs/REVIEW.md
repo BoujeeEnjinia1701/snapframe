@@ -208,3 +208,26 @@ On 2026-09-26 Amish wrote: "i approve all the budget items." Open item O4 (R10 c
 - R10: **not met** (10.8 % over $400) to **met** ($1.70 under $445). Requirement status is now 5 met, 5 not met, 2 at risk and 1 not verifiable.
 - `docs/04-calcs/sizing.py` now checks against $445 and was rerun; SNF-CAL-001 v0.3, SNF-REQ-001 v0.5, SNF-PRC-001 v0.5, SNF-PRB-001 v0.6, `README.md` and `bom/bom-notes.md` quote the new figure. The concept blueprint key figure now reads "budget $445", and `media/` was regenerated.
 - Still awaiting Amish: O1 tube offcuts, O2 co-design partner, O3 open gable, O5 packages and carried mass, O6 node polymer, O7 anchor target, O8 1 in posts.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose this repo for the first batch of product renders on 2026-09-26. This session added `cad/src/product_model.py`, an appearance model of the size M frame for photoreal renders, and pointed the README hero image at `media/render-hero.png` with a link to `media/render-exploded.png`. The render files are produced later by the orchestrator.
+
+What `product_model.py` adds:
+
+- `product_parts()`: 144 parts in four groups (shell, internal, accessory, context), each with a colour, material, BOM line and exploded-view offset; `TITLE` and three `RENDER_VIEWS` (hero, exploded, detail).
+- Galvanized EMT tubes with colour bands just outside each socket mouth, one colour per tube type (posts, rafters, ridge tubes, eave tubes), as the BOM's "color band at ends".
+- The printed nodes from `model.node_variants()` in the kit teal, with fillets at the core-to-socket junctions, the socket mouths and the foot plate edges; grip ribs and a size mark on each foot plate.
+- Stainless spring buttons showing in every tube socket hole, hitch pins with pull rings at the 12 tension joints, and ribbed push-in caps on the four blank corner eave sockets (item 12).
+- Brace cables with hand cam tensioners and swaged sleeves, a snap hook on the front right corner eave node's cable tab, screw anchors at the feet, and guy lines with slide tensioners and reflective tape.
+- Context: a compact soil plinth, one tarpaulin fitted over the rear bay with a hem and eyelets (agency stock, item 11, as in `concept_media.py`), and the shared clay mannequin standing beside the open front gable for scale.
+- A "detail" view of one joint: the front right corner eave node and the ends of its post, rafter and eave tube, with buttons, hitch pin, cap and snap hook.
+
+Places where the appearance model differs from `model.py`:
+
+1. **Tube ends at the detail node.** The three tubes that meet the front right corner eave node are drawn as two pieces each, split 300 mm from the node centre, so the detail view can frame the joint alone. The joint between the two pieces is a flush butt that does not show in the renders; tube lengths and positions are unchanged. Proposed, awaiting Amish: keep the split as a render device. Recommendation: keep it; no document quotes it.
+2. **Guy lines and guy anchors not in the hero.** They sit in the "accessory" group, so the hero shows the frame on a compact plinth; they appear in the exploded view. Proposed, awaiting Amish: accept the hero without guy lines, or add them and a wider plinth (the frame then fills less of the image). Recommendation: accept, with the hero caption saying guy lines are not shown.
+3. **Appearance hardware not modeled in `model.py`.** Colour bands, spring buttons, hitch pins with rings, socket caps, cable tensioners, sleeves and snap hook, guy tensioners and foot plate ribs and marks are appearance additions with indicative sizes; the foot plate size mark and grip ribs are not in the BOM spec. Proposed, awaiting Amish: whether the foot plate ribs and size mark should become part of the node concept. Recommendation: keep them as appearance only until the node polymer (O6) is chosen.
+4. **Brace cable at the detail node** starts 48 mm outside the node core rather than at the node centre, so it does not cross the snap hook in close-ups. Proposed, awaiting Amish. Recommendation: accept; the node-to-node cable length in SNF-CAL-001 is unchanged.
+
+This is an appearance model only: no tolerances, no fabrication detail and no change to `model.py`, the BOM or the controlled documents. `trl` stays 3, and TRL 4 remains on hold.
