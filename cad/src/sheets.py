@@ -26,15 +26,15 @@ nodes = {n: project_views(var[n][0], work / n) for n in ("eave", "ridge-end", "f
 
 ml = M.member_lengths("M")
 p = M.SIZES["M"]
-s = Sheet(project="SnapFrame", title="General arrangement, size M", dwg_no="SNF-DWG-001", rev="P2",
+s = Sheet(project="SnapFrame", title="General arrangement, size M", dwg_no="SNF-DWG-001", rev="P3",
           author="Amish Chadha", date=DATE, scale=1 / 50,
           material="EMT to ANSI C80.3; printed polymer nodes (not chosen); see bom/bom.csv and SNF-CAL-001",
           revisions=[("P1", "Preliminary general arrangement (TRL 3)", DATE, "AC"),
-                     ("P2", "1 in ridge tubes; one eave node variant (DDR-002)", DATE, "AC")])
+                     ("P2", "1 in ridge tubes; one eave node variant (DDR-002)", DATE, "AC"),
+                     ("P3", "Layout and labels tidied", DATE, "AC")])
 s.add_ortho(views, ["front", "top", "right"])
-s._layers.append(_t(16, 27, "PRELIMINARY, NOT FOR FABRICATION. Anchors omitted from views; guy lines shown.", 2.4, 400, MUTED))
 
-s.add_svg(views["iso"], 268, 26, 150, 62, label="Isometric view", sublabel="Not to scale")
+s.add_svg(views["iso"], 268, 34, 150, 54, label="Isometric view", sublabel="Not to scale")
 x0 = 268
 for i, (n, title, item) in enumerate([("eave", "Eave node, all six", 6), ("ridge-end", "Ridge node, end", 7),
                                        ("foot", "Foot node", 5)]):
@@ -54,6 +54,7 @@ s.add_notes("Key dimensions and data (size M)", [
     f"Guy anchors {M.GUY_OUT / 1000:.1f} m beyond each gable; 10 brace cables, 4 mm",
     "Wind rating 19.7 m/s at SF 1.5 (post governs); not rated for snow",
     "Corner eave nodes: socket past the gable left blank and capped",
+    "PRELIMINARY, NOT FOR FABRICATION. Anchors omitted from views; guy lines shown",
 ], x=268, y=150, width=150)
 s.save(ROOT / "cad" / "drawings" / "SNF-DWG-001")
 shutil.rmtree(work, ignore_errors=True)
