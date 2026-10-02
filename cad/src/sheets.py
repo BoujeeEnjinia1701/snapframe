@@ -1,4 +1,4 @@
-"""SnapFrame general arrangement drawing SNF-DWG-001 Rev P2 (TRL 3).
+"""SnapFrame general arrangement drawing SNF-DWG-001 Rev P4 (TRL 3, constructable design, SNF-DDR-003).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/SNF-DWG-001.svg, .pdf and .png. Geometry from cad/src/model.py.
@@ -16,25 +16,29 @@ from drawing import Sheet, project_views, _t, INK, MUTED
 import model as M
 
 DATE = "2026-09-25"
+DATE_P4 = "2026-10-01"
 work = ROOT / "cad" / "drawings" / "_views"
 
 asm = M.assembly("M")
-frame = Compound(children=[sh for no, (_, shapes) in asm.items() if no != 9 for sh in shapes.values()])
+frame = Compound([sh for no, (_, shapes) in asm.items() if no not in (9, 12) for sh in shapes.values()])
 views = project_views(frame, work / "frame")
 var = M.node_variants("M")
-nodes = {n: project_views(var[n][0], work / n) for n in ("eave", "ridge-end", "foot")}
+bolt = {"eave": M.cable_bolt(M.V(*M.BOLT_DIR["eave"])), "ridge-end": M.cable_bolt(M.V(*M.BOLT_DIR["ridge"]))}
+nodes = {n: project_views(Compound([var[n][0]] + ([bolt[n]] if n in bolt else [])), work / n)
+         for n in ("eave", "ridge-end", "foot")}
 
 ml = M.member_lengths("M")
 p = M.SIZES["M"]
-s = Sheet(project="SnapFrame", title="General arrangement, size M", dwg_no="SNF-DWG-001", rev="P3",
-          author="Amish Chadha", date=DATE, scale=1 / 50,
+s = Sheet(project="SnapFrame", title="General arrangement, size M", dwg_no="SNF-DWG-001", rev="P4",
+          author="Amish Chadha", date=DATE_P4, scale=1 / 50,
           material="EMT to ANSI C80.3; printed polymer nodes (not chosen); see bom/bom.csv and SNF-CAL-001",
           revisions=[("P1", "Preliminary general arrangement (TRL 3)", DATE, "AC"),
                      ("P2", "1 in ridge tubes; one eave node variant (DDR-002)", DATE, "AC"),
-                     ("P3", "Layout and labels tidied", DATE, "AC")])
+                     ("P3", "Layout and labels tidied", DATE, "AC"),
+                     ("P4", "Design for construction (DDR-003): cable bolts, slots, pin", DATE_P4, "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 
-s.add_svg(views["iso"], 268, 34, 150, 54, label="Isometric view", sublabel="Not to scale")
+s.add_svg(views["iso"], 268, 50, 150, 40, label="Isometric view", sublabel="Not to scale")
 x0 = 268
 for i, (n, title, item) in enumerate([("eave", "Eave node, all six", 6), ("ridge-end", "Ridge node, end", 7),
                                        ("foot", "Foot node", 5)]):
@@ -47,10 +51,11 @@ s.add_notes("Key dimensions and data (size M)", [
     "Tubes: 1 in EMT rafters and ridge (OD 29.5 mm); 3/4 in EMT posts and eaves (OD 23.4 mm)",
     f"Sockets: {M.NODE['sock_l'] - M.NODE['tube_gap']:.0f} mm engagement, bore = tube OD + "
     f"{M.NODE['clear']:.1f} mm, wall {M.NODE['wall']:.0f} mm; core {2 * M.NODE['core_r']:.0f} mm",
-    f"Button hole {M.NODE['button_d']:.0f} mm at {M.NODE['button_at']:.0f} mm from tube end; "
-    f"pin hole {M.NODE['pin_d']:.0f} mm at {M.NODE['pin_at']:.0f} mm (feet, eave posts)",
-    f"Foot plate {M.NODE['plate']:.0f} x {M.NODE['plate']:.0f} x {M.NODE['plate_t']:.0f} mm, "
-    f"anchor slot {M.NODE['slot_w']:.0f} mm, anchor {M.NODE['anchor_off']:.0f} mm outboard",
+    f"Button hole {M.NODE['button_d']:.0f} mm at {M.NODE['button_at']:.0f} mm from tube end, in a "
+    f"{M.NODE['recess_d']:.0f} mm finger recess; pin hole {M.NODE['pin_d']:.0f} mm at {M.NODE['pin_at']:.0f} mm",
+    f"Foot plate {M.NODE['plate']:.0f} x {M.NODE['plate']:.0f} x {M.NODE['plate_t']:.0f} mm, two "
+    f"{M.NODE['slot_w']:.0f} mm anchor slots at 45 deg; anchor eye down on the plate",
+    "Eave and ridge nodes: M10 cable bolt with spacer and 6 mm ring; cables clip to rings and anchor eyes",
     f"Guy anchors {M.GUY_OUT / 1000:.1f} m beyond each gable; 10 brace cables, 4 mm",
     "Wind rating 19.7 m/s at SF 1.5 (post governs); not rated for snow",
     "Corner eave nodes: socket past the gable left blank and capped",

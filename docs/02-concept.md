@@ -3,9 +3,9 @@ doc_id: SNF-PRC-001
 title: SnapFrame design precis
 project: SnapFrame
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,11 +29,15 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget approved by Amish ($445, SNF-DDR-002); cost figure restated against it
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Design for construction (SNF-DDR-003, Draft) applied; erection order, joints and cable fixings updated; cost against the value-engineering target
 ---
 
 # SnapFrame design precis
 
-SnapFrame is a gable-roof shelter frame of straight EMT conduit joined by printed nodes: 1 in EMT rafters and ridge tubes, and 3/4 in EMT posts and eave tubes. Each tube end carries a spring button that snaps into a hole in the node socket, so two adults can put the frame up by hand. The reference size M covers 4.0 x 4.0 m (16 m²) with a 2.6 m ridge and takes two standard 4 x 6 m relief tarpaulins from agency stock as its skin. The TRL 3 calculation note SNF-CAL-001 v0.3 puts the frame kit at about 42.0 kg and $443 (within the $445 budget) and rates the frame at about 19.7 m/s (71 km/h, 44 mph), just short of the 20 m/s target, with the 3/4 in posts governing.
+SnapFrame is a gable-roof shelter frame of straight EMT conduit joined by printed nodes: 1 in EMT rafters and ridge tubes, and 3/4 in EMT posts and eave tubes. Each tube end carries a spring button that snaps into a hole in the node socket, so two adults can put the frame up by hand. The reference size M covers 4.0 x 4.0 m (16 m²) with a 2.6 m ridge and takes two standard 4 x 6 m relief tarpaulins from agency stock as its skin. The TRL 3 calculation note SNF-CAL-001 v0.4 puts the constructable frame kit (SNF-DDR-003) at about 43.3 kg and $469, $24 over the $445 value-engineering target, and rates the frame at about 19.7 m/s (71 km/h, 44 mph), just short of the 20 m/s target, with the 3/4 in posts governing.
 
 ![Hero render](../media/hero.png)
 
@@ -41,12 +45,13 @@ SnapFrame is a gable-roof shelter frame of straight EMT conduit joined by printe
 
 ## How it works
 
-1. **Unpack.** The frame kit arrives as a strapped bundle of 18 straight tubes (four types, color-coded at the ends) and a bag with 15 nodes (three families, four printed variants), 10 brace cables, 8 screw anchors, 2 guy lines, buttons and hitch pins. Two tarpaulins come from agency stock.
-2. **Anchor the feet.** Six foot nodes are laid out with a knotted layout cord (4.0 x 4.0 m, diagonals equal). A screw anchor is turned in by hand just outboard of each foot, using a spare tube through its eye as a lever, and the foot plate's open slot is slid onto the anchor shaft under the eye.
-3. **Build the frames.** Each of the three gable frames is two posts, two rafters, two eave nodes and one ridge node. The frame is assembled flat on the ground, then walked up and its posts dropped into the foot sockets. Every joint closes with a click as the spring button finds its hole; hitch pins go in at the feet and the eave post sockets.
-4. **Tie the frames together.** Ridge and eave tubes connect the three frames. Brace cables with hand tensioners go into the rear gable, one bay of each side wall and one diagonal per bay in each roof plane, and are pulled snug. Guy lines run from the two end ridge nodes to anchors 1.5 m beyond each gable.
-5. **Skin.** One tarpaulin goes over the ridge as the roof; the second closes both side walls and the rear gable. The front gable stays open (R7, awaiting Amish). The blank socket on each corner eave node takes a push-in cap. Tarpaulins are tied through their eyelets to the tubes, never to the nodes.
-6. **Strike and reuse.** Pressing each button releases its joint. Tubes and nodes go back in the bundle and bag, or the frame stays and carries better cladding later.
+1. **Unpack.** The frame kit arrives as a strapped bundle of 18 straight tubes (four types, color-coded at the ends, snap buttons fitted) and a bag with 15 nodes (three families, four printed variants, cable bolts fitted to the eave and ridge nodes), 10 brace cables, 8 screw anchors, 2 guy lines, hitch pins and caps. Two tarpaulins come from agency stock.
+2. **Mark out.** Six pegs mark the feet with a knotted layout cord (4.0 x 4.0 m, diagonals equal).
+3. **Build the frames.** Each of the three gable frames is two posts, two rafters, two eave nodes, one ridge node and two foot nodes, assembled flat on the ground. Every joint closes with a click as the spring button finds its hole; hitch pins go in at the feet and the eave post sockets.
+4. **Stand and join the frames.** The rear frame is walked up and stood on its marks. The ridge and eave tubes go into it, and the middle frame, stood 70 mm short of its marks, slides 65 mm on its feet onto the three tube ends; the front bay follows the same way (SNF-DDR-003 C7). Then the frame is squared, and a screw anchor is turned in by hand through a slot in each foot plate, using a spare tube through its eye as a lever, until the eye sits down on the plate.
+5. **Brace.** Brace cables with hand tensioners go into the rear gable, one bay of each side wall and one diagonal per bay in each roof plane. Their snap hooks clip to the anchor eyes at the feet and to the steel ring on each eave and ridge node's cable bolt, and they are pulled snug. Guy lines run from the rings of the two end ridge nodes to anchors 1.5 m beyond each gable.
+6. **Skin.** One tarpaulin goes over the ridge as the roof; the second closes both side walls and the rear gable. The front gable stays open (R7, awaiting Amish). The blank socket on each corner eave node takes a push-in cap. Tarpaulins are tied through their eyelets to the tubes, never to the nodes.
+7. **Strike and reuse.** Pressing each button in its finger recess releases its joint. Tubes and nodes go back in the bundle and bag, or the frame stays and carries better cladding later.
 
 ## Main components
 
@@ -58,19 +63,20 @@ Table 1. Main components. Numbers match `bom/bom.csv`, Figure 2 and drawing SNF-
 | 2 | Rafters (6) | 1 in EMT, 2.064 m | SNF-DDR-001 D2; second socket bore on eave and ridge nodes |
 | 3 | Ridge tubes (2) | 1 in EMT, 1.910 m | SNF-DDR-002 D8 (were 3/4 in and governed the wind rating) |
 | 4 | Eave tubes (4) | 3/4 in EMT, 1.910 m | Same length as item 3, smaller tube; different end color for the guide |
-| 5 | Foot nodes (6) | Printed, one socket, 170 x 170 x 12 mm plate with an open anchor slot | About 422 g each |
-| 6 | Eave nodes (6) | Printed, four sockets plus a cable tab, one variant | At the corners the socket past the gable stays blank and capped (SNF-DDR-002 D9); about 271 g |
-| 7 | Ridge nodes (3) | Printed, three or four sockets, all 30.1 mm bore | End nodes carry a guy tab; about 262 to 283 g |
-| 8 | Brace cables (10) | 4 mm galvanized wire rope, loop ends, hand cam tensioner | 31.1 m node to node |
+| 5 | Foot nodes (6) | Printed, one socket, 170 x 170 x 12 mm plate with two anchor slots at 45° | About 410 g each |
+| 6 | Eave nodes (6) | Printed, four sockets and a cable bolt hole, one variant | At the corners the socket past the gable stays blank and capped (SNF-DDR-002 D9); about 256 g |
+| 7 | Ridge nodes (3) | Printed, three or four sockets, all 30.1 mm bore, and a cable bolt hole | About 247 to 271 g |
+| 8 | Brace cables (10) | 4 mm galvanized wire rope, thimble loop, hand tensioner, snap hook at each end | 29.5 m eye to eye |
 | 9 | Screw ground anchors (8) | 380 mm galvanized screw anchor with eye | Six at the feet, two for guys |
 | 10 | Guy lines (2) | 6 mm polyester rope with slide tensioner | From end ridge nodes |
 | 11 | Skin | Two 4 x 6 m reinforced polyethylene tarpaulins | Agency stock, outside the kit budget (SNF-DDR-001 D1) |
 | 12 | Snap buttons, hitch pins and caps | 36 spring buttons (one per tube end), 12 hitch pins on lanyards, 4 socket caps | Hitch pins at the 12 tension joints (SNF-DDR-001 D4) |
 | 13 | Bundle straps and bag | Two cam straps for the tube bundle; one duffel bag | |
+| 14 | Cable bolt sets (9) | Stainless M10 bolt through each eave and ridge node, with spacer, washers, nyloc nut and a welded 6 mm ring | The cables and guy lines clip to the ring (SNF-DDR-003 C3) |
 
 ### Node concept
 
-A node is a spherical core (84 mm diameter) with one socket per member. Each socket is 110 mm long from the node center; the tube end stops 45 mm from the center, so it engages 65 mm. The bore is the tube outside diameter plus 0.6 mm (24.0 mm for 3/4 in, 30.1 mm for 1 in) and the socket wall is 5 mm. One eave node serves all six eave positions; it is symmetric about its own frame line, so it is not handed, and at the corners its outward socket stays empty under a cap. A 6 mm spring button hole sits 25 mm from the tube end; at the feet and eave post sockets an 8 mm hitch pin hole sits 50 mm from the tube end. Socket axes are computed from the node positions, so a new width, length or pitch produces a new set of printable nodes. The prototype prints the nodes, and the printed node is intended to become a pattern for sand-cast aluminum later (SNF-DDR-001 D3); castability is not checked at TRL 3.
+A node is a spherical core (84 mm diameter) with one socket per member. Each socket is 110 mm long from the node center; the tube end stops 45 mm from the center, so it engages 65 mm. The bore is the tube outside diameter plus 0.6 mm (24.0 mm for 3/4 in, 30.1 mm for 1 in) and the socket wall is 5 mm. One eave node serves all six eave positions; it is symmetric about its own frame line, so it is not handed, and at the corners its outward socket stays empty under a cap. A 6 mm spring button hole sits 40 mm from the tube end, in a 16 mm finger recess so the button can be pressed by hand; at the feet and eave post sockets an 8 mm hitch pin hole sits 15 mm from the tube end, clear of the button's spring inside the tube (SNF-DDR-003 C1, C2). Each socket mouth has a lead-in chamfer. Each eave and ridge node carries a through-bolted M10 cable bolt with a steel ring, and the foot plate has two anchor slots, so the cables never load the print in bending (SNF-DDR-003 C3 to C6). Socket axes are computed from the node positions, so a new width, length or pitch produces a new set of printable nodes. The prototype prints the nodes, and the printed node is intended to become a pattern for sand-cast aluminum later (SNF-DDR-001 D3); castability is not checked at TRL 3.
 
 ## Sizes
 
@@ -93,11 +99,11 @@ Table 3. Geometry, mass, cost and wind, size M.
 | Floor area | 16.0 m² | R1 met |
 | Headroom 2.0 m or more | 73 % of floor | R2 met |
 | Tube length in the kit | 33.7 m (54.9 m bought, 39 % offcut) | |
-| Frame kit mass | 42.0 kg (93 lb); 51.1 kg with tarpaulins | R11 **not met** (1.1 kg over) |
-| Packages | Tube bundle 28.6 kg, 0.030 m³; bag 22.5 kg with tarpaulins | R5 **not met** |
+| Frame kit mass | 43.3 kg (96 lb); 52.5 kg with tarpaulins | R11 **not met** (2.5 kg over) |
+| Packages | Tube bundle 28.6 kg, 0.030 m³; bag 23.9 kg with tarpaulins | R5 **not met** |
 | Erection time | About 46 min for two adults (estimate) | R4 not verifiable at TRL 3 |
 | Skin area | 51.4 m² for full enclosure; 42.6 m² with one gable open | R7 **not met** (48 m² available) |
-| Frame kit cost | About $443 | R10 **not met** (10.8 % over) |
+| Frame kit cost | About $469; value-engineering target $445 | R10: $24 over the value-engineering target |
 | Dynamic pressure at 20 m/s | 245 Pa | |
 | Rafter (1 in) at 20 m/s | 142 N·m, 166 MPa, factor 1.66 | Meets 1.5 |
 | Ridge tube (1 in) at 20 m/s | 106 N·m, 124 MPa, factor 2.22 | Meets 1.5 (1.18 with 3/4 in) |
@@ -117,7 +123,7 @@ The TRL 2 estimates (factor 1.70 for posts, 1.26 for 3/4 in rafters, about 18 m/
 Decided by Amish on 2026-09-25 (SNF-DDR-001):
 
 - **Tube size (D2).** 1 in EMT rafters, with the wind rating stated on the kit.
-- **Budget scope (D1).** The budget covers the frame kit; Amish set it at $445 on 2026-09-26 to cover the priced BOM (SNF-DDR-002). Tarpaulins come from agency stock and are costed separately.
+- **Budget scope (D1).** The budget covers the frame kit; Amish set it at $445 on 2026-09-26 (SNF-DDR-002) and on 2026-10-01 made it a value-engineering target, not a limit. Tarpaulins come from agency stock and are costed separately.
 - **Node process (D3).** Print for the first prototype, design every node to be castable from the printed pattern.
 - **Joint locking (D4).** Spring buttons at every tube end, hitch pins at the 12 tension joints.
 - **Frame form (D5).** Gable roof with pinned nodes and cable bracing, not a dome, barrel vault or rigid nodes.
@@ -129,7 +135,7 @@ Decided by Amish on 2026-09-25, going with the recommendations (SNF-DDR-002):
 - **One eave node (D9).** The four-socket eave node is used at the corners with one blank, capped socket, so there are no handed nodes and R12 is met.
 - **Wind rating on the kit (D2 with D8).** Until R6 is met the kit label states 19.7 m/s (71 km/h) and about 14.7 m/s with wind into the open gable.
 
-Still proposed, awaiting Amish: tube offcuts (accept 39 %, shorten posts to 1.50 m, or buy 6 m metric stock, to decide once the first region's tube source is known), the first co-design partner and region, how to treat the open front gable (R7), how to close the cost gap (R10), the package and carry mass (R5, R11), and the node polymer and anchor target (R9, R8).
+Still proposed, awaiting Amish (all listed in the design decisions register, SNF-DEC-001): the design for construction changes of SNF-DDR-003, tube offcuts (accept 39 %, shorten posts to 1.50 m, or buy 6 m metric stock, to decide once the first region's tube source is known), the first co-design partner and region, how to treat the open front gable (R7), whether the posts move to 1 in after the frame analysis (R6), the package and carry mass (R5, R11), and the node polymer and anchor target (R9, R8). Cost is followed against the value-engineering target in the register rather than as a decision.
 
 ## Safety
 
@@ -157,4 +163,4 @@ Still proposed, awaiting Amish: tube offcuts (accept 39 %, shorten posts to 1.50
 - Picture-only erection guide: test with users who have not seen the kit.
 - Validate floor area, headroom, erection time, wind exposure and price with users through a local partner.
 
-Drawings and media: [general arrangement SNF-DWG-001](../cad/drawings/SNF-DWG-001.pdf), [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html).
+Drawings and media: [prototype build plan SNF-BLD-001](05-build-plan.md), [design decisions register SNF-DEC-001](06-design-decisions.md), [general arrangement SNF-DWG-001](../cad/drawings/SNF-DWG-001.pdf), [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html).

@@ -1,7 +1,8 @@
 """SnapFrame concept media from the parametric model (TRL 3).
 
 Run from the repo root:  python cad/src/concept_media.py
-Frame geometry comes from cad/src/model.py (size M, 1 in rafters per SNF-DDR-001 and 1 in ridge tubes per SNF-DDR-002).
+Frame geometry comes from cad/src/model.py (size M, 1 in rafters per SNF-DDR-001 and 1 in ridge tubes per SNF-DDR-002,
+constructable design per SNF-DDR-003: cable bolts with rings, cables clipped to rings and anchor eyes).
 The tarpaulin skin is shown on the rear bay only so the frame and nodes stay visible;
 tarpaulins are agency stock, outside the kit budget (SNF-DDR-001 D1).
 CONCEPT, NOT FOR FABRICATION.
@@ -23,9 +24,8 @@ YE = W / 2
 SKIN_OFF = 60.0
 
 COLORS = {1: "#A8B0B8", 2: "#7C8792", 3: "#A8B0B8", 4: "#A8B0B8", 5: "#0F766E", 6: "#0F766E",
-          7: "#0F766E", 8: "#374151", 9: "#B45309", 10: "#D4A017"}
+          7: "#0F766E", 8: "#374151", 9: "#B45309", 10: "#D4A017", 12: "#4B5563", 14: "#111827"}
 TARP = "#3B6EA5"
-LABEL_KEY = {1: (L, -1), 2: (L, -1), 3: 1, 4: (1, -1), 5: (L, -1), 6: (L, -1), 7: L, 8: 3, 9: (L, -1), 10: "front"}
 EXTRA = {9: (0, 0, -600), 10: (0, 0, 250)}
 
 
@@ -56,13 +56,16 @@ def boff(shape, extra=(0, 0, 0)):
 lengths = M.member_lengths(SIZE)
 NAMES = {1: f"EMT post, 3/4 in, {lengths['post'] / 1000:.2f} m", 2: f"EMT rafter, 1 in, {lengths['rafter'] / 1000:.2f} m",
          3: f"EMT ridge tube, 1 in, {lengths['ridge'] / 1000:.2f} m", 4: f"EMT eave tube, 3/4 in, {lengths['eave'] / 1000:.2f} m",
-         5: "Foot node with anchor slot", 6: "Eave node", 7: "Ridge node", 8: "Brace cable with hand tensioner",
-         9: "Screw ground anchor", 10: "Guy line"}
+         5: "Foot node with two anchor slots", 6: "Eave node", 7: "Ridge node", 8: "Brace cable with hand tensioner",
+         9: "Screw ground anchor", 10: "Guy line", 12: "Snap buttons, hitch pins and caps", 14: "Cable bolt set and ring"}
 
 parts = []
 for no, (_, shapes) in M.assembly(SIZE).items():
+    if no == 12:
+        continue                     # buttons, pins and caps: too small to show at shelter scale
+    lead_key = max(shapes, key=lambda kk: shapes[kk].bounding_box().center().X - shapes[kk].bounding_box().center().Y)
     for k, sh in shapes.items():
-        lead = k == LABEL_KEY[no]
+        lead = k == lead_key
         parts.append(Part(NAMES[no] if lead else f"{NAMES[no]} ({k})", sh, COLORS[no], no if lead else None,
                           boff(sh, EXTRA.get(no, (0, 0, 0)))))
 SKIN = "Tarpaulin skin, agency stock (rear bay shown)"
@@ -79,7 +82,7 @@ render_all(
     key_figures=["Size M: 4.0 x 4.0 m floor (16 m²), eave 1.8 m, ridge 2.6 m",
                  "18 EMT members: 1 in rafters and ridge, 3/4 in posts and eaves",
                  "15 printed nodes in 4 variants, spring-button sockets, no tools",
-                 "Frame kit 42.0 kg, $443 (budget $445); tarpaulins agency stock",
+                 "Frame kit 43.3 kg, $469 (value-engineering target $445)",
                  "Wind rating 19.7 m/s, 3/4 in post governs (SNF-CAL-001)"],
     cut=False, scale_figure=False, context=context,
 )

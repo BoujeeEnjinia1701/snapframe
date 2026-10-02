@@ -237,3 +237,67 @@ This is an appearance model only: no tolerances, no fabrication detail and no ch
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-01: design for construction and illustrated build plan (BLD-001)
+
+Kit 1.7.0 installed (`.kit/`, `.claude/commands/`, `CLAUDE.md`). Amish approved the build plan format on 2026-09-30 and asked for it across all repos, with outstanding decisions kept in a separate register; on 2026-10-01 he set `budget_usd` as a value-engineering target. This session made the SnapFrame design constructable, wrote the illustrated build plan and opened the design decisions register. No hardware was built; `trl` stays 3.
+
+### What was done
+
+- `cad/src/model.py`: constructable model with the bought hardware (snap buttons with their spring envelope, hitch pins, caps, cable bolt sets with rings, snap hooks, anchors turned down onto the plates) and 203 constructability checks (`python cad/src/model.py --check`): all 203 pass. STEP (`cad/step/`) and STL (`cad/stl/`) regenerated.
+- `docs/decisions/0003-design-for-construction.md` (SNF-DDR-003 v0.1, Draft): every change, made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+- `docs/05-build-plan.md` (SNF-BLD-001 v0.1): plain-English build plan, components in build order, 13 assembly steps, first checks, safety stops, tools; no open decisions.
+- `docs/06-design-decisions.md` (SNF-DEC-001 v0.1): 10 open decisions, 6 items to confirm when parts are bought, a value-engineering section and the decisions made with Amish's words.
+- `cad/src/build_plan_media.py`: overview, nine making sketches `cad/drawings/SNF-DWG-101` to `109`, six joint close-ups, 13 step pictures and a cable make-up picture in `docs/05-build-plan/`.
+- `docs/04-calcs/sizing.py` and SNF-CAL-001 v0.4 (cable bolt check, pin shear-out, cable lengths, mass and cost); SNF-REQ-001 v0.6; SNF-PRC-001 v0.6; `bom/bom.csv` (lines 1 to 10 and 12 updated, new line 14) and `bom/bom-notes.md`; SNF-DWG-001 Rev P4 (`cad/src/sheets.py`); concept media regenerated (`cad/src/concept_media.py`).
+- `project.yaml`: `design_state: constructable`; DDR-003, the build plan, the register, the overview picture and the picture script added to `trl_evidence`. `budget_usd` unchanged (445). `README.md`: links line, value-engineering target in the header line, and a "Building the prototype" section before "Safety".
+
+### Design changes made for construction (SNF-DDR-003)
+
+1. **C1** Spring button moved from 25 to 40 mm and hitch pin from 50 to 15 mm from the tube end: the button's spring ran through the pin.
+2. **C2** A 16 mm finger recess round every button hole and a 1.5 mm chamfer at every socket mouth: the button can be pressed by hand and rides in.
+3. **C3** Printed cable and guy tabs replaced by a through-bolted stainless M10 cable bolt with a spacer and a welded 6 mm ring on every eave and ridge node (171 MPa in the shank, factor 2.6).
+4. **C4** Lower cable ends clip to the anchor eyes at the feet.
+5. **C5** Anchor eyes turned down onto the foot plates (they stood 32 mm clear).
+6. **C6** Two anchor slots at 45° in the foot plate, so the gable cable clears the foot node; still one foot node, not handed.
+7. **C7** Erection order: frames stand unanchored and slide 65 mm onto the eave and ridge tubes; anchors go in last (a 1,910 mm tube cannot fit between fixed sockets 1,780 mm apart).
+8. **C8** Guy lines tie to the end ridge node rings.
+9. **C9** One drilling rule: the two button holes of every tube on opposite sides of one marked line.
+
+### Key results and requirements
+
+- Frame kit 43.3 kg (was 42.0); 52.5 kg with tarpaulins, so R11 is **not met** by 2.5 kg (was 1.1 kg).
+- Frame kit cost $469.14 against the $445 value-engineering target: $24.14 over (was $443.30). R10 is reported against the target.
+- Not met: R5, R6, R7, R11, R13. At risk: R8, R9. Not verifiable: R4. Met: R1, R2, R3, R12.
+- Wind, anchor and snow figures are unchanged; EMT shear-out behind the pin falls to 9.0 kN, seven times the 1.28 kN worst foot load.
+
+### Proposed, awaiting Amish (all in SNF-DEC-001)
+
+1. Accept the design for construction changes C1 to C9 (recommended).
+2. A1: guiding the ridge tubes at 2.6 m during the slide-on (R4). Recommendation: from the ground with a spare tube, timed at TRL 4; the first prototype uses a step.
+3. A2: the side wall tarpaulin passing the cables at the corner anchors; settle in the R7 tarpaulin plan (O3).
+4. Carried over: O1 offcuts, O2 partner and region, O3 open gable, O5 packages and carried mass, O6 node polymer, O7 anchor target, O8 1 in posts, and the four appearance-model choices of 2026-09-26.
+
+### Pictures and checks
+
+- Every build plan picture, making sketch and the general arrangement was looked at one by one; leaders that pointed at the wrong part, labels sitting on lines, a duplicated footer on SNF-DWG-109, the general arrangement's isometric view running under its revision table and its title block date were fixed and redrawn. `python3 .kit/drawing.py --check-text` finds no overlapping text.
+- Known limit: the title block of SNF-DWG-109 (cable make-up, not to scale) reads "1:1"; the kit's title block has no "not to scale" entry. The picture itself is labelled "Not to scale".
+- PDFs of every controlled document are in `docs/pdf/`.
+- Concept media regenerated from the constructable model (`media/hero.png`, `media/exploded.png`, `media/concept-blueprint.*`, `media/model.glb`). The cable bolts and rings roughly double the viewer model, to about 19.9 MB (was 9.4 MB); worth a coarser export setting if the website load time matters.
+
+### Stale, to regenerate on Amish's Mac
+
+- `media/render-hero.png`, `media/render-exploded.png`, `media/render-detail.png` (not in this cloud copy) and `media/card.png`, `media/social-preview.png` show the printed cable tabs, the old button and pin positions and the single anchor slot.
+- `cad/src/product_model.py` still draws the concept tabs and the snap hook on the eave node tab; update it to the cable bolt, ring, anchor slots and new hole positions before re-rendering.
+
+### Safety concerns
+
+- Raising and joining frames: a standing frame is unbraced until step 9; one person holds it until the next frame is joined, and nobody works in strong wind.
+- Tensioning cables: stand out of line with a cable; hand tension only.
+- Anchors: check for buried services before turning one in.
+- Printing ASA-class polymer gives off fumes; print in a ventilated space.
+- The shelter safety notes (wind rating, snow, fire, lightning) are unchanged.
+
+### Recommended next step
+
+Amish reviews SNF-DDR-003, the illustrated plan and the register, and decides open decisions 1 and 2. The renders and `product_model.py` can then be brought up to the constructable design on his Mac. Building to the plan is TRL 4 work and stays on hold.

@@ -3,9 +3,9 @@ doc_id: SNF-CAL-001
 title: SnapFrame sizing calculations
 project: SnapFrame
 doc_type: Calculation
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,13 +21,17 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget approved by Amish ($400 to $445, SNF-DDR-002); script rerun; R10 not met to met
+- version: "0.4"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Design for construction (SNF-DDR-003, Draft) rerun; cable bolt check added; cost reported against the value-engineering target
 ---
 
 # SnapFrame sizing calculations
 
-With the decisions in SNF-DDR-001 and SNF-DDR-002 (1 in EMT rafters and ridge tubes, 3/4 in EMT posts and eave tubes, one eave node variant, tarpaulins from agency stock), the size M frame meets its floor, headroom, size-family and part-count targets, but five of thirteen requirements are **not met**: wind (R6), packages (R5), skin (R7), carried mass (R11) and fire (R13). A first-principles load share puts more wind load on the ridge tubes and posts than the TRL 2 estimate did. With the 1 in ridge tubes of SNF-DDR-002 the frame is rated at about **19.7 m/s** (71 km/h, 44 mph), up from 17.8 m/s in v0.1, and the 3/4 in posts now govern. The heavier tubes raise the frame kit to about **$443** (from $431), the tube bundle to about **28.6 kg** (from 27.4 kg) against the 25 kg package limit, and the complete kit with tarpaulins to **51.1 kg** (from 49.8 kg), just over the 50 kg carry limit. The frame kit is within the $445 budget that Amish approved on 2026-09-26, so R10 is met (it was not met against the former $400 budget).
+With the decisions in SNF-DDR-001 and SNF-DDR-002 (1 in EMT rafters and ridge tubes, 3/4 in EMT posts and eave tubes, one eave node variant, tarpaulins from agency stock), the size M frame meets its floor, headroom, size-family and part-count targets, but five of thirteen requirements are **not met**: wind (R6), packages (R5), skin (R7), carried mass (R11) and fire (R13). A first-principles load share puts more wind load on the ridge tubes and posts than the TRL 2 estimate did. With the 1 in ridge tubes of SNF-DDR-002 the frame is rated at about **19.7 m/s** (71 km/h, 44 mph), up from 17.8 m/s in v0.1, and the 3/4 in posts now govern. The design for construction (SNF-DDR-003, version 0.4 of this note) adds cable bolt sets and second snap hooks: the frame kit is now about **$469**, **$24 over the $445 value-engineering target** (a control target, not a limit; Amish, 2026-10-01), the tube bundle stays at **28.6 kg** against the 25 kg package limit, and the complete kit with tarpaulins is **52.5 kg**, 2.5 kg over the 50 kg carry limit.
 
-Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the repo root). Geometry, cut lengths and node volumes come from the parametric model `cad/src/model.py`, so the note, the model, drawing SNF-DWG-001 and `bom/bom.csv` agree. This is a first-order hand calculation, not a code check or a frame analysis. Version 0.2 reruns the script after SNF-DDR-002; every changed number is noted with its v0.1 value. Version 0.3 changes only the budget, from $400 to $445 (SNF-DDR-002), so R10 moves from not met to met; no design number changed.
+Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the repo root). Geometry, cut lengths and node volumes come from the parametric model `cad/src/model.py`, so the note, the model, drawing SNF-DWG-001 and `bom/bom.csv` agree. This is a first-order hand calculation, not a code check or a frame analysis. Version 0.2 reruns the script after SNF-DDR-002; every changed number is noted with its v0.1 value. Version 0.3 changed only the budget, from $400 to $445 (SNF-DDR-002). Version 0.4 reruns the script on the constructable model of SNF-DDR-003: the hitch pin moves to 15 mm from the tube end, the cables run between their real attachment points (anchor eyes and cable bolt rings), the cable bolt is checked, and the masses and costs of the new parts are added. Every changed number gives its v0.3 value. The budget is reported as a value-engineering target, as Amish set out on 2026-10-01.
 
 ## 1. Method
 
@@ -55,9 +59,11 @@ Table 1. Assumptions. Each is used only where stated.
 | A10 | Bracing | Tension-only cables; the rear gable is the only braced frame across the span; the roof and side walls carry the rest to it | Concept bracing layout (SNF-PRC-001) |
 | A11 | Wire rope | 4 mm 7x19 galvanized, minimum breaking load 8.0 kN | Typical catalog value, unverified |
 | A12 | Printed nodes | Density 1,070 kg/m³, 55 % effective fill, filament $22/kg plus $1.00 machine time per node | ASA-class polymer, estimate; polymer not chosen |
-| A13 | Tarpaulins | Two 4 x 6 m, 190 g/m², $25 each, from agency stock | Relief tarpaulin class; outside the kit budget (SNF-DDR-001 D1) |
+| A13 | Tarpaulins | Two 4 x 6 m, 190 g/m², $25 each, from agency stock | Relief tarpaulin class; outside the frame kit cost (SNF-DDR-001 D1) |
 | A14 | Tube prices | 3.05 m (10 ft) stick: 3/4 in $9.00, 1 in $14.00 | Indicative US retail, not quotes |
 | A15 | Corner eave nodes | The four-socket eave node with the socket past the gable left blank and capped | SNF-DDR-002 D9 |
+| A16 | Cable bolt | M10 stainless A4-70 (yield 450 MPa), load applied at the ring 9.5 mm from the spot face, both cables of a rear corner eave node added at full value | SNF-DDR-003 C3; conservative upper bound |
+| A17 | Cable bolt sets and second snap hooks | 0.13 kg and $2.60 a set; cable assembly $4.20 and 0.17 kg of fittings | Indicative catalog values |
 
 ## 3. Geometry
 
@@ -121,7 +127,9 @@ Wind across the span puts 2,217 N on the two side walls; about 1,108 N reaches e
 
 Roof suction lifts the middle frame with 1,372 N against 116 N of its own weight, so each middle foot anchor sees **0.63 kN** and each end foot 0.31 kN. At a rear corner foot, the gable cable and the side wall cable both pull up as well: 0.31 + 0.48 + 0.48 = **1.28 kN** before cable pretension, above the 1.0 kN target in R8.
 
-At that foot the hitch pin bears on the polymer socket at 16.0 MPa, or **32.0 MPa** with the factor of 2 in R9, and on the EMT wall at 64 MPa. The EMT shear-out capacity behind the pin hole is about 37.8 kN, so the steel is not the limit; the polymer socket is. A rafter end transfers 198 N of shear into its socket, a nominal bearing pressure of 0.10 MPa over 65 mm of engagement.
+At that foot the hitch pin bears on the polymer socket at 16.0 MPa, or **32.0 MPa** with the factor of 2 in R9, and on the EMT wall at 64 MPa. With the pin hole now 15 mm from the tube end (SNF-DDR-003 C1), the EMT shear-out capacity behind it is about 9.0 kN (37.8 kN at 50 mm in v0.3), seven times the load, so the steel is still not the limit; the polymer socket is. A rafter end transfers 198 N of shear into its socket, a nominal bearing pressure of 0.10 MPa over 65 mm of engagement.
+
+The cables now clip to an M10 cable bolt through each eave and ridge node (SNF-DDR-003 C3). The worst node is a rear corner eave node, which takes the gable cable and a roof cable; taking both at full value together (1,765 N, an upper bound) with the ring 9.5 mm from the spot face gives 16.8 N·m and **171 MPa** in the shank, a factor of **2.6** on A4-70 stainless, and about 5.6 MPa of bearing on the polymer (11.2 MPa with the factor of 2 in R9). The printed tab it replaces would have carried about 46 MPa in bending at the gable cable load alone.
 
 ## 7. Nodes, mass, packages and cost
 
@@ -129,44 +137,47 @@ Table 6. Printed nodes, size M, from the model volumes.
 
 | Node | Count | Solid volume | Printed mass | Cost each |
 | --- | --- | --- | --- | --- |
-| Foot | 6 | 717.3 cm³ | 422 g | $10.29 |
-| Eave (all six; corners with one blank socket) | 6 | 461.1 cm³ | 271 g | $6.97 |
-| Ridge, end | 2 | 445.5 cm³ | 262 g | $6.77 |
-| Ridge, middle | 1 | 481.1 cm³ | 283 g | $7.23 |
+| Foot | 6 | 697.3 cm³ | 410 g | $10.03 |
+| Eave (all six; corners with one blank socket) | 6 | 434.3 cm³ | 256 g | $6.62 |
+| Ridge, end | 2 | 419.3 cm³ | 247 g | $6.43 |
+| Ridge, middle | 1 | 461.3 cm³ | 271 g | $6.97 |
 
-The 15 nodes weigh 4.97 kg and cost about $124 (v0.1: 4.87 kg, $122). With one eave node variant (SNF-DDR-002 D9), a size M kit prints four node variants in three families, none of them handed; the ridge nodes grow slightly because their ridge sockets now take 1 in tube.
+The 15 nodes weigh 4.76 kg and cost about $120 (v0.3: 4.97 kg, $124; the printed tabs are gone and the finger recesses, bolt holes and second anchor slot remove a little more). With one eave node variant (SNF-DDR-002 D9), a size M kit prints four node variants in three families, none of them handed; the ridge nodes grow slightly because their ridge sockets now take 1 in tube.
 
 Table 7. Mass and packages, size M.
 
 | Item | Mass |
 | --- | --- |
 | Tubes (33.74 m) | 28.20 kg |
-| Nodes | 4.97 kg |
-| Brace cables (31.1 m node to node) and tensioners | 3.22 kg |
+| Nodes | 4.76 kg (v0.3: 4.97 kg) |
+| Brace cables (29.5 m eye to eye), snap hooks and tensioners | 3.62 kg (v0.3: 3.22 kg) |
+| Cable bolt sets (9) | 1.17 kg (new) |
 | Screw anchors | 3.60 kg |
 | Guy lines | 0.28 kg |
 | Buttons and hitch pins | 0.72 kg |
 | Straps and bag | 1.00 kg |
-| **Frame kit** | **42.0 kg (93 lb)** |
+| **Frame kit** | **43.3 kg (96 lb)** (v0.3: 42.0 kg) |
 | Tarpaulins, agency stock | 9.1 kg |
-| **With tarpaulins** | **51.1 kg** |
+| **With tarpaulins** | **52.5 kg** (v0.3: 51.1 kg) |
 
-The tube bundle weighs **28.6 kg** and takes about 0.030 m³; the bag weighs 13.4 kg (22.5 kg with the tarpaulins) and holds about 0.060 m³ of parts before the tarpaulins. Splitting the tubes into two bundles (rafters and ridge tubes 16.5 kg; posts and eave tubes 12.1 kg) would keep every package under 25 kg but makes three packages. The complete kit with tarpaulins is now 1.1 kg over the 50 kg carry limit of R11.
+The tube bundle weighs **28.6 kg** and takes about 0.030 m³; the bag weighs 14.7 kg (23.9 kg with the tarpaulins) and holds about 0.057 m³ of parts before the tarpaulins. Splitting the tubes into two bundles (rafters and ridge tubes 16.5 kg; posts and eave tubes 12.1 kg) would keep every package under 25 kg but makes three packages. The complete kit with tarpaulins is now 2.5 kg over the 50 kg carry limit of R11 (1.1 kg in v0.3).
 
 Table 8. Cost, size M.
 
 | Item | Cost |
 | --- | --- |
 | Tubes: 10 sticks of 3/4 in, 8 of 1 in | $202.00 |
-| Nodes (15) | $124.30 |
-| Brace cables (10) | $35.00 |
+| Nodes (15) | $119.74 (v0.3: $124.30) |
+| Brace cables (10) | $42.00 (v0.3: $35.00) |
+| Cable bolt sets (9) | $23.40 (new) |
 | Screw anchors (8) | $32.00 |
 | Guy lines (2) | $6.00 |
 | Buttons and hitch pins | $24.00 |
 | Straps and bag | $20.00 |
-| **Frame kit** | **$443.30, 0.4 % under the $445 budget** |
+| **Frame kit** | **$469.14** (v0.3: $443.30) |
+| Value-engineering target | $445 (a control target, not a limit): **$24.14 over** |
 | Tarpaulins, agency stock | $50.00 |
-| With tarpaulins | $493.30 |
+| With tarpaulins | $519.14 |
 
 The kit buys 54.9 m of tube and uses 33.7 m, a 39 % offcut.
 
@@ -174,7 +185,7 @@ The kit buys 54.9 m of tube and uses 33.7 m, a 39 % offcut.
 
 Full enclosure needs about 51.4 m² (roof with 150 mm overhang 19.4 m², side walls 14.4 m², each gable 8.8 m²); roof, side walls and one gable need 42.6 m². Two 4 x 6 m tarpaulins give 48.0 m², so the front gable stays open.
 
-Erection time is estimated at about **46 min** for two adults: 63 person-minutes of one-person tasks (36 snap joints at 20 s, 8 anchors at 2 min, 10 cables at 1.5 min, skin 20 min) shared by two, plus 14 min of two-person tasks (layout and raising three frames). This is an estimate only; R4 needs a timed trial.
+Erection time is estimated at about **46 min** for two adults: 63 person-minutes of one-person tasks (36 snap joints at 20 s, 8 anchors at 2 min, 10 cables at 1.5 min, skin 20 min) shared by two, plus 14 min of two-person tasks (layout and raising three frames). This is an estimate only; R4 needs a timed trial. The erection order of SNF-DDR-003 C7 (frames slid onto the tube ends, anchors last) uses the same tasks, so the estimate is unchanged.
 
 ## 9. Results against requirements
 
@@ -182,10 +193,10 @@ Table 9. Requirement status, size M. Not met items first.
 
 | ID | Requirement | Value | Target | Status |
 | --- | --- | --- | --- | --- |
-| R5 | Ship flat | Longest member 2.064 m; tube bundle 28.6 kg, 0.030 m³; bag 22.5 kg with tarpaulins | 2.1 m or less; two packages, each 25 kg or less and 0.10 m³ or less | **Not met** (tube bundle 3.6 kg over) |
+| R5 | Ship flat | Longest member 2.064 m; tube bundle 28.6 kg, 0.030 m³; bag 23.9 kg with tarpaulins | 2.1 m or less; two packages, each 25 kg or less and 0.10 m³ or less | **Not met** (tube bundle 3.6 kg over) |
 | R6 | Resist wind | Rating 19.7 m/s; post factor 1.46 at 20 m/s | Factor 1.5 at 20 m/s | **Not met** (posts; frame analysis pending) |
 | R7 | Fit standard tarpaulins | 48.0 m² closes roof, side walls and one gable (42.6 m²); full enclosure 51.4 m² | Both gables closed | **Not met** (front gable open; awaiting Amish) |
-| R11 | Carried by two people | Frame kit 42.0 kg; 51.1 kg with tarpaulins | 50 kg or less | **Not met** (1.1 kg over with tarpaulins) |
+| R11 | Carried by two people | Frame kit 43.3 kg; 52.5 kg with tarpaulins | 50 kg or less | **Not met** (2.5 kg over with tarpaulins) |
 | R13 | Limit fire spread | Standard polyethylene tarpaulins | Flame spread test or fire-retardant option | **Not met** |
 | R8 | Anchor without a hammer | Demand up to 1.28 kN at a rear corner foot, before pretension | Each anchor holds 1.0 kN | **At risk** (demand above target; capacity not verifiable at TRL 3) |
 | R9 | Nodes strong in sun and cold | Pin bearing 32.0 MPa with the factor of 2 | Factor 2 after two years, -10 to 70 °C | **At risk** (polymer not chosen; close to typical printed ASA strength at room temperature, lower at 70 °C) |
@@ -193,15 +204,15 @@ Table 9. Requirement status, size M. Not met items first.
 | R1 | Living space | 16.0 m² (4.6 people at 3.5 m²) | 16 m² or more | Met |
 | R2 | Headroom | 73 % of floor at 2.0 m or more | 60 % or more | Met |
 | R3 | Several sizes | S, M and L node sets generated and exported | Three sizes from one model | Met |
-| R10 | Stay within budget | Frame kit $443 | $445 or less, frame kit without tarpaulins | Met (not met at the former $400 budget in v0.2) |
+| R10 | Value-engineering target | Frame kit $469 | $445 value-engineering target, frame kit without tarpaulins | Over the value-engineering target by $24.14 (reported against the target, not as met or not met) |
 | R12 | Repairable in the field | 4 tube types; 3 node types in 4 printed variants, none handed | 4 tube types and 3 node types | Met (at risk in v0.1) |
 
-Summary: 5 met, 5 not met, 2 at risk, 1 not verifiable at TRL 3 (v0.2: 4 met, 6 not met, 2 at risk, 1 not verifiable; v0.1: 4 met, 5 not met, 3 at risk, 1 not verifiable).
+Summary: 4 met, 5 not met, 2 at risk, 1 not verifiable at TRL 3, and R10 reported against the value-engineering target, $24.14 over (v0.3: 5 met with R10 within the $445 budget; v0.2: 4 met, 6 not met, 2 at risk, 1 not verifiable; v0.1: 4 met, 5 not met, 3 at risk, 1 not verifiable).
 
 ## 10. Limitations
 
 - Pressure coefficients are first-order, not taken from a code for this building shape and exposure. Gust factor, terrain and shelter from neighboring structures are not modeled.
 - The frame is checked member by member. No frame analysis with pinned nodes and tension-only cables was run, so buckling of posts under combined axial load and bending, cable slack and second-order sway are not covered. That analysis is the next TRL 3 step under SNF-DDR-002 D8, before deciding on 1 in posts.
 - Tarpaulin membrane forces that pull the edge members inward are ignored.
-- EMT yield, anchor holding capacity, tensioner rating and printed polymer strength at 70 °C are assumed or unknown.
+- EMT yield, anchor holding capacity, tensioner, ring and snap hook ratings and printed polymer strength at 70 °C are assumed or unknown.
 - Costs are indicative and exclude labor, shipping and tooling.

@@ -2,13 +2,13 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386352497.svg)](https://zenodo.org/badge/latestdoi/1386352497) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/snapframe/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/snapframe/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/snapframe/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/snapframe)
 
-**Area:** Situational Field Hardware · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $445 USD for the frame kit · **Difficulty:** 2 of 5
+**Area:** Situational Field Hardware · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** about $445 USD for the frame kit · **Difficulty:** 2 of 5
 
 Frame kit of standard EMT conduit joined by printed or cast nodes, with parametric nodes generated for several shelter sizes.
 
 ![SnapFrame: tool-free emergency shelter frame of conduit and printed nodes, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/SNF-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/SNF-DWG-001.pdf) · [Calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -55,7 +55,7 @@ Emergency shelters need frames that ship flat and go up without tools. Relief ag
 
 Frame kit of standard EMT conduit joined by printed or cast nodes, with parametric nodes generated for several shelter sizes.
 
-The reference size M is a 4.0 x 4.0 m (16 m²) gable frame with a 2.6 m ridge: 18 straight EMT tubes (1 in rafters and ridge tubes, 3/4 in posts and eave tubes), 15 printed nodes in four variants with spring-button sockets, cable bracing, hand-turned screw anchors, and two standard tarpaulins from agency stock. The TRL 3 calculation note puts the frame kit at about 42.0 kg and $443 (within the $445 budget) and the wind rating at about 19.7 m/s, just short of the 20 m/s target, with the 3/4 in posts governing. See the [review note](docs/REVIEW.md) for decisions and open items.
+The reference size M is a 4.0 x 4.0 m (16 m²) gable frame with a 2.6 m ridge: 18 straight EMT tubes (1 in rafters and ridge tubes, 3/4 in posts and eave tubes), 15 printed nodes in four variants with spring-button sockets, cable bracing, hand-turned screw anchors, and two standard tarpaulins from agency stock. The TRL 3 calculation note puts the constructable frame kit at about 43.3 kg and $469 ($24 over the $445 value-engineering target) and the wind rating at about 19.7 m/s, just short of the 20 m/s target, with the 3/4 in posts governing. See the [design decisions register](docs/06-design-decisions.md) for decisions and open items.
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -64,11 +64,17 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - EMT conduit in four cut lengths: 1 in rafters and ridge tubes, 3/4 in posts and eave tubes
 - Printed polymer nodes in three types (four printed variants, none handed), castable in aluminum later
 - Spring snap buttons and hitch pins
-- Wire-rope brace cables with hand tensioners
+- Wire-rope brace cables with hand tensioners, clipped to anchor eyes and to steel rings on bolts through the nodes
 - Two 4 x 6 m relief tarpaulins (agency stock)
 - Screw ground anchors and guy lines
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+
+## Building the prototype
+
+![SnapFrame prototype: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
+
+The [prototype build plan](docs/05-build-plan.md) (SNF-BLD-001) shows, in pictures, how to make each of the nine made components and put the size M frame up in thirteen steps; nothing has been built yet. The tubes are cut and drilled conduit with snap buttons fitted, the nodes are printed and each eave and ridge node gets a stainless cable bolt with a steel ring, and the brace cables are made up from wire rope. Writing the plan made the design buildable: the button and hitch pin moved apart inside the tube ends, the printed cable tabs became through-bolted rings, the cables now clip to the anchor eyes, the foot plate has two anchor slots, and the frames slide onto the tubes before the anchors go in (SNF-DDR-003, open for Amish's review). Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not.
 
 ## Safety
 

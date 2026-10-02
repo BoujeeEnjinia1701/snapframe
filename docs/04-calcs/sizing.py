@@ -5,6 +5,9 @@ Prints every number quoted in docs/04-calcs/01-sizing.md. Geometry (cut lengths,
 bounding boxes) comes from cad/src/model.py so the note, the model and the BOM stay in step.
 
 v0.2 applies SNF-DDR-002 (1 in ridge tubes, one eave node variant).
+v0.4 applies SNF-DDR-003 (design for construction): hitch pin 15 mm from the tube end, cable bolt
+sets with rings on the eave and ridge nodes, cable lengths between their real attachment points,
+and the budget treated as a value-engineering target.
 First-order, hand-calculation level. Not a code check and not a frame analysis.
 """
 import math
@@ -253,6 +256,19 @@ def main():
     eng = M.NODE["sock_l"] - M.NODE["tube_gap"]
     print(f"rafter end shear {shear:.0f} N; bearing in the socket over {eng:.0f} mm engagement "
           f"{shear / (SEC['1']['od'] * eng):.2f} MPa (nominal, before prying)")
+    # cable bolt (SNF-DDR-003 C3): worst node is a rear corner eave node, gable cable plus roof cable
+    B = M.BOLT
+    p_bolt = T_gable + T_long
+    lever = B["washer_t"] + B["spacer_l"] - B["ring_wire"] / 2
+    m_b = p_bolt * lever / 1000
+    w_b = math.pi * B["d"] ** 3 / 32
+    sig_b = m_b * 1e3 / w_b
+    FY_A4 = 450.0
+    clamp = B["spot"] + B["recess_at"]
+    bear = p_bolt / (B["d"] * clamp) + 6 * m_b * 1e3 / (B["d"] * clamp ** 2)
+    print(f"cable bolt M10 at a rear corner eave node: load up to {p_bolt:.0f} N (gable plus roof cable, upper bound), "
+          f"lever {lever:.1f} mm, {m_b:.1f} N m, {sig_b:.0f} MPa in the shank, factor {FY_A4 / sig_b:.1f} on 450 MPa (A4-70); "
+          f"bearing on the polymer about {bear:.1f} MPa ({2 * bear:.1f} MPa with the R9 factor of 2)")
 
     hr("6. Node mass and cost (printed)")
     FILL = 0.55; RHO_P = 1070.0; FIL_USD = 22.0; MACH_USD = 1.0
@@ -273,20 +289,22 @@ def main():
     print(f"nodes total {n_mass:.2f} kg, ${n_cost:.2f}; sum of bounding boxes {bb_vol:.3f} m3")
 
     hr("7. Mass, packages and cost, size M")
-    cable_len = 0.0
-    fr = M.geometry(SIZE); x0, xl, xm = fr.xs[0], fr.xs[-1], fr.xs[1]
-    pairs = [(fr.foot[(x0, -1)], fr.eave[(x0, 1)]), (fr.foot[(x0, 1)], fr.eave[(x0, -1)])]
-    for s in (-1, 1):
-        pairs += [(fr.foot[(x0, s)], fr.eave[(xm, s)]), (fr.foot[(xl, s)], fr.eave[(fr.xs[-2], s)]),
-                  (fr.eave[(x0, s)], fr.ridge[xm]), (fr.eave[(xl, s)], fr.ridge[fr.xs[-2]])]
-    cable_len = sum(math.dist(a, b) for a, b in pairs) / 1000
+    # cable assemblies between their attachment points (SNF-DDR-003): anchor eye to cable ring
+    CL = M.cable_lengths(SIZE)
+    kinds = {}
+    for k, v in CL.items():
+        kinds.setdefault(k[0], []).append(v)
+    for k, v in kinds.items():
+        print(f"{k} cables: {len(v)} at {min(v):.0f} to {max(v):.0f} mm eye to eye (wire, hooks not counted)")
+    cable_len = sum(v for k, v in CL.items() if k[0] != "guy") / 1000
     counts = {"post": 6, "rafter": 6, "ridge": 2, "eave": 4}
     tube_kg = sum(counts[k] * m_tubes[k] for k in counts)
     tube_m = sum(counts[k] * ml[k] for k in counts) / 1000
     mass = {
         "tubes": tube_kg,
         "nodes": n_mass,
-        "cables": cable_len * 0.065 + 10 * 0.12,
+        "cables": cable_len * 0.065 + 10 * 0.17,
+        "cable bolt sets": 9 * 0.13,
         "anchors": 8 * 0.45,
         "guys": 2 * (3.5 * 0.025 + 0.05),
         "buttons and pins": 36 * 0.01 + 12 * 0.03,
@@ -296,7 +314,7 @@ def main():
     frame_kit = sum(mass.values())
     for k, v in mass.items():
         print(f"{k:18s} {v:5.2f} kg")
-    print(f"tube length {tube_m:.2f} m; cable length {cable_len:.1f} m (node to node, 10 cables)")
+    print(f"tube length {tube_m:.2f} m; cable length {cable_len:.1f} m (eye to eye, 10 cables)")
     print(f"frame kit {frame_kit:.1f} kg ({frame_kit * 2.205:.0f} lb); tarpaulins (agency stock) {tarps:.1f} kg; "
           f"with tarpaulins {frame_kit + tarps:.1f} kg")
     bundle = tube_kg + 0.4
@@ -316,7 +334,8 @@ def main():
     cost = {
         "tubes (18 sticks)": tube_cost,
         "nodes (15)": n_cost,
-        "brace cables (10)": 10 * 3.50,
+        "brace cables (10)": 10 * 4.20,
+        "cable bolt sets (9)": 9 * 2.60,
         "screw anchors (8)": 8 * 4.00,
         "guy lines (2)": 2 * 3.00,
         "buttons and pins": 24.00,
@@ -325,8 +344,9 @@ def main():
     total = sum(cost.values())
     for k, v in cost.items():
         print(f"{k:20s} ${v:7.2f}")
-    budget = 445  # budget_usd in project.yaml, approved by Amish 2026-09-26 (SNF-DDR-002)
-    print(f"frame kit ${total:.2f} against ${budget} budget: {(total / budget - 1) * 100:+.1f} %; "
+    target = 445  # budget_usd in project.yaml: a value-engineering target, not a limit (Amish, 2026-10-01)
+    print(f"frame kit ${total:.2f}; value-engineering target ${target}: ${abs(total - target):.2f} "
+          f"{'over' if total > target else 'under'} ({(total / target - 1) * 100:+.1f} %); "
           f"tarpaulins (agency stock) $50.00; with tarpaulins ${total + 50:.2f}")
     bought = 18 * 3.05
     print(f"offcut: {bought:.1f} m bought, {tube_m:.1f} m used, {(1 - tube_m / bought) * 100:.0f} % offcut")
