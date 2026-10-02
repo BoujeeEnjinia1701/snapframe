@@ -3,9 +3,9 @@ doc_id: SNF-DDR-003
 title: SnapFrame design for construction
 project: SnapFrame
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Changes that make the concept physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Accepted by Amish on 2026-10-02, with A1 sharpened (folding step for the first prototype) and A2 as recommended"
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** Draft. Made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. Items A1 and A2 in Table 3 are proposed, awaiting Amish.
+- **Status:** accepted. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers the changes C1 to C9 and items A1 and A2 in Table 3, now decided and recorded in the design decisions register (SNF-DEC-001). A1 is decided in a sharpened form: the first prototype uses a folding step, ground guiding is timed at TRL 4, and the step stays in the kit if ground guiding is slower or needs a third person. A2 is decided as recommended, with the front gable closed by part of a third tarpaulin cut to include a door flap.
 
 ## Context
 
@@ -54,16 +58,16 @@ The changes keep what the frame does: the same size M gable, floor, heights, tub
 | Documents | SNF-CAL-001 v0.4, SNF-REQ-001 v0.6, SNF-PRC-001 v0.6: mass, cost, cable, pin and erection-order figures updated; cost reported against the value-engineering target. No met requirement became not met; R10 is now reported against the value-engineering target. | Follows the model. |
 | Wind, anchors, snow | Unchanged: tube sizes, node positions and cable layout are the same. | |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Proposed, then decided by Amish on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | Guiding the ridge tubes into their sockets at 2.6 m during the slide-on of C7. R4 asks for erection without tools; a person standing on the ground reaches about 2.2 m. | (a) a folding step in the kit (about 1.5 kg); (b) guide the ridge tube from the ground with a spare tube; (c) build the roof low and lift it onto the posts. | (b), and time it in the TRL 4 user trial before adding a step; the build plan uses a step for the first prototype. |
-| A2 | Where the side wall tarpaulin's lower edge passes the cables at the corner anchors (the cables leave the anchor eyes just outside the wall line). | (a) tuck the hem inside the cable at each corner; (b) a short slit with an eyelet; (c) settle it in the cutting and folding plan of R7 (open item O3). | (c), since R7 already needs a tarpaulin plan. |
+| A1 | Guiding the ridge tubes into their sockets at 2.6 m during the slide-on of C7. R4 asks for erection without tools; a person standing on the ground reaches about 2.2 m. | (a) a folding step in the kit (about 1.5 kg); (b) guide the ridge tube from the ground with a spare tube; (c) build the roof low and lift it onto the posts. | (b), and time it in the TRL 4 user trial before adding a step; the build plan uses a step for the first prototype. **Decided 2026-10-02:** a folding step for the first prototype; (b) timed in the TRL 4 user trial; the step stays in the kit if (b) is slower or needs a third person. |
+| A2 | Where the side wall tarpaulin's lower edge passes the cables at the corner anchors (the cables leave the anchor eyes just outside the wall line). | (a) tuck the hem inside the cable at each corner; (b) a short slit with an eyelet; (c) settle it in the cutting and folding plan of R7 (open item O3). | (c), since R7 already needs a tarpaulin plan. **Decided 2026-10-02: (c)**, in the cutting plan that closes the front gable with part of a third tarpaulin. |
 
 ## Consequences
 
 - `design_state: constructable` in `project.yaml`. The build plan SNF-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`).
-- Requirement status (SNF-CAL-001 v0.4): 4 met, 5 not met, 2 at risk, 1 not verifiable at TRL 3, and R10 reported against the value-engineering target, $24.14 over (in v0.3 R10 was counted as met within the $445 figure). R11 is further from its target: 2.5 kg over, was 1.1 kg.
+- Requirement status (SNF-CAL-001 v0.4, before the decisions of 2026-10-02): 4 met, 5 not met, 2 at risk, 1 not verifiable at TRL 3, and R10 reported against the value-engineering target, $24.14 over (in v0.3 R10 was counted as met within the $445 figure). R11 is further from its target: 2.5 kg over, was 1.1 kg. With R5, R7, R8 and R11 restated on 2026-10-02 (SNF-DEC-001): 7 met, 2 not met (R6, R13), 2 at risk (R8, R9), 1 not verifiable at TRL 3 (R4).
 - The photoreal renders (`media/render-*.png`), the storefront images and the appearance model `cad/src/product_model.py` still show the printed cable tabs, the old button and pin positions and the single anchor slot; they need updating on Amish's Mac, where Blender is.
 - Bought parts to confirm before buying are listed in the design decisions register (SNF-DEC-001): snap button spring length and height, snap hook gate opening, ring and tensioner ratings, anchor eye fit on the plate.

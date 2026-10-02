@@ -3,9 +3,9 @@ doc_id: SNF-PRC-001
 title: SnapFrame design precis
 project: SnapFrame
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Design for construction (SNF-DDR-003, Draft) applied; erection order, joints and cable fixings updated; cost against the value-engineering target
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Gable, packages, polymer, anchors, posts, offcut and partner decided by Amish on 2026-10-02 (SNF-DEC-001)"
 ---
 
 # SnapFrame design precis
@@ -50,7 +54,7 @@ SnapFrame is a gable-roof shelter frame of straight EMT conduit joined by printe
 3. **Build the frames.** Each of the three gable frames is two posts, two rafters, two eave nodes, one ridge node and two foot nodes, assembled flat on the ground. Every joint closes with a click as the spring button finds its hole; hitch pins go in at the feet and the eave post sockets.
 4. **Stand and join the frames.** The rear frame is walked up and stood on its marks. The ridge and eave tubes go into it, and the middle frame, stood 70 mm short of its marks, slides 65 mm on its feet onto the three tube ends; the front bay follows the same way (SNF-DDR-003 C7). Then the frame is squared, and a screw anchor is turned in by hand through a slot in each foot plate, using a spare tube through its eye as a lever, until the eye sits down on the plate.
 5. **Brace.** Brace cables with hand tensioners go into the rear gable, one bay of each side wall and one diagonal per bay in each roof plane. Their snap hooks clip to the anchor eyes at the feet and to the steel ring on each eave and ridge node's cable bolt, and they are pulled snug. Guy lines run from the rings of the two end ridge nodes to anchors 1.5 m beyond each gable.
-6. **Skin.** One tarpaulin goes over the ridge as the roof; the second closes both side walls and the rear gable. The front gable stays open (R7, awaiting Amish). The blank socket on each corner eave node takes a push-in cap. Tarpaulins are tied through their eyelets to the tubes, never to the nodes.
+6. **Skin.** One tarpaulin goes over the ridge as the roof; the second closes both side walls and the rear gable. Part of a third tarpaulin from agency stock, cut to include a door flap, closes the front gable (R7, decided 2026-10-02). The blank socket on each corner eave node takes a push-in cap. Tarpaulins are tied through their eyelets to the tubes, never to the nodes.
 7. **Strike and reuse.** Pressing each button in its finger recess releases its joint. Tubes and nodes go back in the bundle and bag, or the frame stays and carries better cladding later.
 
 ## Main components
@@ -99,17 +103,17 @@ Table 3. Geometry, mass, cost and wind, size M.
 | Floor area | 16.0 m² | R1 met |
 | Headroom 2.0 m or more | 73 % of floor | R2 met |
 | Tube length in the kit | 33.7 m (54.9 m bought, 39 % offcut) | |
-| Frame kit mass | 43.3 kg (96 lb); 52.5 kg with tarpaulins | R11 **not met** (2.5 kg over) |
-| Packages | Tube bundle 28.6 kg, 0.030 m³; bag 23.9 kg with tarpaulins | R5 **not met** |
+| Frame kit mass | 43.3 kg (96 lb); 52.5 kg with tarpaulins | R11 met: frame kit alone counted since 2026-10-02 (tarpaulins issued separately) |
+| Packages | Two tube bundles, 16.5 and 12.1 kg, 0.030 m³; bag 14.7 kg (23.9 kg with two tarpaulins) | R5 met (three packages, restated 2026-10-02) |
 | Erection time | About 46 min for two adults (estimate) | R4 not verifiable at TRL 3 |
-| Skin area | 51.4 m² for full enclosure; 42.6 m² with one gable open | R7 **not met** (48 m² available) |
+| Skin area | 51.4 m² for full enclosure; 42.6 m² with one gable open | R7 met by area with part of a third tarpaulin (72 m² in three; decided 2026-10-02) |
 | Frame kit cost | About $469; value-engineering target $445 | R10: $24 over the value-engineering target |
 | Dynamic pressure at 20 m/s | 245 Pa | |
 | Rafter (1 in) at 20 m/s | 142 N·m, 166 MPa, factor 1.66 | Meets 1.5 |
 | Ridge tube (1 in) at 20 m/s | 106 N·m, 124 MPa, factor 2.22 | Meets 1.5 (1.18 with 3/4 in) |
 | Post (3/4 in) at 20 m/s | 86 N·m, 188 MPa, factor 1.46 | R6 **not met** |
 | Wind rating | 19.7 m/s (71 km/h, 44 mph); 14.7 m/s with the open gable facing the wind | R6 **not met** (posts govern) |
-| Worst foot anchor uplift | 1.28 kN at a rear corner, before pretension | R8 at risk (1.0 kN target) |
+| Worst foot anchor uplift | 1.28 kN at a rear corner, before pretension | R8 at risk (1.5 kN target at the rear corner feet since 2026-10-02) |
 | Snow | Not rated; 0.5 kPa would put 416 MPa in a 1 in rafter | Out of scope |
 
 The TRL 2 estimates (factor 1.70 for posts, 1.26 for 3/4 in rafters, about 18 m/s) spread half of each panel uniformly over the frames. SNF-CAL-001 uses 45° tributary lines, which peak at midspan and give higher moments. On that basis, a 3/4 in rafter would reach only 0.89.
@@ -135,7 +139,7 @@ Decided by Amish on 2026-09-25, going with the recommendations (SNF-DDR-002):
 - **One eave node (D9).** The four-socket eave node is used at the corners with one blank, capped socket, so there are no handed nodes and R12 is met.
 - **Wind rating on the kit (D2 with D8).** Until R6 is met the kit label states 19.7 m/s (71 km/h) and about 14.7 m/s with wind into the open gable.
 
-Still proposed, awaiting Amish (all listed in the design decisions register, SNF-DEC-001): the design for construction changes of SNF-DDR-003, tube offcuts (accept 39 %, shorten posts to 1.50 m, or buy 6 m metric stock, to decide once the first region's tube source is known), the first co-design partner and region, how to treat the open front gable (R7), whether the posts move to 1 in after the frame analysis (R6), the package and carry mass (R5, R11), and the node polymer and anchor target (R9, R8). Cost is followed against the value-engineering target in the register rather than as a decision.
+Decided by Amish on 2026-10-02 (SNF-DEC-001): the design for construction changes of SNF-DDR-003 are accepted; the 39 % tube offcut is accepted for the prototype, with 1.50 m posts or 6 m metric stock chosen once the first region's tube source is known; the IFRC Shelter Research Unit is the first candidate to approach for a technical review and Field Ready for printing; part of a third tarpaulin closes the front gable (R7); the frame analysis is run now, with 1 in posts if it has not been run when the tubes are bought (R6); the tubes go in two bundles, R5 is three packages and R11 counts the frame kit alone; the nodes are printed in glass- or carbon-filled PA12-class nylon (R9); and the rear corner anchors are rated 1.5 kN (R8). Cost is followed against the value-engineering target in the register rather than as a decision.
 
 ## Safety
 
@@ -154,11 +158,11 @@ Still proposed, awaiting Amish (all listed in the design decisions register, SNF
 ## Open questions
 
 - R6: with 1 in ridge tubes the 3/4 in posts (factor 1.46) still fall short at 20 m/s. A frame analysis with pinned nodes and tension-only cables, including post buckling, cable slack and sway, comes before the decision on 1 in posts (SNF-DDR-002 D8).
-- R5 and R11: the tube bundle (28.6 kg) and the complete kit with tarpaulins (51.1 kg) are over their limits; options are in `docs/REVIEW.md`.
+- R5 and R11: decided 2026-10-02, two tube bundles of 16.5 and 12.1 kg (three packages) and the carried mass counted on the frame kit alone (SNF-DEC-001).
 - Confirm EMT yield strength and dimensions from supplier data for the first region, and whether metric thin-wall tube of about 25 mm is stocked where EMT is not.
-- Node polymer: which printable polymer keeps its strength at 70 °C surface temperature under UV for two years (R9).
+- Node polymer: glass- or carbon-filled PA12-class nylon chosen on 2026-10-02; printed coupons to be tested for pin bearing at 70 °C, and its strength under UV over two years confirmed (R9).
 - Anchor holding capacity in sand, clay and gravel, and the rating of the hand cable tensioners (R8).
-- A cutting and folding plan that closes both gables, or the case for a third tarpaulin (R7).
+- A cutting plan for the three tarpaulins, with the door flap and the corner cable hem (R7; third tarpaulin decided 2026-10-02).
 - Fire-retardant tarpaulin sources and cost (R13).
 - Picture-only erection guide: test with users who have not seen the kit.
 - Validate floor area, headroom, erection time, wind exposure and price with users through a local partner.

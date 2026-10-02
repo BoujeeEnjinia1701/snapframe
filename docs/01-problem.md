@@ -3,9 +3,9 @@ doc_id: SNF-PRB-001
 title: SnapFrame problem statement
 project: SnapFrame
 doc_type: Problem statement
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Budget approved by Amish ($445, SNF-DDR-002)
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "First partners decided by Amish on 2026-10-02; IFRC Shelter Research Unit and Field Ready named as first candidates to approach"
 ---
 
 # SnapFrame problem statement
@@ -66,7 +70,7 @@ The gap is a frame kit that uses a globally stocked tube (EMT, made to ANSI C80.
 - Garage-buildable prototype, concept budget $445 USD for one size M frame kit (approved by Amish, 2026-09-26). Tarpaulins come from agency stock and are costed separately (SNF-DDR-001 D1).
 - Members are trade-size EMT conduit, cut to length and drilled only. No bending, flattening or welding.
 - No tools on site for erection. Hands only, plus parts of the kit itself (for example, a tube used as a lever to turn a screw anchor).
-- Every package that a person carries weighs 25 kg (55 lb) or less, and no member is longer than about 2.1 m, so the kit fits a pickup bed and a standard pallet.
+- Every package that a person carries weighs 25 kg (55 lb) or less (three packages for size M: two tube bundles and a bag, decided 2026-10-02), and no member is longer than about 2.1 m, so the kit fits a pickup bed and a standard pallet.
 - Skin is standard relief tarpaulin (4 x 6 m reinforced polyethylene), tied on, not a custom-cut fabric.
 - The frame must be understood and erected by people who have not seen it before, with a picture guide and no written language needed.
 - Operating range about 0 to 50 °C air temperature, with node surfaces in full sun reaching higher.
@@ -90,7 +94,7 @@ The gap is a frame kit that uses a globally stocked tube (EMT, made to ANSI C80.
 
 ## Open questions
 
-- Which partner and region to design with first (an IFRC national society shelter team, an NGO with a print farm, or a university humanitarian engineering group)? Proposed, awaiting Amish.
+- Which partner and region to design with first (an IFRC national society shelter team, an NGO with a print farm, or a university humanitarian engineering group)? Decided 2026-10-02: the first candidate to approach is the IFRC Shelter Research Unit, for a technical review of the kit with standard relief tarpaulins, with Field Ready as the printing partner; the region is taken from the first warm-climate response the review points to. Nothing is agreed (SNF-DEC-001).
 - Tarpaulins come from agency stock (decided, SNF-DDR-001 D1). Do partner agencies stock a fire-retardant tarpaulin (R13)?
 - Nodes are printed for the prototype and designed for casting later (decided, SNF-DDR-001 D3). Which polymer, and are printed nodes acceptable to a partner for a first field trial?
 - The frame is rated at about 19.7 m/s by calculation with 1 in ridge tubes (SNF-CAL-001 v0.2, SNF-DDR-002 D8), just below the 20 m/s target. What rating do partners need, and what is the procedure above it (drop the skin, add guys, evacuate)?

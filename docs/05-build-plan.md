@@ -3,9 +3,9 @@ doc_id: SNF-BLD-001
 title: SnapFrame prototype build plan
 project: SnapFrame
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: First build plan, from the template with pictures by component and step; design made constructable (SNF-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Node polymer changed to glass- or carbon-filled PA12-class nylon (decided by Amish on 2026-10-02); printer and fume notes to match"
 ---
 
 # SnapFrame prototype build plan
@@ -54,7 +58,7 @@ Make and check each component before the assembly step that needs it. Sizes are 
 
 *Figure 2. Foot node making sketch (SNF-DWG-101).*
 
-**What it is and what it is made from.** The node the bottom of each post stands in: an 84 mm ball with one socket pointing straight up, on a square plate that lies on the ground and is held down by a screw anchor. Printed in an ASA-class outdoor polymer, about 410 g each.
+**What it is and what it is made from.** The node the bottom of each post stands in: an 84 mm ball with one socket pointing straight up, on a square plate that lies on the ground and is held down by a screw anchor. Printed in a glass- or carbon-filled nylon of the PA12 class (decided 2026-10-02, SNF-DEC-001), about 410 g each in ASA (to be re-estimated for the nylon).
 
 **How to make it.**
 
@@ -359,7 +363,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 Stop at each point. Carry on only when everything listed is true.
 
 - **S1. Before cutting and drilling.** Safety glasses on; tube clamped in a vice or vee block, never held by hand under the drill; gloves for handling cut ends.
-- **S2. Before printing.** The printer is in a ventilated space or has a filtered enclosure; ASA-class polymers give off fumes while printing.
+- **S2. Before printing.** The printer is in a ventilated space or has a filtered enclosure; nylon and other engineering polymers give off fumes while printing.
 - **S3. Before a frame is stood up.** Every button clicked and every hitch pin in; two people; wind light (no tarpaulin on the frame).
 - **S4. Before any anchor is turned in.** The site is checked for buried cables and pipes with whoever owns them; no anchor within 0.5 m of a marked service.
 - **S5. Before the cables and guys are tensioned.** Gloves on; nobody stands in line with a cable while it is being tensioned; tensioners pulled by hand only, never with a bar; guy lines marked with reflective tape.
@@ -368,7 +372,7 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 7. Tools, skills and workspace
 
-**Tools.** Pipe cutter for 3/4 in and 1 in conduit, or a hacksaw with a 32 teeth per inch blade; inside reamer and flat file; tape measure, steel rule, marker, a 2 m straight edge (a length of aluminium angle) for the hole line, and a centre punch; bench drill or a drill in a stand, with a vee block and drills of 3, 6 and 8 mm; deburring tool; 3D printer with a bed of at least 230 mm that prints ASA-class polymer in an enclosure (or a print farm); 16 or 17 mm spanner and a deep socket that fits a 27 mm recess; wire rope cutters and a 10 mm spanner for the rope clips; hand scale to 50 kg; knotted layout cord and six pegs; a step about 0.6 m high; gloves and safety glasses.
+**Tools.** Pipe cutter for 3/4 in and 1 in conduit, or a hacksaw with a 32 teeth per inch blade; inside reamer and flat file; tape measure, steel rule, marker, a 2 m straight edge (a length of aluminium angle) for the hole line, and a centre punch; bench drill or a drill in a stand, with a vee block and drills of 3, 6 and 8 mm; deburring tool; 3D printer with a bed of at least 230 mm and a hardened nozzle that prints glass- or carbon-filled PA12-class nylon (or a print farm); 16 or 17 mm spanner and a deep socket that fits a 27 mm recess; wire rope cutters and a 10 mm spanner for the rope clips; hand scale to 50 kg; knotted layout cord and six pegs; a step about 0.6 m high; gloves and safety glasses.
 
 **Skills.** No certified trade is needed. Basic metalwork (measuring, cutting and drilling thin-wall tube), running a 3D printer, bolting, and making up wire rope ends with clips. No electrical work is part of this build.
 

@@ -301,3 +301,39 @@ Kit 1.7.0 installed (`.kit/`, `.claude/commands/`, `CLAUDE.md`). Amish approved 
 ### Recommended next step
 
 Amish reviews SNF-DDR-003, the illustrated plan and the register, and decides open decisions 1 and 2. The renders and `product_model.py` can then be brought up to the constructable design on his Mac. Building to the plan is TRL 4 work and stays on hold.
+
+## Session 2026-10-02: open decisions decided
+
+Amish approved every recommendation for the open decisions on 2026-10-02: "i approve your recommendations for all 555 open decisions."
+
+### Decisions recorded
+
+Ten, all moved to "Decisions made" in SNF-DEC-001 (open items 1 to 10): design for construction accepted (SNF-DDR-003, C1 to C9); a folding step for the first prototype, with ground guiding timed at TRL 4; the front gable closed with part of a third tarpaulin cut to include a door flap, and R7 restated; the frame analysis run now, with 1 in posts if it has not been run when the tubes are bought; two tube bundles, R5 restated as three packages and R11 counted on the frame kit alone; nodes in glass- or carbon-filled PA12-class nylon, PETG dropped; 1.5 kN anchors at the two rear corner feet; the 39 % offcut accepted for the prototype; the IFRC Shelter Research Unit as the first candidate to approach for a technical review and Field Ready for printing; the first three render choices accepted and the fourth withdrawn.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` SNF-DEC-001 v0.2: decisions made; open decisions section now reads "None"; To confirm items 4 and 6 and the value engineering note updated.
+- `docs/decisions/0003-design-for-construction.md` SNF-DDR-003 v0.2: accepted (status Draft kept); A1 sharpened, A2 as recommended.
+- `docs/03-requirements.md` SNF-REQ-001 v0.7: R5, R7, R8 and R11 restated; R6 and R9 status notes; now 7 met, 2 not met (R6, R13), 2 at risk, 1 not verifiable.
+- `docs/04-calcs/01-sizing.md` SNF-CAL-001 v0.5: status table and summary against the restated targets; polymer assumption noted; no figures changed.
+- `docs/02-concept.md` SNF-PRC-001 v0.7 and `docs/01-problem.md` SNF-PRB-001 v0.7: skin, packages, polymer, anchors, posts, offcut and first candidate partners.
+- `docs/05-build-plan.md` SNF-BLD-001 v0.2: node polymer, printer and fume notes.
+- `README.md`: key components and summary name the third tarpaulin for the front gable.
+- `bom/bom-notes.md`: offcut, polymer, anchors, step, bundles and third tarpaulin noted.
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 2 (BOM, pictures): add the folding step to the bill of materials for the first prototype and show it in steps 5 to 7.
+2. Decision 3 (drawings, pictures): draw the cutting plan for three tarpaulins with the door flap and the corner cable hem; redraw step 13 and the skin in the model and concept media.
+3. Decision 3 (BOM): tarpaulins line from two to three (agency stock, outside the frame kit), with its separate cost.
+4. Decision 4 (calculations): run the frame analysis named in SNF-DDR-002 D8; if it has not been run when the prototype tubes are bought, change the posts to 1 in in the model, foot nodes, eave node post sockets and BOM.
+5. Decision 5 (BOM, pictures): a second set of bundle straps (line 13) and the packing picture for two tube bundles.
+6. Decision 6 (calculations, BOM): re-estimate node masses and print prices for filled PA12-class nylon (assumption A12, node lines of the BOM); add coupon tests for pin bearing at 70 °C to the TRL 4 plan.
+7. Decision 7 (BOM, model): longer screw anchors at the two rear corner feet, rated 1.5 kN.
+8. Decision 10 (pictures): re-render on Amish's Mac with the first three choices kept and the brace cable start at the detail node withdrawn.
+
+### Points found in the review
+
+- Five requirements are not met (R5, R6, R7, R11, R13); R13 (fire spread) has no open decision, though the problem statement asks whether partners stock a fire-retardant tarpaulin. It should be added to the register.
+- Item 3 and item 5 interact: a third tarpaulin adds several kilograms to whatever carries it, which is why R11 is best counted on the frame kit alone.
+- Cost is $469.14 against the $445 target, $24.14 over, and the frame analysis item may add about $30 more.

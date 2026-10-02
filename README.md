@@ -55,7 +55,7 @@ Emergency shelters need frames that ship flat and go up without tools. Relief ag
 
 Frame kit of standard EMT conduit joined by printed or cast nodes, with parametric nodes generated for several shelter sizes.
 
-The reference size M is a 4.0 x 4.0 m (16 m²) gable frame with a 2.6 m ridge: 18 straight EMT tubes (1 in rafters and ridge tubes, 3/4 in posts and eave tubes), 15 printed nodes in four variants with spring-button sockets, cable bracing, hand-turned screw anchors, and two standard tarpaulins from agency stock. The TRL 3 calculation note puts the constructable frame kit at about 43.3 kg and $469 ($24 over the $445 value-engineering target) and the wind rating at about 19.7 m/s, just short of the 20 m/s target, with the 3/4 in posts governing. See the [design decisions register](docs/06-design-decisions.md) for decisions and open items.
+The reference size M is a 4.0 x 4.0 m (16 m²) gable frame with a 2.6 m ridge: 18 straight EMT tubes (1 in rafters and ridge tubes, 3/4 in posts and eave tubes), 15 printed nodes in four variants with spring-button sockets, cable bracing, hand-turned screw anchors, and standard tarpaulins from agency stock (two, and part of a third for the front gable). The TRL 3 calculation note puts the constructable frame kit at about 43.3 kg and $469 ($24 over the $445 value-engineering target) and the wind rating at about 19.7 m/s, just short of the 20 m/s target, with the 3/4 in posts governing. See the [design decisions register](docs/06-design-decisions.md) for decisions and open items.
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -65,7 +65,7 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - Printed polymer nodes in three types (four printed variants, none handed), castable in aluminum later
 - Spring snap buttons and hitch pins
 - Wire-rope brace cables with hand tensioners, clipped to anchor eyes and to steel rings on bolts through the nodes
-- Two 4 x 6 m relief tarpaulins (agency stock)
+- Three 4 x 6 m relief tarpaulins (agency stock): two whole, and part of a third, cut with a door flap, for the front gable
 - Screw ground anchors and guy lines
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
