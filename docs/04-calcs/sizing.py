@@ -8,8 +8,13 @@ v0.2 applies SNF-DDR-002 (1 in ridge tubes, one eave node variant).
 v0.4 applies SNF-DDR-003 (design for construction): hitch pin 15 mm from the tube end, cable bolt
 sets with rings on the eave and ridge nodes, cable lengths between their real attachment points,
 and the budget treated as a value-engineering target.
-First-order, hand-calculation level. Not a code check and not a frame analysis.
+v0.6 applies the decisions of 2026-10-02 (SNF-DEC-001): the frame analysis named in SNF-DDR-002 D8 is run (section 3a, a
+two-dimensional stiffness analysis of the middle frame, with axial force added to bending), nodes re-estimated for glass- or
+carbon-filled PA12-class nylon (A12), a folding step, longer anchors at the two rear corner feet, two sets of bundle straps,
+two tube bundles, and the skin cutting plan for three tarpaulins (cad/src/skin_plan.py).
+First-order, hand-calculation level. Not a code check.
 """
+import json
 import math
 import sys
 from pathlib import Path
@@ -17,6 +22,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "cad" / "src"))
 import model as M  # noqa: E402
+import skin_plan as SK  # noqa: E402
+import numpy as np  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Assumptions (each is stated in the note, section 2)
@@ -148,6 +155,111 @@ def rating(tube_of=None, cp_roof=CP_ROOF, cpi=0.0):
     return V_DESIGN * math.sqrt(sf_min / SF_REQ), sf_min, min(r, key=lambda k: r[k][2])
 
 
+# ---------------------------------------------------------------------------
+# Frame analysis of the middle frame (SNF-DDR-002 D8, run 2026-10-02): plane frame, two posts and two rafters,
+# 16 beam elements a member, feet pinned, eave nodes held across the span by the braced roof and rear gable
+# (section 6), same panel loads as the member check. Joints: "pinned" (tube ends free to turn in the sockets,
+# the design basis, as A9) or "rigid" (knees and ridge keep their angle: an upper bound, not credited).
+# Axial force is added to bending: stress = M/S + N/A.
+# ---------------------------------------------------------------------------
+E_STEEL = 200e3          # MPa
+
+
+def frame_analysis(v=V_DESIGN, knee="pinned", ridge="pinned", tube_of=None, nel=16):
+    tube_of = tube_of or M.TUBE_OF
+    q_ = q(v)
+    hw = HALF * 1000; he = P["eave"]; hr_ = P["ridge"]; zf = M.NODE["z_foot"]
+    pts = {"F1": (-hw, zf), "E1": (-hw, he), "R": (0.0, hr_), "E2": (hw, he), "F2": (hw, zf)}
+    mem = [("post, windward", "F1", "E1", "post"), ("rafter, windward", "E1", "R", "rafter"),
+           ("rafter, leeward", "R", "E2", "rafter"), ("post, leeward", "E2", "F2", "post")]
+    wall = tributary(BAY, POST); roof = tributary(BAY, RAFTER)
+    free_rot = {"E1": knee == "pinned", "E2": knee == "pinned", "R": ridge == "pinned", "F1": True, "F2": True}
+    nodes = []; idx = {}; mn = {}
+    for name, a, b, kind in mem:
+        pa = np.array(pts[a], float); pb = np.array(pts[b], float); ids = []
+        for i in range(nel + 1):
+            if i == 0 and a in idx:
+                ids.append(idx[a]); continue
+            if i == nel and b in idx:
+                ids.append(idx[b]); continue
+            nodes.append(pa + (pb - pa) * i / nel); n = len(nodes) - 1
+            if i == 0: idx[a] = n
+            if i == nel: idx[b] = n
+            ids.append(n)
+        mn[name] = (ids, kind, pa, pb)
+    nn = len(nodes); cnt = 3 * nn; enddof = {}
+    for name, (ids, kind, pa, pb) in mn.items():
+        for end, nid in ((0, ids[0]), (1, ids[-1])):
+            nodename = [k for k, vv in idx.items() if vv == nid][0]
+            if free_rot[nodename]:
+                enddof[(name, end)] = cnt; cnt += 1
+    K = np.zeros((cnt, cnt)); F = np.zeros(cnt)
+
+    def kloc(A, I, Le):
+        EA = E_STEEL * A / Le; EI = E_STEEL * I
+        k = np.zeros((6, 6))
+        k[0, 0] = k[3, 3] = EA; k[0, 3] = k[3, 0] = -EA
+        k[1, 1] = k[4, 4] = 12 * EI / Le ** 3; k[1, 4] = k[4, 1] = -12 * EI / Le ** 3
+        k[1, 2] = k[2, 1] = k[1, 5] = k[5, 1] = 6 * EI / Le ** 2
+        k[2, 4] = k[4, 2] = k[4, 5] = k[5, 4] = -6 * EI / Le ** 2
+        k[2, 2] = k[5, 5] = 4 * EI / Le; k[2, 5] = k[5, 2] = 2 * EI / Le
+        return k
+
+    def dofs(name, ids, i):
+        n1, n2 = ids[i], ids[i + 1]
+        d = [3 * n1, 3 * n1 + 1, 3 * n1 + 2, 3 * n2, 3 * n2 + 1, 3 * n2 + 2]
+        if i == 0 and (name, 0) in enddof: d[2] = enddof[(name, 0)]
+        if i == nel - 1 and (name, 1) in enddof: d[5] = enddof[(name, 1)]
+        return d
+    for name, (ids, kind, pa, pb) in mn.items():
+        sec = SEC[tube_of[kind]]; Lt = np.linalg.norm(pb - pa); c, sn = (pb - pa) / Lt; Le = Lt / nel
+        Rm = np.array([[c, sn, 0], [-sn, c, 0], [0, 0, 1]]); T = np.zeros((6, 6)); T[:3, :3] = Rm; T[3:, 3:] = Rm
+        kg = T.T @ kloc(sec["A"], sec["I"], Le) @ T
+        if kind == "post":
+            area, ramp, shp = wall["b"]; p = (CP_WALL_WW if "windward" in name else abs(CP_WALL_LW)) * q_ / 1e6
+            gdir = np.array([1.0, 0.0])
+        else:
+            area, ramp, shp = roof["b"]; p = abs(CP_ROOF) * q_ / 1e6
+            nrm = np.array([-sn, c]); gdir = nrm if nrm[1] > 0 else -nrm
+        ramp *= 1000; w0 = p * ramp * 2; rr = Lt / 2 if shp == "tri" else ramp
+        for i in range(nel):
+            d = dofs(name, ids, i)
+            K[np.ix_(d, d)] += kg
+            sm = (i + 0.5) * Le; w = w0 * min(sm, Lt - sm, rr) / rr
+            for nid in (ids[i], ids[i + 1]):
+                F[3 * nid] += gdir[0] * w * Le / 2; F[3 * nid + 1] += gdir[1] * w * Le / 2
+    fixed = {3 * idx[k] + j for k in ("F1", "F2") for j in (0, 1)} | {3 * idx["E1"], 3 * idx["E2"]}
+    fr = [i for i in range(cnt) if i not in fixed and K[i, i] > 0]
+    u = np.zeros(cnt); u[fr] = np.linalg.solve(K[np.ix_(fr, fr)], F[fr])
+    res = {}
+    for name, (ids, kind, pa, pb) in mn.items():
+        sec = SEC[tube_of[kind]]; Lt = np.linalg.norm(pb - pa); c, sn = (pb - pa) / Lt; Le = Lt / nel
+        Rm = np.array([[c, sn, 0], [-sn, c, 0], [0, 0, 1]]); T = np.zeros((6, 6)); T[:3, :3] = Rm; T[3:, 3:] = Rm
+        kl = kloc(sec["A"], sec["I"], Le); best = (0.0, 0.0, 0.0)
+        for i in range(nel):
+            f = kl @ (T @ u[dofs(name, ids, i)])
+            for Mv, Nv in ((f[2], f[0]), (f[5], f[3])):
+                sig = abs(Mv) / sec["S"] + abs(Nv) / sec["A"]
+                if sig > best[0]: best = (sig, abs(Mv) / 1000, Nv)
+        res[name] = (best[1], best[2], best[0], FY / best[0])     # M N m, N N, stress MPa, factor
+    return res
+
+
+def rating_fe(**kw):
+    """Gust speed at which the weakest member reaches SF_REQ: frame analysis for posts and rafters, member
+    checks (section 3) for the eave tubes, ridge tube and the end rafter under gable wind."""
+    r = frame_analysis(**kw)
+    hand = stresses(wind_members(V_DESIGN), kw.get("tube_of"))
+    cands = {k: v[3] for k, v in r.items()}
+    for k in ("ridge", "eave (windward)", "eave (leeward)", "rafter (end, gable wind)"):
+        cands[k] = hand[k][2]
+    gov = min(cands, key=cands.get)
+    return V_DESIGN * math.sqrt(cands[gov] / SF_REQ), cands[gov], gov
+
+
+RESULTS = {}
+
+
 def hr(t):
     print("\n" + t + "\n" + "-" * len(t))
 
@@ -203,6 +315,19 @@ def main():
     m_old = w_old * RAFTER ** 2 / 8
     print(f"TRL 2 method (half of panel, uniform): rafter M {m_old:.0f} N m; "
           f"{m_old * 1e3 / SEC['3/4']['S']:.0f} MPa in 3/4 in")
+
+    hr("3a. Frame analysis of the middle frame (SNF-DDR-002 D8)")
+    for kn, rd, lab in (("pinned", "pinned", "pinned knees and ridge (design basis)"), ("rigid", "pinned", "rigid knees, pinned ridge (bound)"),
+                        ("rigid", "rigid", "rigid knees and ridge (upper bound)")):
+        fa = frame_analysis(knee=kn, ridge=rd)
+        print(lab)
+        for k, (m_, n_, sig, sf) in fa.items():
+            print(f"  {k:18s} M {m_:6.1f} N m, axial {n_:5.0f} N, stress {sig:5.0f} MPa, factor {sf:4.2f}")
+        vv, sff, gg = rating_fe(knee=kn, ridge=rd)
+        print(f"  rating {vv:.1f} m/s ({vv * 3.6:.0f} km/h, {vv * 2.237:.0f} mph); governed by {gg} at factor {sff:.2f}")
+    v1, sf1, g1 = rating_fe(tube_of=dict(M.TUBE_OF, post="1"))
+    print(f"1 in posts, pinned joints: rating {v1:.1f} m/s; governed by {g1} at factor {sf1:.2f}")
+    print("Hand member check for comparison (section 3): post 86.0 N m, factor 1.46, rating 19.7 m/s (bending only)")
 
     hr("4. Snow check (out of scope, for the safety note)")
     s_kpa = 0.5
@@ -271,7 +396,10 @@ def main():
           f"bearing on the polymer about {bear:.1f} MPa ({2 * bear:.1f} MPa with the R9 factor of 2)")
 
     hr("6. Node mass and cost (printed)")
-    FILL = 0.55; RHO_P = 1070.0; FIL_USD = 22.0; MACH_USD = 1.0
+    FILL = 0.55; RHO_P = 1200.0; FIL_USD = 55.0; MACH_USD = 1.50      # A12: filled PA12-class nylon (decided 2026-10-02)
+    asa = {n: sh.volume * 1e-9 * 1070.0 * FILL for n, (sh, c, _) in M.node_variants(SIZE).items()}
+    print("v0.5 basis for comparison (ASA, 1,070 kg/m3, $22/kg + $1.00): nodes " +
+          f"{sum(asa[n] * c for n, (sh, c, _) in M.node_variants(SIZE).items()):.2f} kg, $119.74")
     var = M.node_variants(SIZE)
     n_mass = 0.0; n_cost = 0.0; bb_vol = 0.0
     fam = {"foot": 0.0, "eave": 0.0, "ridge": 0.0}; fam_n = {"foot": 0, "eave": 0, "ridge": 0}
@@ -305,12 +433,13 @@ def main():
         "nodes": n_mass,
         "cables": cable_len * 0.065 + 10 * 0.17,
         "cable bolt sets": 9 * 0.13,
-        "anchors": 8 * 0.45,
+        "anchors": 6 * 0.45 + 2 * 0.45 * M.ANCHOR_DEPTH_REAR / M.ANCHOR_DEPTH,     # 6 standard (4 feet, 2 guys), 2 long
+        "folding step": 1.5,
         "guys": 2 * (3.5 * 0.025 + 0.05),
         "buttons and pins": 36 * 0.01 + 12 * 0.03,
-        "straps and bag": 0.4 + 0.6,
+        "straps and bag": 4 * 0.2 + 0.6,        # four cam straps, one duffel
     }
-    tarps = 2 * 4 * 6 * 0.19
+    tarps = 3 * 4 * 6 * 0.19
     frame_kit = sum(mass.values())
     for k, v in mass.items():
         print(f"{k:18s} {v:5.2f} kg")
@@ -318,16 +447,28 @@ def main():
     print(f"frame kit {frame_kit:.1f} kg ({frame_kit * 2.205:.0f} lb); tarpaulins (agency stock) {tarps:.1f} kg; "
           f"with tarpaulins {frame_kit + tarps:.1f} kg")
     bundle = tube_kg + 0.4
-    rest = frame_kit - bundle
+    split_a = counts["rafter"] * m_tubes["rafter"] + counts["ridge"] * m_tubes["ridge"] + 0.4     # two cam straps each
+    split_b = bundle - (split_a - 0.4) + 0.0
+    split_b = counts["post"] * m_tubes["post"] + counts["eave"] * m_tubes["eave"] + 0.4
+    rest = frame_kit - split_a - split_b
     ods = [SEC[M.TUBE_OF[k]]["od"] for k in counts for _ in range(counts[k])]
     bundle_vol = sum(d ** 2 for d in ods) * 1e-6 * 1.15 * 2.10
-    bag_vol = bb_vol * 0.6 + 0.012
-    print(f"package 1, tube bundle: {bundle:.1f} kg, {bundle_vol:.3f} m3 (hex packing factor 1.15, 2.10 m)")
-    print(f"package 2, bag: {rest:.1f} kg without tarpaulins ({rest + tarps:.1f} kg with); contents "
-          f"about {bag_vol:.3f} m3 without tarpaulins (nodes nest to 60 % of their boxes, plus 0.012 m3)")
-    split_a = counts["rafter"] * m_tubes["rafter"] + counts["ridge"] * m_tubes["ridge"] + 0.2
-    split_b = bundle - split_a
-    print(f"option, two tube bundles: rafters and ridge tubes {split_a:.1f} kg; posts and eave tubes {split_b:.1f} kg")
+    ods_a = [SEC[M.TUBE_OF[k]]["od"] for k in ("rafter", "ridge") for _ in range(counts[k])]
+    ods_b = [SEC[M.TUBE_OF[k]]["od"] for k in ("post", "eave") for _ in range(counts[k])]
+    vol_a = sum(d ** 2 for d in ods_a) * 1e-6 * 1.15 * 2.10
+    vol_b = sum(d ** 2 for d in ods_b) * 1e-6 * 1.15 * 2.10
+    step_vol = 0.50 * 0.45 * 0.08                     # folded step, m3
+    print(f"one tube bundle, before the split (v0.5): {bundle:.1f} kg, {bundle_vol:.3f} m3")
+    print(f"package 1, tube bundle A, rafters (6) and ridge tubes (2), two straps: {split_a:.1f} kg, {vol_a:.3f} m3")
+    print(f"package 2, tube bundle B, posts (6) and eave tubes (4), two straps: {split_b:.1f} kg, {vol_b:.3f} m3")
+    bag_vol = bb_vol * 0.6 + 0.012 + step_vol
+    print(f"package 3, bag: {rest:.1f} kg without tarpaulins ({rest + tarps:.1f} kg with three); contents "
+          f"about {bag_vol:.3f} m3 without tarpaulins (nodes nest to 60 % of their boxes, plus 0.012 m3 and the folded step {step_vol:.3f} m3)")
+    print(f"longest package {max(split_a, split_b, rest):.1f} kg; longest member {max(ml.values()) / 1000:.3f} m")
+    RESULTS.update({"frame_kit_kg": round(frame_kit, 2), "tarps_kg": round(tarps, 2), "bundle_a_kg": round(split_a, 2),
+                    "bundle_b_kg": round(split_b, 2), "bag_kg": round(rest, 2), "bundle_a_m3": round(vol_a, 4),
+                    "bundle_b_m3": round(vol_b, 4), "bag_m3": round(bag_vol, 4), "nodes_kg": round(n_mass, 3),
+                    "nodes_usd": round(n_cost, 2), "tube_m": round(tube_m, 2), "cable_m": round(cable_len, 1)})
 
     price = {"3/4": 9.00, "1": 14.00}
     tube_cost = sum(counts[k] * price[M.TUBE_OF[k]] for k in counts)
@@ -336,10 +477,12 @@ def main():
         "nodes (15)": n_cost,
         "brace cables (10)": 10 * 4.20,
         "cable bolt sets (9)": 9 * 2.60,
-        "screw anchors (8)": 8 * 4.00,
+        "screw anchors (6 standard)": 6 * 4.00,
+        "long screw anchors (2, rear corners)": 2 * 6.00,
+        "folding step (1)": 25.00,
         "guy lines (2)": 2 * 3.00,
         "buttons and pins": 24.00,
-        "straps and bag": 20.00,
+        "straps and bag (4 straps)": 26.00,
     }
     total = sum(cost.values())
     for k, v in cost.items():
@@ -347,18 +490,25 @@ def main():
     target = 445  # budget_usd in project.yaml: a value-engineering target, not a limit (Amish, 2026-10-01)
     print(f"frame kit ${total:.2f}; value-engineering target ${target}: ${abs(total - target):.2f} "
           f"{'over' if total > target else 'under'} ({(total / target - 1) * 100:+.1f} %); "
-          f"tarpaulins (agency stock) $50.00; with tarpaulins ${total + 50:.2f}")
+          f"tarpaulins (3, agency stock) $75.00; with tarpaulins ${total + 75:.2f}")
+    RESULTS.update({"frame_kit_usd": round(total, 2), "over_target_usd": round(total - target, 2)})
     bought = 18 * 3.05
     print(f"offcut: {bought:.1f} m bought, {tube_m:.1f} m used, {(1 - tube_m / bought) * 100:.0f} % offcut")
 
     hr("8. Skin (R7)")
-    ov = 0.15
-    roof = 2 * (RAFTER + ov) * (LENGTH + 2 * 0.10)
-    walls = 2 * LENGTH * H_E
-    gable = SPAN * H_E + 0.5 * SPAN * (H_R - H_E)
-    print(f"roof {roof:.1f} m2, side walls {walls:.1f} m2, each gable {gable:.1f} m2; "
-          f"one gable {roof + walls + gable:.1f} m2, both {roof + walls + 2 * gable:.1f} m2; two tarpaulins 48.0 m2")
+    nd = SK.needs()
+    print(f"roof {nd['roof']:.1f} m2, side walls {nd['walls']:.1f} m2, each gable {nd['gable']:.1f} m2; "
+          f"one gable {nd['roof'] + nd['walls'] + nd['gable']:.1f} m2, both {nd['total']:.1f} m2; three tarpaulins 72.0 m2")
+    for t, name, u0, v0, w, h, shape, note in SK.PIECES:
+        print(f"tarpaulin {t}: {name}, {SK.area((t, name, u0, v0, w, h, shape, note)):.1f} m2")
+    bad = 0
+    for d, ok in SK.check():
+        bad += 0 if ok else 1
+        print(("ok   " if ok else "FAIL ") + d)
+    print(f"cutting plan checks: {len(SK.check()) - bad} of {len(SK.check())} pass; pieces use {72 - SK.spare():.1f} m2, spare {SK.spare():.1f} m2")
 
+    RESULTS["rating_ms"] = round(rating_fe()[0], 1)
+    (Path(__file__).parent / "sizing-results.json").write_text(json.dumps(RESULTS, indent=1) + "\n")
     hr("9. Erection time estimate (R4)")
     solo = 36 * 20 / 60 + 8 * 2 + 10 * 1.5 + 20
     joint = 5 + 3 * 3

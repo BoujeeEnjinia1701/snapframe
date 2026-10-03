@@ -8,6 +8,8 @@ With no argument it draws everything. Every picture is drawn from cad/src/model.
     docs/05-build-plan/joint-NN.png        close-ups of the joints that need explaining
     docs/05-build-plan/step-NN.png         one picture per assembly step
     docs/05-build-plan/cable-assembly.png  how a brace cable is made up (matplotlib, also on SNF-DWG-109)
+    docs/05-build-plan/cutting-plan.png    the three tarpaulins cut up (cad/src/skin_plan.py, matplotlib)
+    docs/05-build-plan/packing.png         the three packages: two tube bundles and the bag (matplotlib)
 Uses .kit/build_views.py. BUILD PLAN ILLUSTRATION, PLAN NOT YET BUILT.
 """
 import math
@@ -20,10 +22,13 @@ sys.path[:0] = [str(ROOT / ".kit"), str(ROOT / "cad" / "src")]
 import build_views as bv  # noqa: E402
 from build_views import Part  # noqa: E402
 import model as M  # noqa: E402
+import skin_plan as SK  # noqa: E402
+import plan_figures as PF  # noqa: E402
+from build123d import Pos  # noqa: E402
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-10-01"
+DATE = "2026-10-02"
 SIZE = "M"
 
 # tessellate each shape once: the same shapes appear in many pictures
@@ -174,7 +179,9 @@ def overview():
          COL["ridgenode"], (0, 0, 1100)),
         ("Eave tubes (4)", is_tube("eave"), COL["eave"], (0, 0, 450)),
         ("Ridge tubes (2)", is_tube("ridge"), COL["ridge"], (0, 0, 1350)),
-        ("Screw anchors (6 at the feet)", lambda k: k[0] == "anchor" and k[1] not in ("rear", "front"), COL["anchor"], (0, 0, -1150)),
+        ("Screw anchors (4 at the middle and front feet)", lambda k: k[0] == "anchor" and k[1] not in ("rear", "front") and k[1][0] != X0, COL["anchor"], (0, 0, -1150)),
+        ("Long screw anchors (2 at the rear corner feet)", lambda k: k[0] == "anchor" and k[1] not in ("rear", "front") and k[1][0] == X0, "#7C2D12", (0, 0, -1150)),
+        ("Folding step (1), for the ridge sockets", lambda k: k[0] == "step", "#6D28D9", (0, 0, -1500)),
         ("Brace cables (10) with snap hooks", lambda k: k[0] in ("cable", "hook") and k[1] != "guy", COL["cable"], (0, 0, 0)),
         ("Guy lines (2) and guy anchors (2)", lambda k: (k[0] in ("cable", "hook") and k[1] == "guy") or (k[0] == "anchor" and k[1] in ("rear", "front")),
          COL["guy"], (0, 0, 0)),
@@ -188,7 +195,7 @@ def overview():
             sh = fuse([thick(lambda k: k[1] == "guy"), S(lambda k: k[0] == "anchor" and k[1] in ("rear", "front"))])
         parts.append(part(n, sh, c, e))
     return bv.overview(parts, OUT / "overview.png", "SnapFrame size M prototype: every component, pulled apart",
-                       subtitle="Numbered in build order. Cables drawn thicker than they are; snap buttons sit inside the tube ends; tarpaulins not shown",
+                       subtitle="Numbered in build order. Cables drawn thicker than they are; snap buttons sit inside the tube ends; tarpaulins not shown (three, cut as in Figure 18)",
                        elev=20, azim=-62, size=(11, 8.5), dpi=150, key=True)
 
 
@@ -218,7 +225,7 @@ def node_sheets():
         Part("Foot node", C[("node", "foot", X0, -1)].shape, COL["foot"]),
         near([part("Post", C[("tube", "post", X0, -1)].shape, COL["post"]), part("Anchor", C[("anchor", (X0, -1))].shape, COL["anchor"])], ("foot", X0, -1), half=200),
         dwg_no="SNF-DWG-101", title="SnapFrame foot node (make 6): making sketch",
-        material="Printed polymer (to be chosen, ASA class assumed), about 410 g",
+        material="Printed in filled PA12-class nylon, about 460 g",
         view_shape=node_local("foot"), inset_view=(30, -40),
         notes=["Print 6, plate down on the bed; supports under the core only.",
                "Plate 170 x 170 x 12 mm; core 84 mm ball, its centre 60 mm up.",
@@ -241,7 +248,7 @@ def node_sheets():
     out.append(bv.component_sheet(
         Part("Eave node", C[("node", "eave", X0, -1)].shape, COL["eavenode"]), near(eave_ctx, ("eave", X0, -1)),
         dwg_no="SNF-DWG-103", title="SnapFrame eave node (make 6): making sketch",
-        material="Printed polymer (to be chosen), about 256 g; M10 cable bolt set",
+        material="Printed in filled PA12-class nylon, about 287 g; M10 cable bolt set",
         view_shape=fuse([node_local("eave"), hardware_local("eave")]), inset_view=(18, -35),
         notes=["Print 6, all the same. Four sockets from the 84 mm core:",
                "  post straight down (24.0 bore, hitch pin 60 mm from the centre);",
@@ -263,7 +270,7 @@ def node_sheets():
     out.append(bv.component_sheet(
         Part("Ridge node, end", C[("node", "ridge", X0)].shape, COL["ridgenode"]), near(ridge_ctx, ("ridge", X0)),
         dwg_no="SNF-DWG-105", title="SnapFrame ridge node, end (make 2): making sketch",
-        material="Printed polymer (to be chosen), about 247 g; M10 cable bolt set",
+        material="Printed in filled PA12-class nylon, about 277 g; M10 cable bolt set",
         view_shape=fuse([node_local("ridge-end"), hardware_local("ridge")]), inset_view=(25, -50),
         notes=["Print 2, the same for the rear and the front (the front one is",
                "  turned round). Three 30.1 mm sockets from the 84 mm core:",
@@ -283,7 +290,7 @@ def node_sheets():
     out.append(bv.component_sheet(
         Part("Ridge node, middle", C[("node", "ridge", XM)].shape, COL["ridgenode"]), near(mid_ctx, ("ridge", XM)),
         dwg_no="SNF-DWG-106", title="SnapFrame ridge node, middle (make 1): making sketch",
-        material="Printed polymer (to be chosen), about 271 g; M10 cable bolt set",
+        material="Printed in filled PA12-class nylon, about 304 g; M10 cable bolt set",
         view_shape=fuse([node_local("ridge-middle"), hardware_local("ridge")]), inset_view=(25, -50),
         notes=["Print 1. As the end ridge node with a fourth socket: two",
                "  30.1 mm ridge sockets, one each way along the ridge line.",
@@ -706,25 +713,29 @@ def steps(only=None):
     st(4, [], [mv(rear, (0, 0, 250))], "stand the rear frame on its marks",
        "Two people walk it up from the ridge end (where it lay flat, faint); feet on the rear pegs. One holds it upright until step 6",
        context=[ground(X0 - 2900, 4700, -2700, 2700), part("Frame lying flat", _flat(S(fx), X0), "#E5E7EB")], elev=22, azim=-60)
+    def stepper(x):
+        return part("Folding step: stand on it to reach the ridge sockets", M.folding_step(x=x), "#6D28D9")
     tubes1 = part("Eave tubes (2) and ridge tube, rear bay", S(lambda k: k[0] == "tube" and k[1] in ("eave", "ridge") and k[2] == 0), COL["eave"])
-    st(5, [rear], [mv(tubes1, (350, 0, 0))], "eave tubes and ridge tube into the rear frame",
-       "Push each straight into its socket until it clicks; a helper holds the far ends level (a step for the ridge)",
+    st(5, [rear], [mv(tubes1, (350, 0, 0)), stepper(450)], "eave tubes and ridge tube into the rear frame",
+       "Push each straight into its socket until it clicks; a helper holds the far ends level; stand on the folding step for the ridge socket",
        context=[g], elev=18, azim=-60, label_done=False)
     mid = part("Middle frame (built flat as steps 2 and 3)", S(frame_line(XM)), "#16A34A")
-    st(6, [rear, tubes1], [mv(mid, (300, 0, 0))], "slide the middle frame onto the tube ends",
-       "Stand it 70 mm short of its pegs, line up the three sockets, slide it back 65 mm on its feet until all three click",
+    st(6, [rear, tubes1], [mv(mid, (300, 0, 0)), stepper(1650)], "slide the middle frame onto the tube ends",
+       "Stand it 70 mm short of its pegs, line up the three sockets (the folding step reaches the ridge), slide it back 65 mm on its feet until all three click",
        context=[g], elev=18, azim=-60, label_done=False)
     tubes2 = part("Eave tubes (2) and ridge tube, front bay", S(lambda k: k[0] == "tube" and k[1] in ("eave", "ridge") and k[2] == 1), COL["ridge"])
     front = part("Front frame", S(frame_line(XL)), "#0F766E")
-    st(7, [rear, tubes1, mid], [mv(tubes2, (350, 0, 0)), mv(front, (700, 0, 0))], "front bay: tubes, then the front frame",
+    st(7, [rear, tubes1, mid], [mv(tubes2, (350, 0, 0)), mv(front, (700, 0, 0)), stepper(2450)], "front bay: tubes, then the front frame",
        "Tubes into the middle frame; slide the front frame on as in step 6; caps go in the two front corner sockets",
        context=[g], elev=18, azim=-60, label_done=False)
     frame = [part("Frame", S(lambda k: k[0] in ("tube", "node", "pin", "cap", "bolt", "ring")), "#D1D5DB")]
-    anchors = part("Screw anchors (6)", S(lambda k: k[0] == "anchor" and k[1] not in ("rear", "front")), COL["anchor"])
-    st(8, frame, [mv(anchors, (0, 0, 500))], "square the frame and turn in the anchors",
-       "Diagonals equal; each anchor down through its slot, turned by a spare tube through the eye until the eye sits on the plate",
+    anchors = part("Screw anchors (4)", S(lambda k: k[0] == "anchor" and k[1] not in ("rear", "front") and k[1][0] != X0), COL["anchor"])
+    longa = part("Long screw anchors (2, rear corners)", S(lambda k: k[0] == "anchor" and k[1] not in ("rear", "front") and k[1][0] == X0), "#7C2D12")
+    anchors_all = fuse([anchors.shape, longa.shape])
+    st(8, frame, [mv(anchors, (0, 0, 500)), mv(longa, (0, 0, 500))], "square the frame and turn in the anchors",
+       "Diagonals equal; each anchor down through its slot, turned by a spare tube through the eye until the eye sits on the plate; the two long ones at the rear corners",
        context=[g], elev=25, azim=-50, label_done=False)
-    fa = frame + [part("Anchors", anchors.shape, "#D1D5DB")]
+    fa = frame + [part("Anchors", anchors_all, "#D1D5DB")]
     gc = part("Rear gable cables (2)", thick(lambda k: k[1] == "gable"), "#DC2626")
     st(9, fa, [gc], "rear gable cables",
        "Each from a rear corner anchor eye to the ring of the opposite eave node; pull snug; tie them where they cross",
@@ -743,8 +754,8 @@ def steps(only=None):
     st(12, fa + [part("done", allc, "#D1D5DB")], [guys], "guy anchors and guy lines",
        "Anchors 1.5 m out from each gable on the ridge line; tie each guy to the end ridge node's ring and tension it",
        context=[g2], elev=15, azim=-60, label_done=False)
-    # 13: skin, as the concept (two tarpaulins; front gable open)
-    from build123d import Vector, Wire, Face, Solid
+    # 13: skin, three tarpaulins (decided 2026-10-02): roof; walls and rear gable; front gable with door flap
+    from build123d import Vector, Wire, Face, Solid, Box, Plane
     he, hr = F.p["eave"], F.p["ridge"]
     L = XL
     sl = math.atan2(hr - he, YE)
@@ -754,23 +765,31 @@ def steps(only=None):
         ps = [Vector(*p) + n * off for p in pts]
         return Solid.extrude(Face(Wire.make_polygon(ps, close=True)), n * t)
     roof = fuse([panel([(-100, YE + 150, he - 60), (L + 100, YE + 150, he - 60), (L + 100, -40, hr + 16), (-100, -40, hr + 16)], (0, math.sin(sl), math.cos(sl)))
-, panel([(-100, -YE - 150, he - 60), (L + 100, -YE - 150, he - 60), (L + 100, 40, hr + 16), (-100, 40, hr + 16)], (0, -math.sin(sl), math.cos(sl)))])
+                 , panel([(-100, -YE - 150, he - 60), (L + 100, -YE - 150, he - 60), (L + 100, 40, hr + 16), (-100, 40, hr + 16)], (0, -math.sin(sl), math.cos(sl)))])
     walls = fuse([panel([(0, YE, 10), (L, YE, 10), (L, YE, he), (0, YE, he)], (0, 1, 0))
-             , panel([(0, -YE, 10), (L, -YE, 10), (L, -YE, he), (0, -YE, he)], (0, -1, 0))
-             , panel([(0, -YE, 10), (0, YE, 10), (0, YE, he), (0, 0, hr), (0, -YE, he)], (-1, 0, 0))])
+                  , panel([(0, -YE, 10), (L, -YE, 10), (L, -YE, he), (0, -YE, he)], (0, -1, 0))
+                  , panel([(0, -YE, 10), (0, YE, 10), (0, YE, he), (0, 0, hr), (0, -YE, he)], (-1, 0, 0))])
+    dw, dh = SK.DOOR_W * 1000, SK.DOOR_H * 1000
+    fg = panel([(L, -YE, 10), (L, YE, 10), (L, YE, he), (L, 0, hr), (L, -YE, he)], (1, 0, 0))
+    fg = fg - Pos(L + 60 + 4, 0, 10 + dh / 2) * Box(40, dw, dh)
+    flap = Solid.make_cylinder(55.0, dw, Plane(origin=(L + 130.0, -dw / 2, 10 + dh + 70.0), z_dir=(0, 1, 0)))
+    front = fuse([fg, flap])
     LEAD["Tarpaulin 2: side walls and rear gable"] = (L * 0.3, -YE - 64, he * 0.45)
     LEAD["Tarpaulin 1: roof, over the ridge"] = (L * 0.6, -YE * 0.5 - 30, (he + hr) / 2 + 75 + 500)
+    LEAD["Tarpaulin 3: front gable, door flap rolled up"] = (L + 70, YE * 0.6, he * 0.5)
     st(13, fa + [part("done", fuse([allc, guys.shape]), "#D1D5DB")],
        [mv(part("Tarpaulin 1: roof, over the ridge", roof, "#3B6EA5"), (0, 0, 500)),
-        mv(part("Tarpaulin 2: side walls and rear gable", walls, "#60A5FA"), (0, 0, 0))],
-       "tarpaulins (agency stock)", "Tie through the eyelets to the tubes, never to the nodes or cables; the front gable stays open",
+        mv(part("Tarpaulin 2: side walls and rear gable", walls, "#60A5FA"), (0, 0, 0)),
+        mv(part("Tarpaulin 3: front gable, door flap rolled up", front, "#1E3A8A"), (500, 0, 0))],
+       "tarpaulins (agency stock)", "Tie through the eyelets to the tubes, never to the nodes or cables; the third tarpaulin closes the front gable, its door flap rolled up here",
        context=[g2], elev=20, azim=-55, label_done=False)
     return out
 
 
 if __name__ == "__main__":
-    what = sys.argv[1:] or ["overview", "sheets", "tubes", "cables", "joints", "steps"]
-    fns = {"overview": overview, "sheets": node_sheets, "tubes": tube_sheets, "cables": cable_sheet, "joints": joints, "steps": steps}
+    what = sys.argv[1:] or ["overview", "sheets", "tubes", "cables", "joints", "steps", "cutting", "packing"]
+    fns = {"overview": overview, "sheets": node_sheets, "tubes": tube_sheets, "cables": cable_sheet, "joints": joints, "steps": steps,
+           "cutting": lambda: PF.cutting_plan(), "packing": lambda: PF.packing()}
     for w in what:
         if ":" in w:
             w, arg = w.split(":")

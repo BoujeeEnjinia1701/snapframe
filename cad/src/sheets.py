@@ -1,4 +1,4 @@
-"""SnapFrame general arrangement drawing SNF-DWG-001 Rev P4 (TRL 3, constructable design, SNF-DDR-003).
+"""SnapFrame general arrangement drawing SNF-DWG-001 Rev P5 (TRL 3, constructable design, SNF-DDR-003, decisions of 2026-10-02).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/SNF-DWG-001.svg, .pdf and .png. Geometry from cad/src/model.py.
@@ -17,10 +17,11 @@ import model as M
 
 DATE = "2026-09-25"
 DATE_P4 = "2026-10-01"
+DATE_P5 = "2026-10-02"
 work = ROOT / "cad" / "drawings" / "_views"
 
 asm = M.assembly("M")
-frame = Compound([sh for no, (_, shapes) in asm.items() if no not in (9, 12) for sh in shapes.values()])
+frame = Compound([sh for no, (_, shapes) in asm.items() if no not in (9, 12, 15, 16) for sh in shapes.values()])
 views = project_views(frame, work / "frame")
 var = M.node_variants("M")
 bolt = {"eave": M.cable_bolt(M.V(*M.BOLT_DIR["eave"])), "ridge-end": M.cable_bolt(M.V(*M.BOLT_DIR["ridge"]))}
@@ -29,13 +30,14 @@ nodes = {n: project_views(Compound([var[n][0]] + ([bolt[n]] if n in bolt else []
 
 ml = M.member_lengths("M")
 p = M.SIZES["M"]
-s = Sheet(project="SnapFrame", title="General arrangement, size M", dwg_no="SNF-DWG-001", rev="P4",
-          author="Amish Chadha", date=DATE_P4, scale=1 / 50,
-          material="EMT to ANSI C80.3; printed polymer nodes (not chosen); see bom/bom.csv and SNF-CAL-001",
+s = Sheet(project="SnapFrame", title="General arrangement, size M", dwg_no="SNF-DWG-001", rev="P5",
+          author="Amish Chadha", date=DATE_P5, scale=1 / 50,
+          material="EMT to ANSI C80.3; nodes printed in filled PA12-class nylon; see bom/bom.csv and SNF-CAL-001",
           revisions=[("P1", "Preliminary general arrangement (TRL 3)", DATE, "AC"),
                      ("P2", "1 in ridge tubes; one eave node variant (DDR-002)", DATE, "AC"),
                      ("P3", "Layout and labels tidied", DATE, "AC"),
-                     ("P4", "Design for construction (DDR-003): cable bolts, slots, pin", DATE_P4, "AC")])
+                     ("P4", "Design for construction (DDR-003): cable bolts, slots, pin", DATE_P4, "AC"),
+                     ("P5", "Folding step, long rear anchors, filled nylon nodes; 19.5 m/s (CAL v0.6)", DATE_P5, "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 
 s.add_svg(views["iso"], 268, 50, 150, 40, label="Isometric view", sublabel="Not to scale")
@@ -57,9 +59,9 @@ s.add_notes("Key dimensions and data (size M)", [
     f"{M.NODE['slot_w']:.0f} mm anchor slots at 45 deg; anchor eye down on the plate",
     "Eave and ridge nodes: M10 cable bolt with spacer and 6 mm ring; cables clip to rings and anchor eyes",
     f"Guy anchors {M.GUY_OUT / 1000:.1f} m beyond each gable; 10 brace cables, 4 mm",
-    "Wind rating 19.7 m/s at SF 1.5 (post governs); not rated for snow",
+    "Wind rating 19.5 m/s at SF 1.5 (post governs, frame analysis); not rated for snow",
     "Corner eave nodes: socket past the gable left blank and capped",
-    "PRELIMINARY, NOT FOR FABRICATION. Anchors omitted from views; guy lines shown",
+    "Folding step (15) and two 560 mm rear anchors (16) not drawn",
 ], x=268, y=150, width=150)
 s.save(ROOT / "cad" / "drawings" / "SNF-DWG-001")
 shutil.rmtree(work, ignore_errors=True)

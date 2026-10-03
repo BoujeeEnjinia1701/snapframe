@@ -1,0 +1,17 @@
+{
+ "frame_kit_kg": 46.25,
+ "tarps_kg": 13.68,
+ "bundle_a_kg": 16.66,
+ "bundle_b_kg": 12.34,
+ "bag_kg": 17.25,
+ "bundle_a_m3": 0.0169,
+ "bundle_b_m3": 0.0132,
+ "bag_m3": 0.0749,
+ "nodes_kg": 5.339,
+ "nodes_usd": 316.16,
+ "tube_m": 33.74,
+ "cable_m": 29.5,
+ "frame_kit_usd": 700.56,
+ "over_target_usd": 255.56,
+ "rating_ms": 19.5
+}

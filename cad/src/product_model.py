@@ -5,8 +5,10 @@ bands at their ends, teal printed nodes with filleted cores and socket mouths, s
 buttons showing in their socket holes, hitch pins with pull rings at the tension joints, push-in caps
 on the blank corner sockets, foot plates with grip ribs and a size mark, screw anchors, brace cables
 with hand cam tensioners, and guy lines with slide tensioners. Context is a compact soil plinth, one
-relief tarpaulin fitted over the rear bay (agency stock, item 11, outside the kit) and the shared clay
-mannequin standing beside the open front gable for scale.
+relief tarpaulins fitted over the rear bay and across the front gable, whose door flap is rolled up and tied
+(agency stock, item 11, outside the kit; decided 2026-10-02), a folding step (item 15) in the exploded view, and
+the shared clay mannequin standing beside the front gable for scale. The two rear corner anchors are the longer
+560 mm item 16 (decided 2026-10-02).
 APPEARANCE MODEL ONLY: no tolerances, no fabrication detail. CONCEPT, NOT FOR FABRICATION.
 
 Every main dimension, node position, socket axis, bore, button and pin position comes from
@@ -38,12 +40,12 @@ TITLE = "SnapFrame: tool-free emergency shelter frame of conduit and printed nod
 RENDER_VIEWS = [
     {"name": "hero", "groups": ["shell", "internal", "context"], "explode": False, "el": 24, "az": -40,
      "note": "Product render from the front right and above (about 24 deg elevation); size M frame on a soil "
-             "plinth with a tarpaulin over the rear bay, the open front gable at right and a 1.75 m person "
-             "for scale. Guy lines not shown"},
+             "plinth with a tarpaulin over the rear bay, the front gable at right closed by a third tarpaulin "
+             "with its door flap rolled up, and a 1.75 m person for scale. Guy lines not shown"},
     {"name": "exploded", "groups": ["shell", "internal", "accessory"], "explode": True, "el": 28, "az": -55,
      "note": "Exploded view from the front right and above (about 28 deg elevation): EMT posts, rafters, ridge "
-             "and eave tubes; foot, eave and ridge nodes; brace cables; screw anchors; guy lines. "
-             "Tarpaulin not shown"},
+             "and eave tubes; foot, eave and ridge nodes; brace cables; screw anchors (two of them the longer "
+             "rear corner ones); guy lines; folding step. Tarpaulins not shown"},
     {"name": "detail", "groups": ["internal"], "explode": False, "el": 18, "az": -40,
      "note": "Detail from the front right, slightly above (about 18 deg elevation): front right corner eave "
              "node with the post, rafter and eave tube ends, spring buttons, hitch pin, blank socket cap "
@@ -214,6 +216,13 @@ def _panel(pts, normal, off=60.0, t=8.0):
     return Solid.extrude(Face(Wire.make_polygon(ps, close=True)), nv * t)
 
 
+def fuse_(shapes):
+    out = shapes[0]
+    for sh in shapes[1:]:
+        out = out + sh
+    return out
+
+
 def _boff(center, extra=(0, 0, 0)):
     c = _V(center)
     return tuple(EXPLODE_K * (a - b) + e for a, b, e in zip(c, EXPLODE_C, extra))
@@ -364,12 +373,23 @@ def product_parts(size=SIZE):
     hook += _cyl_on(eye + tab_l * 15, tu, 3.5, 30)
     add("Brace cable snap hook (front right corner)", hook, C_STEEL, "metal", 8, "internal", _boff(dn))
 
-    # ------------------------------------------------------------ screw anchors (BOM 9)
+    # ------------------------------------------------------------ screw anchors (BOM 9; BOM 16 at the rear corner feet)
     offa = NODE["anchor_off"]
+    zc = M.anchor_eye_center_z()
     for k in f.foot:
-        ax, ay = f.foot[k][0], f.foot[k][1] + k[1] * offa
-        sh = M.screw_anchor(ax, ay)
-        add(f"Screw ground anchor ({_tag(k)})", sh, C_GALV, "metal", 9, "shell", _boff(f.foot[k], (0, 0, -700)))
+        d = M.anchor_slot_dir(size, k)
+        ax_, ay_ = f.foot[k][0] + d.X * offa, f.foot[k][1] + d.Y * offa
+        rear = k[0] == x0
+        sh = M.screw_anchor(ax_, ay_, top_z=zc - 58, axis=(d.X, d.Y, 0),
+                            depth=M.ANCHOR_DEPTH_REAR if rear else M.ANCHOR_DEPTH)
+        add(f"{'Long screw ground anchor' if rear else 'Screw ground anchor'} ({_tag(k)})", sh, C_GALV, "metal",
+            16 if rear else 9, "shell", _boff(f.foot[k], (0, 0, -700)))
+
+    # ------------------------------------------------------------ folding step (BOM 15), exploded view only
+    sides, treads = M.folding_step_parts()
+    sx, sy = M.STEP["x"], M.STEP["y"]
+    add("Folding step, side frames", fuse_(sides), C_GALV, "metal", 15, "accessory", _boff((sx, sy, 250), (0, 0, -800)))
+    add("Folding step, treads", fuse_(treads), C_DARK, "plastic", 15, "accessory", _boff((sx, sy, 250), (0, 0, -800)))
 
     # ------------------------------------------------------------ guy lines (BOM 9, 10), accessory group
     h = p["ridge"]
@@ -408,6 +428,13 @@ def product_parts(size=SIZE):
             + _panel([(0, -ye, 10), (bay, -ye, 10), (bay, -ye, he), (0, -ye, he)], (0, -1, 0))
             + _panel([(0, -ye, 10), (0, ye, 10), (0, ye, he), (0, 0, hr), (0, -ye, he)], (-1, 0, 0)))
     add("Tarpaulin, rear bay (agency stock)", tarp, C_TARP, "fabric", 11, "context")
+    # front gable: lower strip with the door flap opening (1.0 x 1.7 m) and the gable top, from the third tarpaulin; flap rolled up
+    dw, dh = 1000.0, 1700.0
+    fg = _panel([(xl, -ye, 10), (xl, ye, 10), (xl, ye, he), (xl, 0, hr), (xl, -ye, he)], (1, 0, 0))
+    fg = fg - Pos(xl + 64, 0, 10 + dh / 2) * Box(40, dw, dh)
+    add("Tarpaulin 3, front gable with door flap (agency stock)", fg, C_TARP, "fabric", 11, "context")
+    roll = Solid.make_cylinder(55.0, dw, Plane(origin=(xl + 130.0, -dw / 2, 10 + dh + 70.0), z_dir=(0, 1, 0)))
+    add("Door flap, rolled up and tied", roll, C_HEM, "fabric", 11, "context")
     # hem along the open front edge of the tarpaulin, and eyelets along the eaves
     hem = (_panel([(bay - 50, -ye - 150, he - 60), (bay, -ye - 150, he - 60), (bay, 40, hr + 16),
                    (bay - 50, 40, hr + 16)], nl, off=68.0, t=1.5)

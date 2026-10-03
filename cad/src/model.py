@@ -22,6 +22,10 @@ tube end (they clashed inside the tube), a finger recess round every button, a l
 at every socket mouth, printed cable and guy tabs replaced by a through-bolted steel cable bolt
 with a ring, brace cables clipped to the anchor eyes at the feet and to the cable bolt rings
 at the top, two anchor slots in the foot plate, and the anchor eye turned down onto the plate.
+
+Decisions of 2026-10-02 (SNF-DEC-001): a folding step in the kit for the first prototype (BOM item 15), and longer
+screw anchors at the two rear corner feet, rated 1.5 kN (BOM item 16). Posts stay 3/4 in: the frame analysis was run
+(SNF-CAL-001 v0.6), so the 1 in post fallback was not triggered.
 """
 from __future__ import annotations
 import math
@@ -29,7 +33,7 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from build123d import (Box, Cylinder, Sphere, Torus, Pos, Rot, Solid, Plane, Vector, Compound,
+from build123d import (Box, Cylinder, Sphere, Torus, Pos, Rot, Solid, Plane, Vector, Compound, Face, Wire,
                        export_step, export_stl)
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -87,6 +91,11 @@ SIZES = {
 GUY_OUT = 1500.0       # guy anchors this far beyond each gable
 CABLE_R = 2.0          # 4 mm wire rope
 ANCHOR_DEPTH = 380.0
+ANCHOR_DEPTH_REAR = 560.0   # longer anchor at the two rear corner feet, rated 1.5 kN (decided 2026-10-02, SNF-DEC-001)
+# Folding step in the first prototype's kit (decided 2026-10-02, SNF-DDR-003 A1): two treads, stands inside the
+# frame to reach the ridge sockets at 2.6 m. Massing model of a bought step, about 1.5 kg.
+STEP = {"x": 1000.0, "y": 0.0, "w": 450.0, "d": 500.0, "top": 500.0, "mid": 250.0, "tread": 250.0, "t": 20.0,
+        "reach_standing": 2200.0}
 EYE_R, EYE_WIRE = 28.0, 6.0     # screw anchor eye: ring radius and wire radius
 CABLE_ENDS = {}        # filled by build_components: cable key -> (attachment point, attachment point)
 
@@ -294,6 +303,29 @@ def screw_anchor(x, y, top_z=20.0, depth=ANCHOR_DEPTH, axis=(0, 1, 0)):
     return shaft + helix + eye
 
 
+def folding_step(x=None, y=None):
+    """Two-tread folding step, long side along the ridge, deep side across the span, massing model."""
+    sides, treads = folding_step_parts(x, y)
+    return fuse(sides + treads)
+
+
+def folding_step_parts(x=None, y=None):
+    """The step as (two side frames, two treads), for the appearance model."""
+    st = STEP
+    x = st["x"] if x is None else x; y = st["y"] if y is None else y
+    d, top, t, w = st["d"], st["top"], st["t"], st["w"]
+    # side frame: a trapezoid in the Y-Z plane, front face upright, back leaning out to the ground
+    pts = [(y - d / 2, 0), (y + d / 2, 0), (y + d / 2 - 250, top), (y - d / 2, top)]
+    parts = []; treads = []
+    for sx in (-1, 1):
+        x0 = x + sx * (w / 2 - t / 2)
+        poly = [Vector(x0 - t / 2, py, pz) for py, pz in pts]
+        parts.append(Solid.extrude(Face(Wire.make_polygon(poly, close=True)), Vector(t, 0, 0)))
+    for z, depth in ((st["top"], st["tread"]), (st["mid"], st["tread"] + 100)):
+        treads.append(Pos(x, y - d / 2 + depth / 2, z - t / 2) * Box(w, depth, t))
+    return parts, treads
+
+
 def anchor_eye_center_z():
     """Eye centre height with the eye turned down onto the foot plate across the slot (DDR-003 C5)."""
     n = NODE
@@ -485,9 +517,13 @@ def build_components(size="M"):
         a = V(*c) + d * NODE["anchor_off"]
         zc = anchor_eye_center_z()
         anchors[k] = (a.X, a.Y, zc, d)
-        add(("anchor", k), "Screw anchor", screw_anchor(a.X, a.Y, top_z=zc - 58, axis=(d.X, d.Y, 0)), 9, "anchor")
+        rear = k[0] == x0
+        add(("anchor", k), "Long screw anchor (rear corner)" if rear else "Screw anchor",
+            screw_anchor(a.X, a.Y, top_z=zc - 58, axis=(d.X, d.Y, 0), depth=ANCHOR_DEPTH_REAR if rear else ANCHOR_DEPTH),
+            16 if rear else 9, "anchor")
     for g, gx in (("rear", x0 - GUY_OUT), ("front", xl + GUY_OUT)):
         add(("anchor", g), "Screw anchor (guy)", screw_anchor(gx, 0.0), 9, "anchor")
+    add(("step",), "Folding step", folding_step(), 15, "hardware")
     # cable ends
     cab = cable_list(size)
     bolt_axis = {}
@@ -576,7 +612,8 @@ def assembly(size="M"):
     C, _ = comps(size)
     names = {1: "EMT post, 3/4 in", 2: "EMT rafter, 1 in", 3: "EMT ridge tube, 1 in", 4: "EMT eave tube, 3/4 in",
              5: "Foot node", 6: "Eave node", 7: "Ridge node", 8: "Brace cable", 9: "Screw ground anchor",
-             10: "Guy line", 12: "Snap buttons, hitch pins and caps", 14: "Cable bolt set and ring"}
+             10: "Guy line", 12: "Snap buttons, hitch pins and caps", 14: "Cable bolt set and ring",
+             15: "Folding step", 16: "Long screw anchor (rear corners)"}
     out = {no: (nm, {}) for no, nm in names.items()}
     for k, c in C.items():
         if c.key[0] == "spring":
@@ -673,6 +710,26 @@ def checks(size="M"):
         if k[1] in ("rear", "front"):
             continue
         chk(f"anchor eye on the foot plate {k[1]}", a.shape, nds[("node", "foot") + k[1]].shape, "touch")
+    # 6b. long anchors at the rear corner feet are longer, same eye and helix; the folding step stands clear and reaches the ridge
+    x0 = f.xs[0]
+    for k, a in anchors.items():
+        if k[1] in ("rear", "front"):
+            continue
+        bb = a.shape.bounding_box()
+        want = ANCHOR_DEPTH_REAR if k[1][0] == x0 else ANCHOR_DEPTH
+        depth = anchor_eye_center_z() - 58 - bb.min.Z
+        rows.append((f"anchor at foot {k[1]} is {want:.0f} mm long ({'rear corner, 1.5 kN' if k[1][0] == x0 else '1.0 kN'})",
+                     0, depth - want, 0.0, abs(depth - want) < 0.5))
+    stp = C[("step",)].shape
+    sb = stp.bounding_box()
+    chk("folding step clear of tubes, nodes, bolts and rings", stp, [c.shape for k, c in C.items() if k[0] in ("tube", "node", "bolt", "ring", "pin")], 100.0)
+    chk("folding step clear of cables, hooks and guys", stp, [c.shape for k, c in C.items() if k[0] in ("cable", "hook")], 300.0)
+    rows.append((f"folding step stands on the ground (lowest point {sb.min.Z:.0f} mm), top tread {STEP['top']:.0f} mm", 0, sb.min.Z, 0.0, abs(sb.min.Z) < 0.5))
+    reach = STEP["reach_standing"] + STEP["top"]
+    rows.append((f"standing on the step a person reaches {reach:.0f} mm, ridge sockets at {f.p['ridge']:.0f} mm", 0, reach - f.p["ridge"], 50.0,
+                 reach - f.p["ridge"] >= 50.0))
+    rows.append(("folding step footprint inside the frame, between frames 0 and 1",
+                 0, 0, "inside", 0 < sb.min.X and sb.max.X < f.xs[1] and abs(sb.min.Y) < f.p["span"] / 2))
     # 7. cables and guys clear of every tube, node and bolt except where they clip on
     allsolid = [c.shape for k, c in C.items() if k[0] in ("tube", "node", "bolt", "pin")]
     for k, c in cables.items():

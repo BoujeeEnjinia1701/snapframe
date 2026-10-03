@@ -55,18 +55,19 @@ Emergency shelters need frames that ship flat and go up without tools. Relief ag
 
 Frame kit of standard EMT conduit joined by printed or cast nodes, with parametric nodes generated for several shelter sizes.
 
-The reference size M is a 4.0 x 4.0 m (16 m²) gable frame with a 2.6 m ridge: 18 straight EMT tubes (1 in rafters and ridge tubes, 3/4 in posts and eave tubes), 15 printed nodes in four variants with spring-button sockets, cable bracing, hand-turned screw anchors, and standard tarpaulins from agency stock (two, and part of a third for the front gable). The TRL 3 calculation note puts the constructable frame kit at about 43.3 kg and $469 ($24 over the $445 value-engineering target) and the wind rating at about 19.7 m/s, just short of the 20 m/s target, with the 3/4 in posts governing. See the [design decisions register](docs/06-design-decisions.md) for decisions and open items.
+The reference size M is a 4.0 x 4.0 m (16 m²) gable frame with a 2.6 m ridge: 18 straight EMT tubes (1 in rafters and ridge tubes, 3/4 in posts and eave tubes), 15 printed nodes in four variants with spring-button sockets, cable bracing, hand-turned screw anchors, and standard tarpaulins from agency stock (two, and part of a third for the front gable), and a folding step for the ridge sockets. The TRL 3 calculation note puts the constructable frame kit at about 46.2 kg and $701 ($256 over the $445 value-engineering target, mostly the nodes in filled nylon) and the wind rating at about 19.5 m/s, just short of the 20 m/s target, with the 3/4 in posts governing in the frame analysis. See the [design decisions register](docs/06-design-decisions.md) for decisions and open items.
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
 - EMT conduit in four cut lengths: 1 in rafters and ridge tubes, 3/4 in posts and eave tubes
-- Printed polymer nodes in three types (four printed variants, none handed), castable in aluminum later
+- Printed nodes in filled PA12-class nylon, three types (four printed variants, none handed), castable in aluminum later
 - Spring snap buttons and hitch pins
 - Wire-rope brace cables with hand tensioners, clipped to anchor eyes and to steel rings on bolts through the nodes
 - Three 4 x 6 m relief tarpaulins (agency stock): two whole, and part of a third, cut with a door flap, for the front gable
-- Screw ground anchors and guy lines
+- Screw ground anchors (two longer ones at the rear corners) and guy lines
+- A folding step to reach the ridge sockets
 
 The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 
@@ -74,11 +75,11 @@ The working bill of materials is in [bom/bom.csv](bom/bom.csv).
 
 ![SnapFrame prototype: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
-The [prototype build plan](docs/05-build-plan.md) (SNF-BLD-001) shows, in pictures, how to make each of the nine made components and put the size M frame up in thirteen steps; nothing has been built yet. The tubes are cut and drilled conduit with snap buttons fitted, the nodes are printed and each eave and ridge node gets a stainless cable bolt with a steel ring, and the brace cables are made up from wire rope. Writing the plan made the design buildable: the button and hitch pin moved apart inside the tube ends, the printed cable tabs became through-bolted rings, the cables now clip to the anchor eyes, the foot plate has two anchor slots, and the frames slide onto the tubes before the anchors go in (SNF-DDR-003, open for Amish's review). Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not.
+The [prototype build plan](docs/05-build-plan.md) (SNF-BLD-001) shows, in pictures, how to make each of the nine made components and put the size M frame up in thirteen steps, with the tarpaulin cutting plan and the packing of the three packages; nothing has been built yet. The tubes are cut and drilled conduit with snap buttons fitted, the nodes are printed and each eave and ridge node gets a stainless cable bolt with a steel ring, and the brace cables are made up from wire rope. Writing the plan made the design buildable: the button and hitch pin moved apart inside the tube ends, the printed cable tabs became through-bolted rings, the cables now clip to the anchor eyes, the foot plate has two anchor slots, and the frames slide onto the tubes before the anchors go in (SNF-DDR-003, open for Amish's review). Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not.
 
 ## Safety
 
-> **Safety:** SnapFrame is an emergency shelter frame, not a storm refuge. By calculation it stays elastic with a factor of 1.5 only up to gusts of about 19.7 m/s (71 km/h), and about 14.7 m/s (53 km/h) with wind blowing into the open gable, and it is not rated for snow. Leave the shelter in storms, clear snow and standing water, keep open flames outside (polyethylene tarpaulins burn), and rate the frame for local wind and snow before relying on it.
+> **Safety:** SnapFrame is an emergency shelter frame, not a storm refuge. By calculation it stays elastic with a factor of 1.5 only up to gusts of about 19.5 m/s (70 km/h), and about 14.7 m/s (53 km/h) with the door flap open and wind blowing into it, and it is not rated for snow. Leave the shelter in storms, clear snow and standing water, keep open flames outside (polyethylene tarpaulins burn), and rate the frame for local wind and snow before relying on it.
 
 ## Repository layout
 

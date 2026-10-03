@@ -337,3 +337,45 @@ Ten, all moved to "Decisions made" in SNF-DEC-001 (open items 1 to 10): design f
 - Five requirements are not met (R5, R6, R7, R11, R13); R13 (fire spread) has no open decision, though the problem statement asks whether partners stock a fire-retardant tarpaulin. It should be added to the register.
 - Item 3 and item 5 interact: a third tarpaulin adds several kilograms to whatever carries it, which is why R11 is best counted on the frame kit alone.
 - Cost is $469.14 against the $445 target, $24.14 over, and the frame analysis item may add about $30 more.
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish approved on 2026-10-02 that every follow-up action from the open-decision sign-off be carried out. The eight follow-ups listed above were worked through; this section records them.
+
+### Approved follow-ups carried out
+
+1. Decision 2, folding step: done. Model part and checks (214 checks pass, was 203), BOM line 15 ($25.00, 1.5 kg), shown in steps 5 to 7 and the overview.
+2. Decision 3, cutting plan: done. `cad/src/skin_plan.py` (19 checks), `docs/05-build-plan/cutting-plan.png`, build plan section 3.11, step 13 and the concept media redrawn with the front gable and door flap; corner cable hem 0.40 x 0.20 m settled (SNF-DDR-003 A2).
+3. Decision 3, BOM: done. Tarpaulins line 11 from two to three ($75.00, outside the frame kit).
+4. Decision 4, frame analysis: done. Section 5 of SNF-CAL-001 v0.6: windward post 1.43 at 20 m/s, rating 19.7 to 19.5 m/s. The analysis has been run, so the 1 in post fallback is not triggered and the posts stay 3/4 in. 1 in posts (20.3 m/s, about $30) are proposed in the register as open decision 12.
+5. Decision 5, straps and packing: done. BOM line 13 now four straps ($26.00); `docs/05-build-plan/packing.png` and build plan section 3.12 (bundles 16.7 and 12.3 kg, bag 17.2 kg).
+6. Decision 6, nodes in filled nylon: done for the re-estimate (A12: 5.34 kg and $316.16, was 4.76 kg and $119.74; BOM lines 5 to 7). Not done: coupon tests for pin bearing at 70 °C in the TRL 4 plan, because it is TRL 4 work.
+7. Decision 7, long anchors: done. Model, BOM line 16 (two at $6.00, 560 mm, 1.5 kN), line 9 cut to six.
+8. Decision 10, re-render: render scenes exported for Amish's Mac (hero, exploded, detail) from the updated appearance model; photoreal images, `card.png` and `social-preview.png` not regenerated, as instructed.
+
+### Key results
+
+- Requirement changes: R6 stays not met, rating 19.7 to 19.5 m/s. R7 from "met by area" to met, cutting plan drawn. R5 and R11 stay met (bundles 16.7 and 12.3 kg, bag 17.2 kg; frame kit 46.2 kg, was 43.3 kg). R8, R9 stay at risk. R10: frame kit $700.56, $255.56 over the $445 target (was $24.14); budget_usd unchanged.
+- Cost basis: the nodes in filled nylon assume $55/kg, 1,200 kg/m3 and $1.50 a node, all indicative.
+- Appearance model `cad/src/product_model.py` updated: front gable with rolled-up door flap, long rear anchors with the eye down on the plate, folding step in the exploded view.
+
+### Documents changed
+
+SNF-CAL-001 v0.6, SNF-REQ-001 v0.8, SNF-PRC-001 v0.8, SNF-BLD-001 v0.3, SNF-DEC-001 v0.3 (value engineering restated; open decisions 11 and 12 proposed, awaiting Amish), `bom/bom.csv`, `bom/bom-notes.md`, README, SNF-DWG-001 Rev P5, concept media (SNF-DWG-010 Rev P2), build plan pictures (overview, steps 5 to 8 and 13, SNF-DWG-101, 103, 105 and 106, cutting plan, packing).
+
+### Decisions proposed and awaiting Amish
+
+- Open decision 11: the $255.56 overrun from filled nylon nodes (recommended: print farm quote first).
+- Open decision 12: 3/4 in or 1 in posts now that the analysis is run (recommended: keep 3/4 in, test knee fixity at TRL 4).
+
+### Cross-repo actions
+
+None for this repo.
+
+### Recommended next step
+
+Amish re-renders on his Mac from the exported scenes, and decides open decisions 11 and 12.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.
